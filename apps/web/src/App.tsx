@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { LOCALES } from '@mars-to-go/content';
+import { DATA_SOURCES_IN_GAME, EVERY_NUMBER_HAS_BADGE, LOCALES } from '@mars-to-go/content';
 import { setLocale } from './i18n';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
@@ -38,7 +38,12 @@ export function App() {
       <footer className="footer">
         <p>{t('footer.madeBy')}</p>
         <p>{t('footer.ai')}</p>
-        <p>{t('footer.data')}</p>
+        <p>
+          {DATA_SOURCES_IN_GAME.length === 0
+            ? t('footer.dataNone')
+            : t('footer.dataInGame', { sources: DATA_SOURCES_IN_GAME.join(', ') })}
+          {EVERY_NUMBER_HAS_BADGE ? ` ${t('footer.everyNumberBadge')}` : null}
+        </p>
         <p>
           <a href={REPO_URL}>{t('footer.source')}</a>
         </p>

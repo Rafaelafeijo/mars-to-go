@@ -21,7 +21,9 @@
   "footer": {
     "madeBy": "Feito pelo Time Rochette para o NASA Space Apps Challenge 2026.",
     "ai": "Código escrito com o Claude Code (IA) e revisado pelo time.",
-    "data": "Dados: dados abertos da NASA (DONKI, OSDR, Mars Trek). Todo número mostra a fonte.",
+    "dataNone": "Ainda não há dados da NASA na tela: eles chegam com o primeiro sol jogável.",
+    "dataInGame": "Dados reais nesta versão: {{sources}}.",
+    "everyNumberBadge": "Todo número mostra a fonte.",
     "source": "Código-fonte"
   }
 }

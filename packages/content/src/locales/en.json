@@ -21,7 +21,9 @@
   "footer": {
     "madeBy": "Made by Team Rochette for the NASA Space Apps Challenge 2026.",
     "ai": "Code written with Claude Code (AI) and reviewed by the team.",
-    "data": "Data: NASA open data (DONKI, OSDR, Mars Trek). Every number shows its source.",
+    "dataNone": "No NASA data on screen yet: it arrives with the first playable sol.",
+    "dataInGame": "Real data in this version: {{sources}}.",
+    "everyNumberBadge": "Every number shows its source.",
     "source": "Source code"
   }
 }

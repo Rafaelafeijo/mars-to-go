@@ -30,6 +30,10 @@ Cada fonte, local e data: [`docs/pt-BR/DATA_MAP.md`](docs/pt-BR/DATA_MAP.md) e [
 
 Cada número no jogo mostra um selo: **Medido** (observação real, com local e data), **Cenário** (assumido para a nossa base) ou **Simplificação** (arredondado ou deixado de fora, de propósito). Dados de arquivo nunca são mostrados como ao vivo. Dados que não foram medidos em Marte são mostrados como paralelo declarado.
 
+## Testado com uma criança de verdade
+
+Ainda não: o primeiro teste com um testador de 8 anos está previsto depois da Fase 4. As observações e as mudanças que elas causaram vão estar em [`docs/pt-BR/PLAYTEST.md`](docs/pt-BR/PLAYTEST.md), só com fatos, sem nome, imagem ou voz da criança.
+
 ## Como rodar
 
 Requisitos: Node 22+, pnpm (via `corepack enable`).

@@ -41,6 +41,9 @@ Suggested structure; write it in English once the game exists.
 WHAT IT DOES
 [2–3 sentences: the sol loop, the three resources, the five decisions.]
 
+WHAT MAKES IT DIFFERENT
+[Only what is true in the game: the math of every decision solved live on screen; an origin label on every number; a solar event measured on Mars (2024-05-20) as the anchor; radio delay as a mechanic; tested with a real child, changes documented; playable on any phone, no account, two languages, assisted mode.]
+
 HOW IT WORKS
 - The mission: 7 sols at a base in Jezero Crater.
 - Power budgeting: 10 power cells per sol.
@@ -60,8 +63,8 @@ Kids 7–12, with an assisted mode for the youngest. Browser-based, no download,
 ACCESSIBILITY
 [What was actually implemented: assisted mode, contrast, screen reader, reduced motion.]
 
-WHAT WE LEARNED FROM OUR FIRST TESTER
-[What changed in the game after an 8-year-old played it. Facts only.]
+TESTED WITH A REAL CHILD
+[Facts only, from docs/en/PLAYTEST.md: what was observed when an 8-year-old played on a phone, and what changed (up to three fixes, each with its commit). No name, image or voice of the child.]
 
 BENEFITS AND WHAT WE HOPE TO ACHIEVE
 [Public understanding of what survival in deep space requires.]

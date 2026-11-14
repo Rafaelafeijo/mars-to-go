@@ -30,6 +30,10 @@ Every source, place and date: [`docs/en/DATA_MAP.md`](docs/en/DATA_MAP.md) and [
 
 Every number in the game shows a badge: **Measured** (real observation, with place and date), **Scenario** (assumed for our base) or **Simplification** (rounded or left out, on purpose). Archived data is never shown as live. Data not measured on Mars is shown as a declared parallel.
 
+## Tested with a real child
+
+Not yet: the first playtest with an 8-year-old tester is planned after Phase 4. Observations and the changes they caused will be listed in [`docs/en/PLAYTEST.md`](docs/en/PLAYTEST.md), facts only, with no name, image or voice of the child.
+
 ## Run it
 
 Requirements: Node 22+, pnpm (via `corepack enable`).

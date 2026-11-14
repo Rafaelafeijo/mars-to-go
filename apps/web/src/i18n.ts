@@ -8,7 +8,7 @@ function isLocale(value: unknown): value is Locale {
   return typeof value === 'string' && (LOCALES as readonly string[]).includes(value);
 }
 
-/** Saved choice first, then the browser language, then English. */
+/** The game always opens in English; only a manual choice saved on this device changes it (ADR-0028). */
 function initialLocale(): Locale {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -16,7 +16,7 @@ function initialLocale(): Locale {
   } catch {
     // Storage can be blocked (private mode); fall through.
   }
-  return navigator.language.toLowerCase().startsWith('pt') ? 'pt-BR' : DEFAULT_LOCALE;
+  return DEFAULT_LOCALE;
 }
 
 export function setLocale(locale: Locale): void {
