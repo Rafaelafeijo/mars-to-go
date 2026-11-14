@@ -20,9 +20,9 @@
     "rolePrefix": "Hoje você é",
     "roles": [
       "piloto",
-      "engenheira",
+      "engenheiro",
       "cientista",
-      "agricultora de Marte"
+      "agricultor de Marte"
     ],
     "play": "Jogar",
     "continue": "Continuar no sol {{sol}}",
@@ -498,13 +498,34 @@
       "miss": "O evento não chegou a Marte. As células do escudo foram gastas mesmo assim.",
       "discovery": "Descoberta do rover: {{site}}",
       "realNasa": "DADO REAL DA NASA",
-      "suits": "trajes −{{suits}}"
+      "suits": "trajes −{{suits}}",
+      "eyebrow": "Missão 1 · Noite do sol {{n}}",
+      "labelAir": "Ar",
+      "labelFood": "Comida",
+      "labelRad": "Radiação",
+      "labelRover": "Rover",
+      "exposure": "{{word}}",
+      "radHint": "Radiação: partículas invisíveis do Sol que podem fazer mal à tripulação. O Escudo bloqueia."
     },
     "sites": {
       "rochette": "a rocha Rochette",
       "kodiak": "o monte Kodiak",
       "delta-front": "a frente do delta"
-    }
+    },
+    "edge": {
+      "title": "Longe demais da base",
+      "text": "O traje espacial tem ar e bateria limitados. Seguir em frente seria imprudente: volte para a base."
+    },
+    "sky": {
+      "look": "Olhar o céu",
+      "back": "Voltar à base",
+      "title": "O céu de Marte",
+      "day": "De dia o céu de Marte é amarelo a laranja, por causa da poeira fina no ar. No pôr do sol ele fica azul perto do Sol. De Marte, o Sol parece ter cerca de dois terços do tamanho que vemos da Terra.",
+      "photo": "Foto real: pôr do sol na Cratera Gale, em Marte, visto pelo rover Curiosity em 15 de abril de 2015 (sol 956). NASA/JPL-Caltech/MSSS/Texas A&M Univ., PIA19400.",
+      "source": "NASA Science: como são o nascer e o pôr do sol em Marte?"
+    },
+    "harvest": "+{{n}} comida · sol {{sol}}",
+    "harvestMarks": "Colheitas chegando: {{list}}"
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",

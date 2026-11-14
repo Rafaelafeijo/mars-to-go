@@ -418,6 +418,20 @@ export const NASA_SOURCES: NasaSource[] = [
     mode: 'archive',
   },
   {
+    id: 'mars-sky',
+    name: 'NASA Science, "What Do Sunrises and Sunsets Look Like on Mars?"',
+    what: {
+      en: 'By day the Mars sky is yellow to orange from the dust; at sunset it turns blue near the Sun. From Mars the Sun looks about two-thirds the size we see from Earth.',
+      'pt-BR': 'De dia o céu de Marte é amarelo a laranja por causa da poeira; no pôr do sol ele fica azul perto do Sol. De Marte, o Sol parece ter cerca de dois terços do tamanho que vemos da Terra.',
+    },
+    whereInGame: {
+      en: 'The "Look at the sky" view in the 3D base: the sky colors and the sky fact, with the real sunset photo PIA19400.',
+      'pt-BR': 'A vista "Olhar o céu" na base 3D: as cores do céu e o fato do céu, com a foto real do pôr do sol PIA19400.',
+    },
+    url: 'https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/',
+    mode: 'archive',
+  },
+  {
     id: 'images-nasa',
     name: 'NASA Image and Video Library (images.nasa.gov)',
     what: {

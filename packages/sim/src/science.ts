@@ -99,6 +99,12 @@ const constants = {
     source: `${FACT_SHEET}: diurnal temperature range 184 K to 242 K (-89 to -31 C), Viking 1 Lander site`,
     url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,
   },
+  /** Sky view (second playtest): how big the Sun looks from Mars, compared with from Earth. */
+  SUN_SIZE_FROM_MARS_RATIO: {
+    value: 0.67, unit: '× the Sun seen from Earth', label: 'measured' as const,
+    source: 'NASA Science, "What Do Sunrises and Sunsets Look Like on Mars?": the Sun "appears only about two-thirds the size we see on Earth"; sky "yellow to orange", blue near the Sun at sunset (Mark Lemmon)',
+    url: 'https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/', place: 'Mars' as const, accessed: ACCESSED,
+  },
   MARS_SURFACE_GRAVITY: {
     value: 3.73, unit: 'm/s²', label: 'measured' as const,
     source: FACT_SHEET, url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,

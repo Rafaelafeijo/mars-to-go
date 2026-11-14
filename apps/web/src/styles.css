@@ -1,4 +1,11 @@
 /* Mobile first (360 px portrait), dark, one warm accent (ADR-0023). Function before polish. */
+:root {
+  /* One side margin for the top bar, the hero and the footer, so they line up. */
+  --gutter: clamp(16px, 5vw, 64px);
+  /* Glass panels (after the second playtest): dark, thin light border, soft shadow. */
+  --glass: rgb(16 12 11 / 0.86);
+  --glass-line: rgb(255 255 255 / 0.1);
+}
 *,
 *::before,
 *::after {
@@ -70,7 +77,7 @@ main:focus {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px var(--space);
+  padding: 8px var(--gutter);
   border-bottom: 1px solid var(--color-line);
   position: sticky;
   top: 0;
@@ -526,13 +533,20 @@ main:focus {
   letter-spacing: 0.05em;
 }
 
+/* Full width, same side margin as the hero, so it reads as part of the page. */
 .footer {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: var(--space);
+  margin: 0;
+  padding: 20px var(--gutter) 28px;
   border-top: 1px solid var(--color-line);
+  background: #0d0a09;
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  display: grid;
+  gap: 4px;
+}
+.footer p {
+  margin: 0;
+  max-width: 80ch;
 }
 
 /* ── Diamond: the data origin mark (ADR-0030) ───────────── */
@@ -1305,10 +1319,11 @@ main.main--one {
 }
 .wpanel {
   position: absolute;
-  background: rgb(20 16 14 / 0.82);
-  border: 1px solid rgb(255 255 255 / 0.12);
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(8px);
   color: var(--color-text);
   padding: 6px 8px;
 }
@@ -1779,8 +1794,8 @@ button.top__brand {
 }
 .hero__content {
   position: relative;
-  padding: 24px 20px 64px;
-  max-width: 560px;
+  padding: 24px var(--gutter) 72px;
+  max-width: calc(760px + 2 * var(--gutter));
 }
 .hero__eyebrow {
   font-family: var(--font-mono);
@@ -1801,6 +1816,7 @@ button.top__brand {
   font-size: clamp(1.1rem, 4.6vw, 1.5rem);
   font-weight: 700;
   margin: 0 0 6px;
+  max-width: 34ch;
 }
 .hero__role {
   margin: 0 0 18px;
@@ -1847,6 +1863,13 @@ button.top__brand {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
+}
+/* Same row in English and Portuguese from tablet width up. */
+@media (min-width: 640px) {
+  .hero__actions {
+    flex-wrap: nowrap;
+  }
 }
 .hero__assist {
   display: flex;
@@ -1858,8 +1881,8 @@ button.top__brand {
 }
 .hero__credit {
   position: absolute;
-  right: 10px;
-  bottom: 8px;
+  right: var(--gutter);
+  bottom: 10px;
   margin: 0;
   max-width: 60%;
   text-align: right;
@@ -1930,108 +1953,199 @@ button.top__brand {
   width: 100%;
   justify-content: center;
 }
+/* Dialogs over the 3D world (after the second playtest): darker, blurred backdrop so the
+   dialog stands out; header / scrolling body / fixed footer so the button never covers text. */
 .overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: rgb(10 8 7 / 0.45);
+  padding: 12px;
+  background: rgb(8 6 5 / 0.74);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 20;
 }
 .banner,
 .report {
-  width: min(520px, 100%);
+  position: relative;
+  width: min(560px, 100%);
   max-height: 100%;
-  overflow: auto;
-  background: rgb(20 16 14 / 0.94);
-  border: 1px solid rgb(255 255 255 / 0.15);
-  border-radius: 16px;
-  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  background: linear-gradient(180deg, rgb(32 25 22 / 0.98), rgb(18 14 12 / 0.98));
+  border: 1px solid var(--glass-line);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.55);
+  overflow: hidden;
+}
+.banner {
+  padding: 24px 22px 20px;
+  gap: 12px;
 }
 .banner h2,
 .report h2 {
   margin: 0;
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
+  line-height: 1.15;
 }
 .banner p,
 .report p {
   margin: 0;
 }
 .banner--event {
-  border-color: #b9a2ff;
-  box-shadow: 0 0 40px rgb(185 162 255 / 0.35);
+  border-color: rgb(185 162 255 / 0.55);
+  box-shadow: 0 0 0 1px rgb(185 162 255 / 0.15), 0 0 60px rgb(185 162 255 / 0.25), 0 24px 60px rgb(0 0 0 / 0.55);
 }
-.banner__eyebrow {
+.banner__eyebrow,
+.report__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--color-accent);
+}
+.banner__record {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   color: var(--color-text-muted);
+  border-left: 2px solid #b9a2ff;
+  padding-left: 10px;
 }
 .banner__hint {
   font-weight: 700;
-  color: #b9a2ff;
+  color: #cbb8ff;
+}
+.banner .btn {
+  margin-top: 6px;
+}
+
+/* Report: header, scrolling body, fixed footer. */
+.report__head {
+  padding: 22px 22px 12px;
+  flex: none;
+}
+.report__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overscroll-behavior: contain;
+}
+.report__body > * {
+  flex-shrink: 0;
+}
+.report__foot {
+  flex: none;
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--glass-line);
+  background: rgb(18 14 12 / 0.98);
+}
+.report__foot .btn {
+  width: 100%;
+  justify-content: center;
 }
 .report__rows {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 6px;
+  gap: 10px;
 }
-.report__rows li {
+.stat {
   display: grid;
-  grid-template-columns: 22px 1fr auto;
-  gap: 8px;
+  grid-template-columns: 40px 1fr auto;
+  gap: 4px 14px;
   align-items: center;
-  background: rgb(255 255 255 / 0.05);
-  border-radius: 10px;
-  padding: 8px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.035);
+  border: 1px solid var(--glass-line);
 }
-.report__what {
-  color: var(--color-text);
-  font-size: 0.9rem;
+.stat__icon {
+  grid-row: span 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, currentColor 14%, transparent);
 }
-.report__rows strong {
+.stat__label {
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: currentColor;
+}
+.stat__value {
+  grid-row: span 2;
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.stat__what {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
 }
 .report__fact {
   margin: 0;
-  border: 1px solid #ffd27a;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  background: rgb(255 255 255 / 0.035);
+  border: 1px solid rgb(255 210 122 / 0.35);
 }
 .report__fact img {
   width: 100%;
-  max-height: 200px;
+  height: 180px;
   object-fit: cover;
   display: block;
 }
 .report__fact figcaption {
-  padding: 8px 10px;
-  font-size: 0.88rem;
+  padding: 14px 16px 16px;
+  font-size: 0.95rem;
+  line-height: 1.45;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+.report__fact-title {
+  font-size: 1.1rem;
 }
 .report__badge {
+  align-self: flex-start;
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: #ffd27a;
+  border: 1px solid rgb(255 210 122 / 0.5);
+  border-radius: 99px;
+  padding: 2px 8px;
 }
 .report__credit {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
   color: var(--color-text-muted);
+}
+@media (min-width: 640px) {
+  .report__fact img {
+    height: 220px;
+  }
 }
 .thermo {
   display: flex !important;
@@ -2086,6 +2200,95 @@ button.top__brand {
   font-weight: 700;
   font-size: 0.8rem;
   cursor: pointer;
+}
+.world__sky-btn {
+  position: absolute;
+  right: 86px;
+  top: 196px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-line);
+  background: var(--glass);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.world__sky-btn[aria-pressed='true'] {
+  border-color: var(--color-accent);
+}
+.hud-mission.is-hidden {
+  display: none;
+}
+.hud-skycard {
+  top: 92px;
+  left: 6px;
+  width: min(340px, calc(100% - 12px));
+  max-height: calc(100% - 260px);
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+.hud-skycard img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.hud-skycard h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.world__edge {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  z-index: 8;
+  width: min(420px, calc(100% - 24px));
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid rgb(255 155 138 / 0.6);
+  border-left: 4px solid #ff9b8a;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.5);
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+.world__edge .icon {
+  color: #ff9b8a;
+  margin-top: 2px;
+}
+.world__edge strong {
+  display: block;
+  margin-bottom: 2px;
+}
+.bar__track {
+  position: relative;
+}
+.bar__mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -2px;
+  background: #f3ece6;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(20 16 14 / 0.8);
 }
 .world__menu {
   top: 236px;
@@ -2203,11 +2406,20 @@ button.top__brand {
 }
 @media (min-width: 900px) {
   .hero__content {
-    padding: 48px 64px 96px;
+    padding: 48px var(--gutter) 96px;
   }
   .world__menu-btn {
     top: 16px;
     right: 16px;
+  }
+  .world__sky-btn {
+    top: 16px;
+    right: 100px;
+  }
+  .hud-skycard {
+    top: 120px;
+    left: 16px;
+    max-height: calc(100% - 140px);
   }
   .world__menu {
     top: 58px;

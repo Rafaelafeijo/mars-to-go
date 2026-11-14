@@ -10,13 +10,18 @@ import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject }
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import type { Destination } from '@mars-to-go/sim';
+import { V, type Destination } from '@mars-to-go/sim';
 import { Astronaut } from './three/Astronaut';
 
 const BASE = import.meta.env.BASE_URL;
 const M = (n: string) => `${BASE}models/kenney/${n}.glb`;
 const NEAR = 3.6;
 const SPEED = 6;
+/** Walking area around the base: a warning from EDGE_WARN, a soft stop at EDGE_MAX (meters, illustration). */
+const BASE_CENTER: [number, number] = [0, -3];
+const EDGE_WARN = 24;
+const EDGE_MAX = 30;
+const SUN_POS: [number, number, number] = [60, 55, -150];
 
 /** Palette E (Phase 3B color prototype): PIA24921 ground colors with saturation ×1.7. */
 const PAL = { sky: '#ddd7d4', skyNight: '#1a1b2c', ground: ['#8a6545', '#97704f', '#a1734f', '#ae7f5b', '#c69067'] };
@@ -105,42 +110,63 @@ function Terrain({ onGround }: { onGround: (p: THREE.Vector3) => void }) {
   );
 }
 
-/** A text plate drawn on a canvas and shown as a sprite (stays inside the 3D view). */
-function makePlate(text: string, pips: number, color: string, faded: boolean, bg = 'rgba(20,16,14,0.82)'): { tex: THREE.CanvasTexture; aspect: number } {
+type PlateLook = 'normal' | 'active' | 'faded' | 'critical';
+/** Labels sit on top of their point (bottom-center anchor), so they never cover the machine. */
+const PLATE_ANCHOR = new THREE.Vector2(0.5, 0);
+
+/**
+ * A label drawn on a canvas and shown as a sprite. After the second playtest: a dark glass pill
+ * with a thin border and a colored dot (not a filled "highlighter" box), and a constant size on
+ * screen, so near labels never grow over the panels.
+ */
+function makePlate(text: string, pips: number, color: string, look: PlateLook): { tex: THREE.CanvasTexture; aspect: number } {
   const c = document.createElement('canvas');
   const ctx = c.getContext('2d');
   if (!ctx) return { tex: new THREE.CanvasTexture(c), aspect: 1 };
-  const font = '700 40px system-ui, sans-serif';
+  const font = '600 34px system-ui, sans-serif';
   ctx.font = font;
-  const w = Math.max(ctx.measureText(text).width + 40, pips * 26 + 40, 120);
-  const h = pips > 0 ? 104 : 64;
+  const dot = 26;
+  const w = Math.max(ctx.measureText(text).width + 56 + dot, pips * 22 + 48, 120);
+  const h = pips > 0 ? 100 : 64;
   c.width = Math.ceil(w);
   c.height = h;
   ctx.font = font;
-  ctx.fillStyle = faded ? 'rgba(20,16,14,0.45)' : bg;
+  const border = look === 'critical' ? '#ff5a4a' : look === 'active' ? '#e8703a' : 'rgba(255,255,255,0.22)';
+  ctx.fillStyle = look === 'critical' ? 'rgba(48,12,10,0.92)' : look === 'faded' ? 'rgba(16,12,11,0.45)' : 'rgba(16,12,11,0.86)';
+  ctx.strokeStyle = border;
+  ctx.lineWidth = look === 'normal' || look === 'faded' ? 2 : 5;
   ctx.beginPath();
-  ctx.roundRect(0, 0, c.width, h, 18);
+  ctx.roundRect(3, 3, c.width - 6, h - 6, 28);
   ctx.fill();
-  ctx.fillStyle = faded ? 'rgba(243,236,230,0.5)' : '#f3ece6';
-  ctx.textAlign = 'center';
+  ctx.stroke();
+  // Colored dot: the machine's color (never the only cue: the text names it).
+  ctx.fillStyle = look === 'faded' ? 'rgba(243,236,230,0.35)' : look === 'critical' ? '#ff5a4a' : color;
+  ctx.beginPath();
+  ctx.arc(26 + 2, 32, 8, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = look === 'faded' ? 'rgba(243,236,230,0.5)' : '#f3ece6';
+  ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, c.width / 2, 34);
+  ctx.fillText(text, 26 + dot, 33);
   for (let i = 0; i < pips; i++) {
     ctx.fillStyle = color;
-    ctx.fillRect(c.width / 2 - (pips * 26) / 2 + i * 26 + 4, 70, 18, 18);
+    ctx.beginPath();
+    ctx.roundRect(c.width / 2 - (pips * 22) / 2 + i * 22 + 3, 66, 16, 16, 4);
+    ctx.fill();
   }
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   return { tex, aspect: c.width / h };
 }
 
-function Plate({ text, pips = 0, color = '#f5b642', faded = false, position, height = 0.6, bg }: { text: string; pips?: number; color?: string; faded?: boolean; position: [number, number, number]; height?: number; bg?: string }) {
-  const { tex, aspect } = useMemo(() => makePlate(text, pips, color, faded, bg), [text, pips, color, faded, bg]);
+/** Constant on-screen size: height is a fraction of the view height (sizeAttenuation off). */
+function Plate({ text, pips = 0, color = '#f5b642', look = 'normal', position, height = 0.042 }: { text: string; pips?: number; color?: string; look?: PlateLook; position: [number, number, number]; height?: number }) {
+  const { tex, aspect } = useMemo(() => makePlate(text, pips, color, look), [text, pips, color, look]);
   useEffect(() => () => tex.dispose(), [tex]);
-  const h = pips > 0 ? height * 1.6 : height;
+  const h = pips > 0 ? height * 1.55 : height;
   return (
-    <sprite position={position} scale={[h * aspect, h, 1]} renderOrder={10}>
-      <spriteMaterial map={tex} transparent depthTest={false} />
+    <sprite position={position} scale={[h * aspect, h, 1]} renderOrder={10} center={PLATE_ANCHOR}>
+      <spriteMaterial map={tex} transparent depthTest={false} sizeAttenuation={false} />
     </sprite>
   );
 }
@@ -148,7 +174,7 @@ function Plate({ text, pips = 0, color = '#f5b642', faded = false, position, hei
 function Floater({ text, color, position }: { text: string; color: string; position: [number, number, number] }) {
   const ref = useRef<THREE.Sprite>(null);
   const t0 = useRef(0);
-  const { tex, aspect } = useMemo(() => makePlate(text, 0, color, false), [text, color]);
+  const { tex, aspect } = useMemo(() => makePlate(text, 0, color, 'active'), [text, color]);
   useEffect(() => () => tex.dispose(), [tex]);
   useFrame((_, dt) => {
     const s = ref.current;
@@ -158,8 +184,8 @@ function Floater({ text, color, position }: { text: string; color: string; posit
     (s.material as THREE.SpriteMaterial).opacity = Math.max(0, 1 - t0.current / 1.3);
   });
   return (
-    <sprite ref={ref} position={position} scale={[0.7 * aspect, 0.7, 1]} renderOrder={11}>
-      <spriteMaterial map={tex} transparent depthTest={false} color={color} />
+    <sprite ref={ref} position={position} scale={[0.05 * aspect, 0.05, 1]} renderOrder={11}>
+      <spriteMaterial map={tex} transparent depthTest={false} sizeAttenuation={false} />
     </sprite>
   );
 }
@@ -172,62 +198,148 @@ const TONE_COLOR: Record<Destination, string> = {
   askEarth: '#f5b642',
 };
 
-/** The air tank next to the air machine: level = air after tonight; red and blinking when critical. */
+/**
+ * The oxygen tank next to the air machine, drawn as a white pressure tank with a level window.
+ * TODO(science): NASA Glenn NTRS 20160004210 (liquefying and storing Mars-made oxygen in tanks)
+ * was seen only as a search snippet; verify before any on-screen claim. The tank is illustration.
+ * Level = air after tonight; the window turns red and pulses when air is critical.
+ */
 function AirTank({ level, critical, label }: { level: number; critical: boolean; label: string }) {
-  const x = AT.lifeSupport.pos[0] - 2.4;
-  const z = AT.lifeSupport.pos[1] + 0.6;
+  const x = AT.lifeSupport.pos[0] - 2.6;
+  const z = AT.lifeSupport.pos[1] + 0.8;
   const y0 = groundHeight(x, z);
+  const H = 2.2;
   const fill = useRef<THREE.Mesh>(null);
   const shown = useRef(level);
   useFrame((state, dt) => {
     shown.current += (level - shown.current) * Math.min(1, dt * 3);
     const m = fill.current;
     if (!m) return;
-    const v = Math.max(0.02, Math.min(1, shown.current));
+    const v = Math.max(0.03, Math.min(1, shown.current));
     m.scale.y = v;
-    m.position.y = y0 + 0.15 + (2.2 * v) / 2;
-    const mat = m.material as THREE.MeshStandardMaterial;
-    mat.emissiveIntensity = critical ? 0.5 + 0.5 * Math.sin(state.clock.elapsedTime * 6) : 0.25;
+    m.position.y = 0.55 + (H * 0.86 * v) / 2;
+    const mat = m.material as THREE.MeshBasicMaterial;
+    mat.opacity = critical ? 0.6 + 0.4 * Math.sin(state.clock.elapsedTime * 6) : 1;
   });
   return (
-    <group>
-      <mesh position={[x, y0 + 1.25, z]}>
-        <cylinderGeometry args={[0.62, 0.62, 2.5, 16, 1, true]} />
-        <meshStandardMaterial color="#cfe6ff" transparent opacity={0.25} side={THREE.DoubleSide} />
+    <group position={[x, y0, z]}>
+      {/* legs */}
+      {[0, 1, 2, 3].map((i) => (
+        <mesh key={i} position={[Math.cos(i * 1.57 + 0.78) * 0.5, 0.2, Math.sin(i * 1.57 + 0.78) * 0.5]}>
+          <boxGeometry args={[0.1, 0.4, 0.1]} />
+          <meshLambertMaterial color="#5c5f66" />
+        </mesh>
+      ))}
+      {/* body with domed ends */}
+      <mesh position={[0, 0.4 + H / 2, 0]}>
+        <cylinderGeometry args={[0.7, 0.7, H, 20]} />
+        <meshStandardMaterial color="#e6e8ec" roughness={0.45} metalness={0.2} />
       </mesh>
-      <mesh ref={fill} position={[x, y0 + 1, z]}>
-        <cylinderGeometry args={[0.55, 0.55, 2.2, 16]} />
-        <meshStandardMaterial color={critical ? '#ff5a4a' : '#6ab0ff'} emissive={critical ? '#ff2a1a' : '#2a6aff'} emissiveIntensity={0.25} />
+      <mesh position={[0, 0.4 + H, 0]}>
+        <sphereGeometry args={[0.7, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color="#e6e8ec" roughness={0.45} metalness={0.2} />
       </mesh>
-      <Plate text={label} position={[x, y0 + 3.1, z]} height={0.5} bg={critical ? 'rgba(160,30,20,0.92)' : undefined} />
+      <mesh position={[0, 0.4, 0]} rotation={[Math.PI, 0, 0]}>
+        <sphereGeometry args={[0.7, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color="#e6e8ec" roughness={0.45} metalness={0.2} />
+      </mesh>
+      {/* band and valve */}
+      <mesh position={[0, 0.4 + H * 0.92, 0]}>
+        <cylinderGeometry args={[0.72, 0.72, 0.12, 20]} />
+        <meshLambertMaterial color="#6ab0ff" />
+      </mesh>
+      <mesh position={[0, 0.4 + H + 0.75, 0]}>
+        <cylinderGeometry args={[0.08, 0.08, 0.3, 8]} />
+        <meshLambertMaterial color="#5c5f66" />
+      </mesh>
+      {/* level window, facing the camera */}
+      <mesh position={[0, 0.45 + (H * 0.86) / 2, 0.69]}>
+        <boxGeometry args={[0.3, H * 0.9, 0.04]} />
+        <meshBasicMaterial color="#1b2230" />
+      </mesh>
+      <mesh ref={fill} position={[0, 0.55, 0.72]}>
+        <boxGeometry args={[0.2, H * 0.86, 0.03]} />
+        <meshBasicMaterial color={critical ? '#ff5a4a' : '#6ab0ff'} transparent />
+      </mesh>
+      <Plate text={label} position={[0, H + 1.6, 0]} color={critical ? '#ff5a4a' : '#6ab0ff'} look={critical ? 'critical' : 'normal'} />
     </group>
   );
 }
 
-/** Plants in front of the greenhouse: each pending harvest grows a little every sol. */
-function Plants({ growing }: { growing: { sol: number; food: number; daysLeft: number }[] }) {
+const TRAYS_PER_ROW = 7;
+
+/**
+ * The greenhouse: an inflatable cylinder with two rows of trays under grow lights, like the
+ * University of Arizona / NASA prototype Mars-Moon greenhouse and the LED-lit Veggie chamber.
+ * One tray per cell planted, so more cells means more plants; plants grow a size each sol.
+ */
+function Greenhouse({ growing, harvestLabel }: { growing: { sol: number; food: number; daysLeft: number }[]; harvestLabel: (n: number, sol: number) => string }) {
   const g = AT.greenhouse;
+  const y0 = groundHeight(g.pos[0], g.pos[1]);
+  const L = 7.2;
+  const R = 1.6;
+  const trays: { size: number; key: string }[] = [];
+  for (const h of growing) {
+    const n = Math.round(h.food / V.FOOD_PER_GREENHOUSE_CELL);
+    const size = h.daysLeft <= 0 ? 1 : h.daysLeft === 1 ? 0.7 : 0.4;
+    for (let i = 0; i < n; i++) trays.push({ size, key: `${h.sol}-${i}` });
+  }
+  const slots = TRAYS_PER_ROW * 3; // 3 sols of planting at most are growing at once
+  const next = growing.filter((h) => h.sol <= V.MISSION_SOLS).slice(0, 2);
   return (
-    <group>
-      {growing.slice(0, 4).map((h, i) => {
-        const x = g.pos[0] - 1.8 + i * 1.2;
-        const z = g.pos[1] + 2.4;
-        const y0 = groundHeight(x, z);
-        const size = h.daysLeft <= 0 ? 1 : h.daysLeft === 1 ? 0.65 : 0.35;
+    <group position={[g.pos[0], y0, g.pos[1]]} rotation={[0, g.rot ?? 0, 0]}>
+      {/* cradle */}
+      <mesh position={[0, 0.15, 0]}>
+        <boxGeometry args={[L, 0.3, R * 1.6]} />
+        <meshLambertMaterial color="#6d6f75" />
+      </mesh>
+      {/* inflatable shell */}
+      <mesh position={[0, R * 0.85, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[R, R, L, 24, 1, true]} />
+        <meshStandardMaterial color="#f1ece6" transparent opacity={0.32} roughness={0.3} side={THREE.DoubleSide} depthWrite={false} />
+      </mesh>
+      {/* end caps and ribs */}
+      {[-L / 2, L / 2].map((x) => (
+        <mesh key={x} position={[x, R * 0.85, 0]} rotation={[0, Math.PI / 2, 0]}>
+          <circleGeometry args={[R, 24]} />
+          <meshStandardMaterial color="#d8d2cc" transparent opacity={0.55} side={THREE.DoubleSide} depthWrite={false} />
+        </mesh>
+      ))}
+      {[-2.4, -0.8, 0.8, 2.4].map((x) => (
+        <mesh key={x} position={[x, R * 0.85, 0]} rotation={[0, Math.PI / 2, 0]}>
+          <torusGeometry args={[R, 0.05, 6, 24]} />
+          <meshLambertMaterial color="#cfc8c0" />
+        </mesh>
+      ))}
+      {/* grow lights: pink, from red and blue LEDs */}
+      <mesh position={[0, R * 1.55, 0]}>
+        <boxGeometry args={[L * 0.9, 0.06, 0.25]} />
+        <meshBasicMaterial color="#ff6ad5" />
+      </mesh>
+      {/* trays: one per cell planted */}
+      {Array.from({ length: slots }, (_, i) => {
+        const row = Math.floor(i / TRAYS_PER_ROW) - 1;
+        const col = i % TRAYS_PER_ROW;
+        const x = -L / 2 + 0.6 + col * ((L - 1.2) / (TRAYS_PER_ROW - 1));
+        const z = row * 0.72;
+        const tray = trays[i];
         return (
-          <group key={`${h.sol}-${i}`} position={[x, y0, z]}>
-            <mesh position={[0, 0.15, 0]}>
-              <cylinderGeometry args={[0.35, 0.3, 0.3, 8]} />
-              <meshLambertMaterial color="#6b4a36" />
+          <group key={i} position={[x, 0.45, z]}>
+            <mesh>
+              <boxGeometry args={[0.8, 0.14, 0.6]} />
+              <meshLambertMaterial color={tray ? '#4a3527' : '#3a3633'} />
             </mesh>
-            <mesh position={[0, 0.3 + 0.5 * size, 0]} scale={[size, size, size]}>
-              <icosahedronGeometry args={[0.55, 0]} />
-              <meshLambertMaterial color="#5fbf5a" flatShading />
-            </mesh>
-            <Plate text={`+${h.food} · sol ${h.sol}`} position={[0, 1.7, 0]} height={0.38} color="#7cd17a" />
+            {tray &&
+              [-0.22, 0, 0.22].map((dx, k) => (
+                <mesh key={k} position={[dx, 0.12 + 0.28 * tray.size, (k - 1) * 0.12]} scale={tray.size}>
+                  <icosahedronGeometry args={[0.24, 0]} />
+                  <meshLambertMaterial color={k === 1 ? '#7cd17a' : '#5fbf5a'} emissive="#3a0a30" flatShading />
+                </mesh>
+              ))}
           </group>
         );
       })}
+      {next.length > 0 && <Plate text={next.map((h) => harvestLabel(h.food, h.sol)).join('  ·  ')} color="#7cd17a" position={[0, 0.05, R + 1.3]} height={0.034} />}
     </group>
   );
 }
@@ -286,6 +398,61 @@ function ShieldDome({ cells, flash }: { cells: number; flash: boolean }) {
   );
 }
 
+/**
+ * Sky dome. NASA Science: by day the Mars sky is "yellow to orange" (dust); the tones here are
+ * an illustration of that description, not a measured color. Night: dark blue with stars.
+ */
+const SKY = { dayHorizon: '#e7c9a0', dayZenith: '#c48f62', nightHorizon: '#2a2440', nightZenith: '#0c0d1a' };
+function SkyDome({ night }: { night: boolean }) {
+  const geo = useMemo(() => {
+    const g = new THREE.SphereGeometry(200, 32, 16);
+    const pos = g.attributes.position as THREE.BufferAttribute;
+    const lo = new THREE.Color(night ? SKY.nightHorizon : SKY.dayHorizon);
+    const hi = new THREE.Color(night ? SKY.nightZenith : SKY.dayZenith);
+    const c = new THREE.Color();
+    const colors = new Float32Array(pos.count * 3);
+    for (let i = 0; i < pos.count; i++) {
+      const k = Math.min(1, Math.max(0, pos.getY(i) / 200) ** 0.6);
+      c.copy(lo).lerp(hi, k);
+      colors.set([c.r, c.g, c.b], i * 3);
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    return g;
+  }, [night]);
+  useEffect(() => () => geo.dispose(), [geo]);
+  return (
+    <mesh geometry={geo} renderOrder={-1}>
+      <meshBasicMaterial vertexColors side={THREE.BackSide} fog={false} depthWrite={false} />
+    </mesh>
+  );
+}
+
+function Stars({ on }: { on: boolean }) {
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    const n = 500;
+    const p = new Float32Array(n * 3);
+    const r = (k: number) => {
+      const s = Math.sin(k * 78.233) * 43758.5453;
+      return s - Math.floor(s);
+    };
+    for (let i = 0; i < n; i++) {
+      const a = r(i * 2 + 1) * Math.PI * 2;
+      const e = 0.08 + r(i * 2 + 2) * 1.4;
+      p[i * 3] = Math.cos(a) * Math.cos(e) * 180;
+      p[i * 3 + 1] = Math.sin(e) * 180;
+      p[i * 3 + 2] = Math.sin(a) * Math.cos(e) * 180;
+    }
+    g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+    return g;
+  }, []);
+  return (
+    <points geometry={geo} visible={on}>
+      <pointsMaterial color="#ffffff" size={2} sizeAttenuation={false} fog={false} />
+    </points>
+  );
+}
+
 export interface SkyEvent {
   /** 0 none, 1 low, 2 medium, 3 high (sim risk). */
   risk: number;
@@ -339,13 +506,13 @@ function SunAndStorm({ event, night }: { event: SkyEvent | null; night: boolean 
   });
   return (
     <group>
-      <mesh ref={sun} position={[70, 45, -150]}>
-        <sphereGeometry args={[3.2, 16, 12]} />
-        <meshBasicMaterial color="#fff6e0" />
+      <mesh ref={sun} position={SUN_POS}>
+        <sphereGeometry args={[2.4, 16, 12]} />
+        <meshBasicMaterial color="#fff6e0" fog={false} />
       </mesh>
-      <mesh ref={halo} position={[70, 45, -151]}>
-        <sphereGeometry args={[5, 16, 12]} />
-        <meshBasicMaterial color="#ff7a3a" transparent opacity={0} depthWrite={false} />
+      <mesh ref={halo} position={[SUN_POS[0], SUN_POS[1], SUN_POS[2] - 1]}>
+        <sphereGeometry args={[4, 16, 12]} />
+        <meshBasicMaterial color="#ff7a3a" transparent opacity={0} depthWrite={false} fog={false} />
       </mesh>
       <points ref={storm} geometry={particles} visible={false}>
         <pointsMaterial color="#c9a6ff" size={0.35} transparent opacity={0.85} />
@@ -362,18 +529,21 @@ interface PlayerProps {
   target: THREE.Vector3 | null;
   onArrive: () => void;
   onNear: (d: Destination | null) => void;
+  onEdge: (near: boolean) => void;
+  skyView: boolean;
   playerRef: MutableRefObject<THREE.Group | null>;
 }
 
-function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
+function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: PlayerProps) {
   const keys = useRef<Record<string, boolean>>({});
   const near = useRef<Destination | null>(null);
+  const edge = useRef(false);
+  const zoom = useRef(1);
+  const look = useRef(new THREE.Vector3(0, 1, -3));
   const [walking, setWalking] = useState(false);
   const walkingRef = useRef(false);
-  const { camera, size } = useThree();
+  const { camera, size, gl } = useThree();
   const portrait = size.width < size.height;
-  const camUp = portrait ? 9.5 : 5.5;
-  const camBack = portrait ? 15 : 9.5;
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -382,13 +552,21 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
     const up = (e: KeyboardEvent) => {
       keys.current[e.key.toLowerCase()] = false;
     };
+    // Mouse wheel / trackpad: zoom the camera in and out.
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      zoom.current = THREE.MathUtils.clamp(zoom.current * (e.deltaY > 0 ? 1.1 : 0.9), 0.55, 1.8);
+    };
+    const el = gl.domElement;
     globalThis.addEventListener('keydown', down);
     globalThis.addEventListener('keyup', up);
+    el.addEventListener('wheel', wheel, { passive: false });
     return () => {
       globalThis.removeEventListener('keydown', down);
       globalThis.removeEventListener('keyup', up);
+      el.removeEventListener('wheel', wheel);
     };
-  }, []);
+  }, [gl]);
 
   useFrame((_, dt) => {
     const p = playerRef.current;
@@ -409,14 +587,34 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
     }
     if (moving) {
       dir.normalize();
-      p.position.x = THREE.MathUtils.clamp(p.position.x + dir.x * SPEED * Math.min(dt, 0.05), -60, 60);
-      p.position.z = THREE.MathUtils.clamp(p.position.z + dir.z * SPEED * Math.min(dt, 0.05), -40, 40);
+      p.position.x += dir.x * SPEED * Math.min(dt, 0.05);
+      p.position.z += dir.z * SPEED * Math.min(dt, 0.05);
       p.rotation.y = Math.atan2(dir.x, dir.z);
     }
+    // Soft limit around the base, with a warning before it (no invisible wall).
+    const ox = p.position.x - BASE_CENTER[0];
+    const oz = p.position.z - BASE_CENTER[1];
+    const r = Math.hypot(ox, oz);
+    if (r > EDGE_MAX) {
+      p.position.x = BASE_CENTER[0] + (ox / r) * EDGE_MAX;
+      p.position.z = BASE_CENTER[1] + (oz / r) * EDGE_MAX;
+      if (target) onArrive(); // a tap beyond the limit stops at the limit
+    }
+    const atEdge = r > EDGE_WARN;
+    if (atEdge !== edge.current) {
+      edge.current = atEdge;
+      onEdge(atEdge);
+    }
     p.position.y = groundHeight(p.position.x, p.position.z);
-    const want = new THREE.Vector3(p.position.x, p.position.y + camUp, p.position.z + camBack);
-    camera.position.lerp(want, 1 - Math.pow(0.001, Math.min(dt, 0.05)));
-    camera.lookAt(p.position.x, p.position.y + 1.2, p.position.z - 3);
+    const ease = 1 - Math.pow(0.001, Math.min(dt, 0.05));
+    const z = zoom.current;
+    const want = skyView
+      ? new THREE.Vector3(p.position.x, p.position.y + 1.6, p.position.z + 4)
+      : new THREE.Vector3(p.position.x, p.position.y + (portrait ? 9.5 : 5) * z, p.position.z + (portrait ? 15 : 10) * z);
+    camera.position.lerp(want, ease);
+    const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + 1.6, p.position.z - 5);
+    look.current.lerp(wantLook, ease);
+    camera.lookAt(look.current);
     let best: Destination | null = null;
     let bestDist = NEAR;
     for (const m of MACHINES) {
@@ -458,7 +656,12 @@ export interface SceneProps {
   airCritical: boolean;
   airLabel: string;
   growing: { sol: number; food: number; daysLeft: number }[];
+  harvestLabel: (n: number, sol: number) => string;
   event: SkyEvent | null;
+  /** Camera looks up at the sky (day only). */
+  skyView: boolean;
+  /** True while the astronaut is near the edge of the walking area. */
+  onEdge: (near: boolean) => void;
 }
 
 function World(props: SceneProps) {
@@ -467,7 +670,7 @@ function World(props: SceneProps) {
   const [nearD, setNearD] = useState<Destination | null>(null);
   const playerRef = useRef<THREE.Group | null>(null);
   const pending = useRef<Destination | null>(null);
-  const sky = night ? PAL.skyNight : PAL.sky;
+  const sky = night ? SKY.nightHorizon : SKY.dayHorizon;
 
   const tapMachine = (m: MachineSpec, e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -482,7 +685,9 @@ function World(props: SceneProps) {
   return (
     <>
       <color attach="background" args={[sky]} />
-      <fog attach="fog" args={[sky, 50, 160]} />
+      <fog attach="fog" args={[sky, 50, 170]} />
+      <SkyDome night={night} />
+      <Stars on={night} />
       <hemisphereLight args={[night ? '#5a6aa0' : '#fff1e2', '#6a3e24', night ? 0.45 : 1.15]} />
       <directionalLight position={[30, 40, 20]} intensity={night ? 0.2 : 1.35} color={night ? '#9fb0ff' : '#fff1dc'} />
       <SunAndStorm event={props.event} night={night} />
@@ -497,19 +702,24 @@ function World(props: SceneProps) {
       ))}
       <ShieldDome cells={cells.shield} flash={night && props.event?.strikes === true} />
       <AirTank level={props.airLevel} critical={props.airCritical} label={props.airLabel} />
-      <Plants growing={props.growing} />
       <Beam on={cells.askEarth > 0} />
       {MACHINES.map((m) => {
         const isOpen = open.includes(m.d);
         const top = groundHeight(m.pos[0], m.pos[1]) + 3.4;
         return (
           <group key={m.d} onClick={(e) => tapMachine(m, e)}>
-            {m.d === 'expedition' ? <Rover driving={night && cells.expedition > 0} /> : <Model name={m.model} x={m.pos[0]} z={m.pos[1]} scale={m.scale} rot={m.rot} />}
+            {m.d === 'expedition' ? (
+              <Rover driving={night && cells.expedition > 0} />
+            ) : m.d === 'greenhouse' ? (
+              <Greenhouse growing={props.growing} harvestLabel={props.harvestLabel} />
+            ) : (
+              <Model name={m.model} x={m.pos[0]} z={m.pos[1]} scale={m.scale} rot={m.rot} />
+            )}
             <Plate
-              text={nearD === m.d ? `▶ ${labels[m.d]}` : labels[m.d]}
+              text={labels[m.d]}
               pips={cells[m.d] * (m.d === 'expedition' ? 2 : 1)}
               color={TONE_COLOR[m.d]}
-              faded={!isOpen}
+              look={!isOpen ? 'faded' : nearD === m.d ? 'active' : 'normal'}
               position={[m.pos[0], top, m.pos[1]]}
             />
             {pulse && pulse.d === m.d && <Floater key={pulse.key} text={pulse.text} color={TONE_COLOR[m.d]} position={[m.pos[0], top + 1, m.pos[1]]} />}
@@ -519,6 +729,8 @@ function World(props: SceneProps) {
       <Player
         target={target}
         playerRef={playerRef}
+        skyView={props.skyView}
+        onEdge={props.onEdge}
         onArrive={() => {
           setTarget(null);
           if (pending.current) {
@@ -570,4 +782,5 @@ export default function Scene3D(props: SceneProps & { label: string }) {
   );
 }
 
-for (const n of [...MACHINES.map((m) => m.model), ...SCENERY.map((s) => s.model)]) useGLTF.preload(M(n));
+// The greenhouse is drawn in code (inflatable cylinder), so its Kenney model is not loaded.
+for (const n of [...MACHINES.filter((m) => m.d !== 'greenhouse').map((m) => m.model), ...SCENERY.map((s) => s.model)]) useGLTF.preload(M(n));

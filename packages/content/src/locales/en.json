@@ -498,13 +498,34 @@
       "miss": "The event did not reach Mars. The shield cells were spent anyway.",
       "discovery": "Rover discovery: {{site}}",
       "realNasa": "REAL NASA DATA",
-      "suits": "suits −{{suits}}"
+      "suits": "suits −{{suits}}",
+      "eyebrow": "Mission 1 · Night of sol {{n}}",
+      "labelAir": "Air",
+      "labelFood": "Food",
+      "labelRad": "Radiation",
+      "labelRover": "Rover",
+      "exposure": "{{word}}",
+      "radHint": "Radiation: invisible particles from the Sun that can harm the crew. The Shield blocks them."
     },
     "sites": {
       "rochette": "the rock Rochette",
       "kodiak": "Kodiak butte",
       "delta-front": "the delta front"
-    }
+    },
+    "edge": {
+      "title": "Too far from the base",
+      "text": "A space suit has limited air and battery. Going farther would be reckless: turn back to the base."
+    },
+    "sky": {
+      "look": "Look at the sky",
+      "back": "Back to the base",
+      "title": "The Mars sky",
+      "day": "By day the Mars sky is yellow to orange, because of fine dust in the air. At sunset it turns blue near the Sun. From Mars, the Sun looks about two-thirds the size we see from Earth.",
+      "photo": "Real photo: sunset in Gale Crater, Mars, seen by the rover Curiosity on April 15, 2015 (sol 956). NASA/JPL-Caltech/MSSS/Texas A&M Univ., PIA19400.",
+      "source": "NASA Science: What do sunrises and sunsets look like on Mars?"
+    },
+    "harvest": "+{{n}} food · sol {{sol}}",
+    "harvestMarks": "Harvests coming: {{list}}"
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",

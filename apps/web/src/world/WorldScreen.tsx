@@ -79,6 +79,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const [missionOpen, setMissionOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
   const [banner, setBanner] = useState(true);
   const [menu, setMenu] = useState(false);
+  const [skyView, setSkyView] = useState(false);
+  const [edge, setEdge] = useState(false);
   const [showFps] = useState(() => new URLSearchParams(window.location.search).get('fps') === '1');
   const [fps, setFps] = useState<number | null>(null);
   useEffect(() => {
@@ -173,7 +175,10 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
               airCritical={airCritical}
               airLabel={airCritical ? t('world.tank.critical', { n: tomorrow.air }) : t('world.tank.label', { n: tomorrow.air })}
               growing={growing}
+              harvestLabel={(n, sol) => t('world.harvest', { n, sol })}
               event={skyEvent}
+              skyView={skyView && !isNight}
+              onEdge={setEdge}
             />
           </Suspense>
         ) : (
@@ -213,6 +218,12 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             <Icon name="food" size={14} />
             <span className="bar__track">
               <span className="bar__fill" style={{ width: `${(Math.min(reach(projection.foodEndsOnSol), span) / span) * 100}%` }} />
+              {/* A notch where each harvest lands: planting today shows up on the trail. */}
+              {growing
+                .filter((h) => h.sol <= V.MISSION_SOLS)
+                .map((h, i) => (
+                  <span key={`${h.sol}-${i}`} className="bar__mark" style={{ left: `${(Math.min(h.sol - base.sol + 1, span) / span) * 100}%` }} />
+                ))}
             </span>
             <span className="bar__text">{foodOk ? t('world.trail.foodOk') : t('world.trail.foodBad', { n: projection.foodEndsOnSol })}</span>
           </div>
@@ -236,8 +247,39 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         </nav>
       )}
 
+      {!isNight && (
+        <button type="button" className="world__sky-btn" aria-pressed={skyView} onClick={() => setSkyView((s) => !s)}>
+          <Icon name={skyView ? 'flag' : 'sun'} size={16} className={skyView ? undefined : 'tone-sun'} /> {skyView ? t('world.sky.back') : t('world.sky.look')}
+        </button>
+      )}
+
+      {/* Sky view: the camera looks up; real NASA facts about the Mars sky, with a real photo */}
+      {skyView && !isNight && (
+        <section className="hud-skycard wpanel" aria-labelledby="skycard-title">
+          <span className="report__badge">{t('world.report.realNasa')}</span>
+          <h2 id="skycard-title">{t('world.sky.title')}</h2>
+          <img src={`${import.meta.env.BASE_URL}images/gale-sunset-480.webp`} alt={t('world.sky.photo')} />
+          <p>{t('world.sky.day')}</p>
+          <p className="muted small">
+            {t('world.sky.photo')}{' '}
+            <a href="https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/" target="_blank" rel="noreferrer">
+              {t('world.sky.source')}
+            </a>
+          </p>
+        </section>
+      )}
+
+      {edge && !isNight && (
+        <div className="world__edge" role="alert">
+          <Icon name="cross" size={18} />
+          <span>
+            <strong>{t('world.edge.title')}</strong> {t('world.edge.text')}
+          </span>
+        </div>
+      )}
+
       {/* Left: Mission Control */}
-      <section className={`hud-mission wpanel${missionOpen ? '' : ' is-closed'}`} aria-labelledby="mc-title">
+      <section className={`hud-mission wpanel${missionOpen ? '' : ' is-closed'}${skyView ? ' is-hidden' : ''}`} aria-labelledby="mc-title">
         <button type="button" className="hud-mission__head" aria-expanded={missionOpen} onClick={() => setMissionOpen((o) => !o)}>
           <Icon name="flag" size={16} />
           <span id="mc-title">{t('world.mission.title')}</span>
@@ -352,11 +394,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             <h2 id="banner-title">
               <Icon name={ev ? 'storm' : cond.dust ? 'dust' : 'sun'} size={28} className={ev ? 'tone-rad' : 'tone-sun'} /> {ev ? t('world.banner.event') : t('world.banner.calm')}
             </h2>
-            {ev && (
-              <p>
-                {eventText} {t('world.banner.record', { id: ev.id, date: longDate(ev.date, i18n.language) })}
-              </p>
-            )}
+            {ev && <p>{eventText}</p>}
+            {ev && <p className="banner__record">{t('world.banner.record', { id: ev.id, date: longDate(ev.date, i18n.language) })}</p>}
             {ev && <p className="banner__hint">{t('world.banner.shieldHint')}</p>}
             {!ev && tm && <p>{t('world.banner.tomorrow', { what: t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: tm.classLabel }) })}</p>}
             <button type="button" className="btn btn--primary" onClick={() => setBanner(false)}>
@@ -378,63 +417,73 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
       {night && report && after && (
         <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="report-title">
           <div className="report">
-            <h2 id="report-title">{t('world.report.title', { n: base.sol })}</h2>
-            <ul className="report__rows">
-              <li className="tone-air">
-                <Icon name="air" size={18} />
-                <span className="report__what">
-                  {t('world.report.air', { made, breathed })}
-                  {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
-                </span>
-                <strong>
-                  {base.air} → {after.air}
-                </strong>
-              </li>
-              <li className="tone-food">
-                <Icon name="food" size={18} />
-                <span className="report__what">{t('world.report.food', { harvested, eaten })}</span>
-                <strong>
-                  {base.food} → {after.food}
-                </strong>
-              </li>
-              <li className="tone-rad">
-                <Icon name="shield" size={18} />
-                <span className="report__what">
-                  {!radiation?.detail?.eventId
-                    ? t('world.report.noEvent')
-                    : radiation.detail.reachesMars === true
-                      ? t('world.report.hit', { risk: radiation.detail.risk, shield: radiation.detail.shield, delta: radiation.delta })
-                      : t('world.report.miss')}
-                </span>
-                <strong>{t(`meters.exposureWords.${exposureWord(after.exposure)}`)}</strong>
-              </li>
-              {typeof discovery === 'string' && (
-                <li className="tone-energy">
-                  <Icon name="rover" size={18} />
-                  <span className="report__what">{t('world.report.discovery', { site: t(`world.sites.${discovery}`) })}</span>
-                </li>
-              )}
-            </ul>
-            {fact && (
-              <figure className="report__fact">
-                <img src={`${import.meta.env.BASE_URL}images/${fact.photo.slug}-960.webp`} srcSet={photoSrcSet(fact.photo.slug)} sizes="(max-width: 640px) 100vw, 520px" alt={fact.photo.caption?.[locale] ?? fact.text[locale].title} />
-                <figcaption>
-                  <span className="report__badge">{t('world.report.realNasa')}</span>
-                  <strong>{fact.text[locale].title}</strong> {fact.text[locale].body}{' '}
-                  <a href={fact.sourceUrl} target="_blank" rel="noreferrer">
-                    {fact.sourceName}
-                  </a>
-                  <span className="report__credit">
-                    {t('card.realPhoto')}
-                    {fact.photo.enhancedColor ? ` · ${t('card.enhanced')}` : ''} · {fact.photo.credit} · {fact.photo.mission} · {locale === 'pt-BR' ? fact.photo.placePt : fact.photo.placeEn}
-                    {fact.photo.caption ? ` · ${fact.photo.caption[locale]}` : ''}
+            <header className="report__head">
+              <p className="report__eyebrow">{t('world.report.eyebrow', { n: base.sol })}</p>
+              <h2 id="report-title">{t('world.report.title', { n: base.sol })}</h2>
+            </header>
+            <div className="report__body">
+              <ul className="report__rows">
+                <li className="stat tone-air">
+                  <span className="stat__icon"><Icon name="air" size={22} /></span>
+                  <span className="stat__label">{t('world.report.labelAir')}</span>
+                  <strong className="stat__value">{base.air} → {after.air}</strong>
+                  <span className="stat__what">
+                    {t('world.report.air', { made, breathed })}
+                    {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
                   </span>
-                </figcaption>
-              </figure>
-            )}
-            <button type="button" className="btn btn--primary" onClick={onNightDone}>
-              {after.status === 'playing' ? t('one.next') : t('one.finish')}
-            </button>
+                </li>
+                <li className="stat tone-food">
+                  <span className="stat__icon"><Icon name="food" size={22} /></span>
+                  <span className="stat__label">{t('world.report.labelFood')}</span>
+                  <strong className="stat__value">{base.food} → {after.food}</strong>
+                  <span className="stat__what">{t('world.report.food', { harvested, eaten })}</span>
+                </li>
+                <li className="stat tone-rad">
+                  <span className="stat__icon"><Icon name="shield" size={22} /></span>
+                  <span className="stat__label">{t('world.report.labelRad')}</span>
+                  <strong className="stat__value">{t(`meters.exposureWords.${exposureWord(after.exposure)}`)}</strong>
+                  <span className="stat__what">
+                    {!radiation?.detail?.eventId
+                      ? t('world.report.noEvent')
+                      : radiation.detail.reachesMars === true
+                        ? t('world.report.hit', { risk: radiation.detail.risk, shield: radiation.detail.shield, delta: radiation.delta })
+                        : t('world.report.miss')}{' '}
+                    {t('world.report.radHint')}
+                  </span>
+                </li>
+                {typeof discovery === 'string' && (
+                  <li className="stat tone-energy">
+                    <span className="stat__icon"><Icon name="rover" size={22} /></span>
+                    <span className="stat__label">{t('world.report.labelRover')}</span>
+                    <span className="stat__value" />
+                    <span className="stat__what">{t('world.report.discovery', { site: t(`world.sites.${discovery}`) })}</span>
+                  </li>
+                )}
+              </ul>
+              {fact && (
+                <figure className="report__fact">
+                  <img src={`${import.meta.env.BASE_URL}images/${fact.photo.slug}-960.webp`} srcSet={photoSrcSet(fact.photo.slug)} sizes="(max-width: 640px) 100vw, 560px" alt={fact.photo.caption?.[locale] ?? fact.text[locale].title} />
+                  <figcaption>
+                    <span className="report__badge">{t('world.report.realNasa')}</span>
+                    <strong className="report__fact-title">{fact.text[locale].title}</strong>
+                    <span>{fact.text[locale].body}</span>
+                    <a href={fact.sourceUrl} target="_blank" rel="noreferrer">
+                      {fact.sourceName}
+                    </a>
+                    <span className="report__credit">
+                      {t('card.realPhoto')}
+                      {fact.photo.enhancedColor ? ` · ${t('card.enhanced')}` : ''} · {fact.photo.credit} · {fact.photo.mission} · {locale === 'pt-BR' ? fact.photo.placePt : fact.photo.placeEn}
+                      {fact.photo.caption ? ` · ${fact.photo.caption[locale]}` : ''}
+                    </span>
+                  </figcaption>
+                </figure>
+              )}
+            </div>
+            <footer className="report__foot">
+              <button type="button" className="btn btn--primary" onClick={onNightDone}>
+                {after.status === 'playing' ? t('one.next') : t('one.finish')}
+              </button>
+            </footer>
           </div>
         </div>
       )}
