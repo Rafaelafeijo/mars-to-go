@@ -1739,6 +1739,482 @@ main.main--one {
   }
 }
 
+/* ── After the first playtest: home, briefing, banner, report, menu, NASA panel ── */
+button.top__brand {
+  background: none;
+  border: 0;
+  color: var(--color-text);
+  cursor: pointer;
+  min-height: var(--tap);
+  padding: 0;
+}
+.hero {
+  position: relative;
+  min-height: calc(100dvh - 61px);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+  animation: hero-pan 40s ease-in-out infinite alternate;
+}
+@keyframes hero-pan {
+  from {
+    transform: scale(1.08) translateX(0);
+  }
+  to {
+    transform: scale(1.08) translateX(-4%);
+  }
+}
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(10 8 7 / 0.88) 0%, rgb(10 8 7 / 0.55) 45%, rgb(10 8 7 / 0.05) 80%), linear-gradient(0deg, rgb(10 8 7 / 0.8), transparent 50%);
+}
+.hero__content {
+  position: relative;
+  padding: 24px 20px 64px;
+  max-width: 560px;
+}
+.hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0;
+}
+.hero__title {
+  font-family: var(--font-mono);
+  font-size: clamp(3.4rem, 17vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: 0.06em;
+  margin: 8px 0 12px;
+}
+.hero__line {
+  font-size: clamp(1.1rem, 4.6vw, 1.5rem);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.hero__role {
+  margin: 0 0 18px;
+  color: var(--color-text-muted);
+}
+.hero__role strong {
+  color: var(--color-accent);
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.hero__play {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgb(232 112 58 / 0.45);
+}
+.hero__play:hover {
+  transform: translateY(-1px);
+}
+.hero__data {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgb(185 162 255 / 0.6);
+  background: rgb(20 16 14 / 0.6);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hero__assist {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 14px;
+  min-height: var(--tap);
+  color: var(--color-text-muted);
+}
+.hero__credit {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  margin: 0;
+  max-width: 60%;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: rgb(243 236 230 / 0.7);
+}
+.brief {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+.brief__card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.brief__portrait {
+  width: 96px;
+  flex: none;
+}
+.brief__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.brief__title {
+  margin: 4px 0;
+  font-size: 1.6rem;
+}
+.brief__intro {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+.brief__points {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: grid;
+  gap: 10px;
+}
+.brief__points li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.brief__icon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.06);
+  flex: none;
+}
+.brief__start {
+  width: 100%;
+  justify-content: center;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgb(10 8 7 / 0.45);
+  z-index: 20;
+}
+.banner,
+.report {
+  width: min(520px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  background: rgb(20 16 14 / 0.94);
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.banner h2,
+.report h2 {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 1.35rem;
+}
+.banner p,
+.report p {
+  margin: 0;
+}
+.banner--event {
+  border-color: #b9a2ff;
+  box-shadow: 0 0 40px rgb(185 162 255 / 0.35);
+}
+.banner__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.banner__hint {
+  font-weight: 700;
+  color: #b9a2ff;
+}
+.report__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.report__rows li {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  background: rgb(255 255 255 / 0.05);
+  border-radius: 10px;
+  padding: 8px;
+}
+.report__what {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+.report__rows strong {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+}
+.report__fact {
+  margin: 0;
+  border: 1px solid #ffd27a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.report__fact img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.report__fact figcaption {
+  padding: 8px 10px;
+  font-size: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.report__badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: #ffd27a;
+}
+.report__credit {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+.thermo {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px !important;
+}
+.thermo__bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #6ab0ff, #cfe6ff);
+  position: relative;
+  overflow: hidden;
+}
+.thermo__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  background: #6ab0ff;
+  transition: width 1s ease;
+}
+.thermo__fill.is-night {
+  width: 8%;
+  background: #2a6aff;
+}
+.hud-sky--event {
+  border-color: #b9a2ff;
+  box-shadow: 0 0 18px rgb(185 162 255 / 0.45);
+}
+.bar--critical .bar__text {
+  color: #ff5a4a;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+.world__menu-btn {
+  position: absolute;
+  right: 6px;
+  top: 196px;
+  z-index: 6;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(20 16 14 / 0.85);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.world__menu {
+  top: 236px;
+  right: 6px;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.world__menu button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+.world__menu button:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+.world__night {
+  flex-direction: column;
+}
+.world__night-ev {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #c9a6ff;
+}
+.nasa-panel {
+  width: min(640px, calc(100vw - 16px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid #b9a2ff;
+  border-radius: 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.nasa-panel::backdrop {
+  background: rgb(0 0 0 / 0.7);
+}
+.nasa-panel__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nasa-panel h2 {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.nasa-panel__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.nasa-panel__list li {
+  background: rgb(255 255 255 / 0.04);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.nasa-panel__list p {
+  margin: 4px 0 0;
+}
+.nasa-panel__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+.nasa-panel__mode {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 1px 6px;
+  border-radius: 99px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.nasa-panel__mode--live {
+  color: #7cd17a;
+}
+.nasa-panel__mode--archive {
+  color: #c4b5a8;
+}
+.end__cause {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.end__why {
+  background: var(--color-surface);
+  border-left: 4px solid #ff9b8a;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.end-chart {
+  margin: 12px 0;
+}
+.end-chart svg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  background: var(--color-surface);
+  border-radius: 10px;
+}
+@media (min-width: 900px) {
+  .hero__content {
+    padding: 48px 64px 96px;
+  }
+  .world__menu-btn {
+    top: 16px;
+    right: 16px;
+  }
+  .world__menu {
+    top: 58px;
+    right: 16px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

@@ -89,6 +89,16 @@ const constants = {
     value: -59, unit: '°C', label: 'measured' as const,
     source: FACT_SHEET, url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,
   },
+  MARS_DAY_TEMP_MIN_C: {
+    value: -89, unit: '°C', label: 'measured' as const,
+    source: `${FACT_SHEET}: diurnal temperature range 184 K to 242 K (-89 to -31 C), Viking 1 Lander site`,
+    url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,
+  },
+  MARS_DAY_TEMP_MAX_C: {
+    value: -31, unit: '°C', label: 'measured' as const,
+    source: `${FACT_SHEET}: diurnal temperature range 184 K to 242 K (-89 to -31 C), Viking 1 Lander site`,
+    url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,
+  },
   MARS_SURFACE_GRAVITY: {
     value: 3.73, unit: 'm/s²', label: 'measured' as const,
     source: FACT_SHEET, url: FACT_SHEET_URL, place: 'Mars' as const, accessed: ACCESSED,

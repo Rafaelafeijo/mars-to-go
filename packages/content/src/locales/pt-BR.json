@@ -230,7 +230,13 @@
     "goBack": "Voltar ao sol em que tudo mudou (sol {{n}})",
     "backHome": "Voltar ao início",
     "discoveries_zero": "nenhuma descoberta",
-    "margin_zero": "Não sobrou ar nem comida: a tripulação chegou sem nenhuma reserva."
+    "margin_zero": "Não sobrou ar nem comida: a tripulação chegou sem nenhuma reserva.",
+    "why": {
+      "air": "Por quê? No sol {{n}} a máquina de ar fez {{made}}, mas quatro pessoas respiram {{breathed}} toda noite. O tanque foi de {{before}} para {{after}}.",
+      "food": "Por quê? No sol {{n}} a colheita deu {{harvested}}, mas a tripulação come {{eaten}} toda noite. A comida foi de {{before}} para {{after}}. A planta leva 2 sóis: plante antes."
+    },
+    "chart": "Ar e comida depois de cada noite",
+    "next": "Próxima: Missão 2 · A tempestade de maio (uma tempestade solar real medida em Marte)."
   },
   "card": {
     "labels": {
@@ -444,7 +450,8 @@
       "airBad": "O ar acaba no sol {{n}}",
       "foodOk": "A comida chega ao foguete",
       "foodBad": "A comida acaba no sol {{n}}",
-      "today": "hoje"
+      "today": "hoje",
+      "airCritical": "Ar crítico! Alimente a máquina de ar"
     },
     "float": {
       "lifeSupport": "+{{n}} de ar",
@@ -454,6 +461,80 @@
       "askEarth": "resposta à noite"
     },
     "night": "A noite cai em Jezero…",
-    "sceneLabel": "Cena da base em Marte. Use a barra de baixo para jogar sem a vista 3D."
+    "sceneLabel": "Cena da base em Marte. Use a barra de baixo para jogar sem a vista 3D.",
+    "missionPlace": "Missão 1 · Cratera Jezero · Sol {{n}} de {{total}}",
+    "tank": {
+      "label": "Tanque de ar: {{n}}",
+      "critical": "AR CRÍTICO: {{n}}"
+    },
+    "thermo": {
+      "aria": "Temperatura em Marte: {{day}} °C de dia, {{night}} °C à noite.",
+      "source": "Marte é muito frio: −31 °C de dia, −89 °C à noite (medido pela sonda Viking 1 da NASA). O aquecimento sempre gasta 3 células."
+    },
+    "does": {
+      "lifeSupport": "transforma o ar de Marte (CO₂) em oxigênio, como o MOXIE.",
+      "greenhouse": "as plantas crescem e dão comida 2 sóis depois.",
+      "shield": "protege a tripulação das partículas do Sol nesta noite.",
+      "expedition": "vai até um lugar real de Jezero e traz uma descoberta; gasta ar.",
+      "askEarth": "pergunta à Terra sobre amanhã; a resposta leva minutos para viajar."
+    },
+    "banner": {
+      "event": "Evento solar detectado!",
+      "calm": "Sol calmo hoje",
+      "record": "Registro real do DONKI da NASA: {{id}}, {{date}}.",
+      "shieldHint": "Se chegar a Marte esta noite, só o Escudo protege a tripulação.",
+      "tomorrow": "Amanhã: {{what}}",
+      "go": "Planejar o sol"
+    },
+    "nightStrike": "As partículas do Sol estão chegando a Marte!",
+    "nightMiss": "O evento solar não veio para Marte.",
+    "nightRover": "O rover está indo até o delta…",
+    "report": {
+      "title": "Relatório do sol {{n}}",
+      "air": "Máquina fez +{{made}} · tripulação respirou −{{breathed}} · trajes −{{suits}}",
+      "food": "Colheita +{{harvested}} · tripulação comeu −{{eaten}}",
+      "noEvent": "Nenhum evento solar esta noite.",
+      "hit": "O evento chegou a Marte: risco {{risk}} − escudo {{shield}} → exposição +{{delta}}",
+      "miss": "O evento não chegou a Marte. As células do escudo foram gastas mesmo assim.",
+      "discovery": "Descoberta do rover: {{site}}",
+      "realNasa": "DADO REAL DA NASA"
+    },
+    "sites": {
+      "rochette": "a rocha Rochette",
+      "kodiak": "o monte Kodiak",
+      "delta-front": "a frente do delta"
+    }
+  },
+  "hero": {
+    "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",
+    "line": "Traga quatro astronautas para casa. 7 sóis. Nenhuma escolha é grátis.",
+    "nasaData": "Dados reais da NASA neste jogo",
+    "credit": "FOTO REAL · Cratera Jezero, Marte · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · cor realçada"
+  },
+  "brief": {
+    "portrait": "Seu personagem: o comandante da base, de traje espacial branco.",
+    "eyebrow": "Missão 1 · Primeiros sóis",
+    "title": "Você comanda a base",
+    "intro": "Quatro astronautas vivem na sua base em Marte. Eles confiam no seu plano.",
+    "goal": "Em 7 sóis, um foguete leva todo mundo para casa.",
+    "air": "Ar: a tripulação respira toda noite. Você faz ar com energia.",
+    "food": "Comida: planta demora. Plante cedo para comer depois.",
+    "power": "Energia: 10 células por sol. Nunca dá para tudo."
+  },
+  "menu": {
+    "label": "Menu",
+    "restart": "Recomeçar esta missão",
+    "home": "Voltar ao início",
+    "close": "Fechar menu",
+    "nasa": "Dados reais da NASA"
+  },
+  "nasa": {
+    "title": "Dados reais da NASA neste jogo",
+    "intro": "Todo número com dado real vem destas fontes da NASA. Toque no nome para abrir.",
+    "where": "No jogo",
+    "mode": {
+      "live": "AO VIVO",
+      "archive": "ARQUIVO"
+    }
   }
 }

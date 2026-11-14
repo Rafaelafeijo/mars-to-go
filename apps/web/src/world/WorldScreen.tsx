@@ -1,15 +1,17 @@
 /**
- * The 3D world prototype (ADR-0032). Panels float over the scene; everything done by
- * walking can also be done on the panels, by keyboard and screen reader. If WebGL is
- * not available, the scene becomes a still illustration and the panels keep working.
- * Numbers come from packages/sim (projection, rules); no emoji, only our own icons.
+ * The 3D world (ADR-0032), after the first playtest. Panels float over the scene;
+ * everything done by walking can also be done on the panels (keyboard, screen reader).
+ * Each sol: forecast banner → plan → night in 3D → visual sol report with a real NASA fact.
+ * Numbers come from packages/sim; facts and photos from packages/content (verified sources).
  */
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   V,
+  airSols,
   cellsUsed,
   conditionsFor,
+  exposureWord,
   freeCells,
   openDestinations,
   project,
@@ -18,12 +20,14 @@ import {
   validateAllocation,
   type Allocation,
   type Destination,
+  type NightStep,
 } from '@mars-to-go/sim';
-import { catalogEvent } from '@mars-to-go/content';
-import { prefersReducedMotion } from '../lib/format';
+import { SOL_FACTS, catalogEvent, type Locale } from '@mars-to-go/content';
+import { photoSrcSet } from '../cards/Photo';
+import { longDate, prefersReducedMotion } from '../lib/format';
 import type { Game } from '../game/useGame';
 import { Icon, type IconName } from './Icon';
-import type { Pulse } from './Scene3D';
+import type { Pulse, SkyEvent } from './Scene3D';
 
 const Scene3D = lazy(() => import('./Scene3D'));
 
@@ -31,6 +35,8 @@ const EMPTY: Allocation = { lifeSupport: 0, greenhouse: 0, shield: 0, expedition
 const DESTS: Destination[] = ['lifeSupport', 'greenhouse', 'shield', 'expedition', 'askEarth'];
 const ICON: Record<Destination, IconName> = { lifeSupport: 'airMachine', greenhouse: 'greenhouse', shield: 'shield', expedition: 'rover', askEarth: 'antenna' };
 const TONE: Record<Destination, string> = { lifeSupport: 'air', greenhouse: 'food', shield: 'rad', expedition: 'energy', askEarth: 'energy' };
+const FULL_TANK = 20;
+const NIGHT_MS = 3600;
 const cost = (d: Destination) => (d === 'expedition' ? V.EXPEDITION_CELLS : d === 'askEarth' ? V.ASK_EARTH_CELLS : 1);
 
 function hasWebGL(): boolean {
@@ -42,14 +48,20 @@ function hasWebGL(): boolean {
   }
 }
 
+const sumSteps = (steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
+
 interface Props {
   game: Game;
   onLock: (a: Allocation) => void;
   onNightDone: () => void;
+  onRestart: () => void;
+  onHome: () => void;
+  onNasaData: () => void;
 }
 
-export function WorldScreen({ game, onLock, onNightDone }: Props) {
-  const { t } = useTranslation();
+export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNasaData }: Props) {
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.language === 'pt-BR' ? 'pt-BR' : 'en') as Locale;
   const { def, screen } = game;
   const night = screen === 'night' ? game.night : null;
   const base = night ? night.before : game.state;
@@ -65,7 +77,8 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
   const [near, setNear] = useState<Destination | null>(null);
   const [webgl] = useState(hasWebGL);
   const [missionOpen, setMissionOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
-  // ?fps=1 shows the measured frame rate, to check the 3D on a real phone.
+  const [banner, setBanner] = useState(true);
+  const [menu, setMenu] = useState(false);
   const [showFps] = useState(() => new URLSearchParams(window.location.search).get('fps') === '1');
   const [fps, setFps] = useState<number | null>(null);
   useEffect(() => {
@@ -74,17 +87,25 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
     return () => window.clearInterval(id);
   }, [showFps]);
 
-  // Night: the sky darkens, then the next sol starts.
-  const done = useRef(onNightDone);
-  useEffect(() => {
-    done.current = onNightDone;
-  }, [onNightDone]);
+  // Night in 3D, then the sol report (the child reads what happened before moving on).
   const isNight = night !== null;
+  const [report, setReport] = useState(false);
   useEffect(() => {
     if (!isNight) return;
-    const id = window.setTimeout(() => done.current(), prefersReducedMotion() ? 50 : 1600);
+    const id = window.setTimeout(() => setReport(true), prefersReducedMotion() ? 50 : NIGHT_MS);
     return () => window.clearTimeout(id);
   }, [isNight]);
+
+  const ev = catalogEvent(cond.event?.id);
+  const tm = catalogEvent(tomorrowForecast(def, base.sol)?.event?.id);
+  const skyEvent: SkyEvent | null = ev ? { risk: ev.risk, strikes: ev.reachesMars === true } : null;
+  const tomorrow = projection.tomorrow;
+  const airCritical = airSols(tomorrow.air) <= 0 || (projection.airEndsOnSol !== null && projection.airEndsOnSol <= base.sol + 1);
+  const airOk = projection.airEndsOnSol === null;
+  const foodOk = projection.foodEndsOnSol === null;
+  const growing = base.pendingHarvests.map((h) => ({ ...h, daysLeft: h.sol - base.sol }));
+  if (!night && a.greenhouse > 0) growing.push({ sol: base.sol + V.GREENHOUSE_DELAY_SOLS, food: a.greenhouse * V.FOOD_PER_GREENHOUSE_CELL, daysLeft: V.GREENHOUSE_DELAY_SOLS });
+  const fact = SOL_FACTS.find((f) => f.sol === base.sol);
 
   const effect = (d: Destination): string => {
     const n = plan[d];
@@ -118,20 +139,42 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
   const remove = (d: Destination) => setA((p) => ({ ...p, [d]: d === 'expedition' || d === 'askEarth' ? 0 : Math.max(0, p[d] - 1) }));
 
   const labels = Object.fromEntries(DESTS.map((d) => [d, t(`world.machines.${d}`)])) as Record<Destination, string>;
-  const ev = catalogEvent(cond.event?.id);
-  const tm = catalogEvent(tomorrowForecast(def, base.sol)?.event?.id);
-  const airOk = projection.airEndsOnSol === null;
-  const foodOk = projection.foodEndsOnSol === null;
   const sols = Array.from({ length: V.MISSION_SOLS }, (_, i) => i + 1);
   const reach = (ends: number | null) => (ends === null ? V.MISSION_SOLS + 1 : ends) - base.sol + 1;
   const span = V.MISSION_SOLS - base.sol + 2;
+  const eventText = ev ? t('world.forecast.event', { kind: t(`forecast.kinds.${ev.kind}`), label: ev.classLabel }) : '';
+
+  // Sol report numbers, straight from the simulation steps of tonight.
+  const steps = night?.result.steps ?? [];
+  const made = sumSteps(steps, ['lifeSupport']);
+  const breathed = -sumSteps(steps, ['breathe']);
+  const suits = -sumSteps(steps, ['expedition', 'expeditionRecalled']);
+  const harvested = sumSteps(steps, ['harvest']);
+  const eaten = -sumSteps(steps, ['eat']);
+  const radiation = steps.find((s) => s.id === 'radiation');
+  const discovery = steps.find((s) => s.id === 'outside')?.detail?.site;
+  const after = night?.result.state;
 
   return (
     <div className={`world${night ? ' world--night' : ''}`}>
       <div className="world__stage">
         {webgl ? (
           <Suspense fallback={<div className="world__still" aria-hidden="true" />}>
-            <Scene3D cells={plan} open={open} labels={labels} night={night !== null} pulse={pulse} onUse={add} onNear={setNear} label={t('world.sceneLabel')} />
+            <Scene3D
+              cells={plan}
+              open={open}
+              labels={labels}
+              night={isNight}
+              pulse={pulse}
+              onUse={add}
+              onNear={setNear}
+              label={t('world.sceneLabel')}
+              airLevel={Math.max(0, tomorrow.air) / FULL_TANK}
+              airCritical={airCritical}
+              airLabel={airCritical ? t('world.tank.critical', { n: tomorrow.air }) : t('world.tank.label', { n: tomorrow.air })}
+              growing={growing}
+              event={skyEvent}
+            />
           </Suspense>
         ) : (
           <div className="world__still" role="img" aria-label={t('world.fallback')}>
@@ -159,12 +202,12 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
           </li>
         </ol>
         <div className="hud-trail__bars">
-          <div className={`bar tone-air${airOk ? '' : ' bar--bad'}`} role="img" aria-label={airOk ? t('world.trail.airOk') : t('world.trail.airBad', { n: projection.airEndsOnSol })}>
+          <div className={`bar tone-air${airOk ? '' : ' bar--bad'}${airCritical ? ' bar--critical' : ''}`} role="img" aria-label={airOk ? t('world.trail.airOk') : t('world.trail.airBad', { n: projection.airEndsOnSol })}>
             <Icon name="air" size={14} />
             <span className="bar__track">
               <span className="bar__fill" style={{ width: `${(Math.min(reach(projection.airEndsOnSol), span) / span) * 100}%` }} />
             </span>
-            <span className="bar__text">{airOk ? t('world.trail.airOk') : t('world.trail.airBad', { n: projection.airEndsOnSol })}</span>
+            <span className="bar__text">{airCritical ? t('world.trail.airCritical') : airOk ? t('world.trail.airOk') : t('world.trail.airBad', { n: projection.airEndsOnSol })}</span>
           </div>
           <div className={`bar tone-food${foodOk ? '' : ' bar--bad'}`} role="img" aria-label={foodOk ? t('world.trail.foodOk') : t('world.trail.foodBad', { n: projection.foodEndsOnSol })}>
             <Icon name="food" size={14} />
@@ -175,6 +218,23 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
           </div>
         </div>
       </section>
+
+      <button type="button" className="world__menu-btn" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+        {t('menu.label')}
+      </button>
+      {menu && (
+        <nav className="world__menu wpanel" aria-label={t('menu.label')}>
+          <button type="button" onClick={() => { setMenu(false); onNasaData(); }}>
+            <Icon name="radiation" size={16} className="tone-rad" /> {t('menu.nasa')}
+          </button>
+          <button type="button" onClick={() => { setMenu(false); onRestart(); }}>
+            <Icon name="flag" size={16} /> {t('menu.restart')}
+          </button>
+          <button type="button" onClick={() => { setMenu(false); onHome(); }}>
+            <Icon name="rocket" size={16} /> {t('menu.home')}
+          </button>
+        </nav>
+      )}
 
       {/* Left: Mission Control */}
       <section className={`hud-mission wpanel${missionOpen ? '' : ' is-closed'}`} aria-labelledby="mc-title">
@@ -202,16 +262,20 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
         )}
       </section>
 
-      {/* Right top: forecast */}
-      <section className="hud-sky wpanel" aria-labelledby="sky-title">
+      {/* Right top: sky and the Mars thermometer */}
+      <section className={`hud-sky wpanel${ev ? ' hud-sky--event' : ''}`} aria-labelledby="sky-title">
         <h2 id="sky-title">{t('world.forecast.title')}</h2>
         <p>
-          <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} />{' '}
-          {cond.dust ? t('world.forecast.dust', { n: free }) : ev ? t('world.forecast.event', { kind: t(`forecast.kinds.${ev.kind}`), label: ev.classLabel }) : t('world.forecast.calm')}
+          <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} /> {cond.dust ? t('world.forecast.dust', { n: free }) : ev ? eventText : t('world.forecast.calm')}
         </p>
-        <p className="muted small">
-          {t('world.forecast.tomorrow')} {tm ? t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: tm.classLabel }) : t('world.forecast.tomorrowCalm')}
+        <p className="thermo" aria-label={t('world.thermo.aria', { day: V.MARS_DAY_TEMP_MAX_C, night: V.MARS_DAY_TEMP_MIN_C })}>
+          <Icon name="heat" size={14} className="tone-air" />
+          <span className="thermo__bar" aria-hidden="true">
+            <span className={`thermo__fill${isNight ? ' is-night' : ''}`} />
+          </span>
+          <strong>{isNight ? V.MARS_DAY_TEMP_MIN_C : V.MARS_DAY_TEMP_MAX_C} °C</strong>
         </p>
+        <p className="muted small">{t('world.thermo.source')}</p>
       </section>
 
       {/* Right bottom: cells in hand and pass the night */}
@@ -242,7 +306,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
       {/* Bottom: place and machine bar (the accessible way to play) */}
       <section className="hud-bottom" aria-labelledby="bar-title">
         <p className="hud-bottom__place">
-          {t('world.place', { n: base.sol, total: V.MISSION_SOLS })}
+          {t('world.missionPlace', { n: base.sol, total: V.MISSION_SOLS })}
           <span className="hud-bottom__ill"> · {t('world.illustration')}</span>
         </p>
         <h2 id="bar-title" className="sr-only">
@@ -276,17 +340,103 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
           })}
         </ul>
         <p className="hud-bottom__hint muted small" aria-hidden="true">
-          <Icon name="walk" size={12} /> {near ? effect(near) || labels[near] : t('world.walkHint')}
+          <Icon name="walk" size={12} /> {near ? `${labels[near]}: ${t(`world.does.${near}`)}` : t('world.walkHint')}
         </p>
       </section>
 
-      {showFps && <div className="world__fps">{fps === null ? '… fps' : `${fps} fps`}</div>}
-
-      {night && (
-        <div className="world__night" role="status">
-          <Icon name="moon" size={28} /> {t('world.night')}
+      {/* Start of the sol: the forecast, big, so it is not missed */}
+      {banner && !night && (
+        <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="banner-title">
+          <div className={`banner${ev ? ' banner--event' : ''}`}>
+            <p className="banner__eyebrow">{t('world.missionPlace', { n: base.sol, total: V.MISSION_SOLS })}</p>
+            <h2 id="banner-title">
+              <Icon name={ev ? 'storm' : cond.dust ? 'dust' : 'sun'} size={28} className={ev ? 'tone-rad' : 'tone-sun'} /> {ev ? t('world.banner.event') : t('world.banner.calm')}
+            </h2>
+            {ev && (
+              <p>
+                {eventText} {t('world.banner.record', { id: ev.id, date: longDate(ev.date, i18n.language) })}
+              </p>
+            )}
+            {ev && <p className="banner__hint">{t('world.banner.shieldHint')}</p>}
+            {!ev && tm && <p>{t('world.banner.tomorrow', { what: t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: tm.classLabel }) })}</p>}
+            <button type="button" className="btn btn--primary" onClick={() => setBanner(false)}>
+              {t('world.banner.go')}
+            </button>
+          </div>
         </div>
       )}
+
+      {night && !report && (
+        <div className="world__night" role="status">
+          <Icon name="moon" size={28} /> {t('world.night')}
+          {skyEvent && <span className="world__night-ev">{skyEvent.strikes ? t('world.nightStrike') : t('world.nightMiss')}</span>}
+          {plan.expedition > 0 && <span className="world__night-ev">{t('world.nightRover')}</span>}
+        </div>
+      )}
+
+      {/* After the night: what happened, then one real NASA fact with its photo */}
+      {night && report && after && (
+        <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="report-title">
+          <div className="report">
+            <h2 id="report-title">{t('world.report.title', { n: base.sol })}</h2>
+            <ul className="report__rows">
+              <li className="tone-air">
+                <Icon name="air" size={18} />
+                <span className="report__what">{t('world.report.air', { made, breathed, suits })}</span>
+                <strong>
+                  {base.air} → {after.air}
+                </strong>
+              </li>
+              <li className="tone-food">
+                <Icon name="food" size={18} />
+                <span className="report__what">{t('world.report.food', { harvested, eaten })}</span>
+                <strong>
+                  {base.food} → {after.food}
+                </strong>
+              </li>
+              <li className="tone-rad">
+                <Icon name="shield" size={18} />
+                <span className="report__what">
+                  {!radiation?.detail?.eventId
+                    ? t('world.report.noEvent')
+                    : radiation.detail.reachesMars === true
+                      ? t('world.report.hit', { risk: radiation.detail.risk, shield: radiation.detail.shield, delta: radiation.delta })
+                      : t('world.report.miss')}
+                </span>
+                <strong>{t(`meters.exposureWords.${exposureWord(after.exposure)}`)}</strong>
+              </li>
+              {typeof discovery === 'string' && (
+                <li className="tone-energy">
+                  <Icon name="rover" size={18} />
+                  <span className="report__what">{t('world.report.discovery', { site: t(`world.sites.${discovery}`) })}</span>
+                </li>
+              )}
+            </ul>
+            {fact && (
+              <figure className="report__fact">
+                <img src={`${import.meta.env.BASE_URL}images/${fact.photo.slug}-960.webp`} srcSet={photoSrcSet(fact.photo.slug)} sizes="(max-width: 640px) 100vw, 520px" alt={fact.photo.caption?.[locale] ?? fact.text[locale].title} />
+                <figcaption>
+                  <span className="report__badge">{t('world.report.realNasa')}</span>
+                  <strong>{fact.text[locale].title}</strong> {fact.text[locale].body}{' '}
+                  <a href={fact.sourceUrl} target="_blank" rel="noreferrer">
+                    {fact.sourceName}
+                  </a>
+                  <span className="report__credit">
+                    {t('card.realPhoto')}
+                    {fact.photo.enhancedColor ? ` · ${t('card.enhanced')}` : ''} · {fact.photo.credit} · {fact.photo.mission} · {locale === 'pt-BR' ? fact.photo.placePt : fact.photo.placeEn}
+                    {fact.photo.caption ? ` · ${fact.photo.caption[locale]}` : ''}
+                  </span>
+                </figcaption>
+              </figure>
+            )}
+            <button type="button" className="btn btn--primary" onClick={onNightDone}>
+              {after.status === 'playing' ? t('one.next') : t('one.finish')}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showFps && <div className="world__fps">{fps === null ? '… fps' : `${fps} fps`}</div>}
 
       <div className="sr-only" aria-live="polite">
         {airOk ? t('world.trail.airOk') : t('world.trail.airBad', { n: projection.airEndsOnSol })}.{' '}
@@ -295,4 +445,3 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
     </div>
   );
 }
-

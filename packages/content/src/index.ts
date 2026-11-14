@@ -3,6 +3,7 @@ import ptBR from './locales/pt-BR.json';
 
 export * from './cards';
 export * from './catalog';
+export * from './facts';
 
 /** English is the default and the game always opens in it (ADR-0012, ADR-0028). */
 export const LOCALES = ['en', 'pt-BR'] as const;

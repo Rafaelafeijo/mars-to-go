@@ -28,7 +28,7 @@ export default tseslint.config(
   },
   {
     // react-three-fiber uses three.js props (position, args, geometry…) that eslint-plugin-react does not know.
-    files: ['apps/web/src/world/Scene3D.tsx'],
+    files: ['apps/web/src/world/Scene3D.tsx', 'apps/web/src/world/three/**/*.tsx'],
     rules: { 'react/no-unknown-property': 'off' },
   },
   {

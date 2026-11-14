@@ -1,18 +1,17 @@
+/**
+ * Home (Phase 3B, after the first playtest): one strong image, one sentence, one button.
+ * The background is a real NASA photo of Jezero (badged as such); no long text to read.
+ */
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { cardById } from '@mars-to-go/content';
-import { Badge } from '../cards/Badge';
 import { photoSrcSet } from '../cards/Photo';
 import { prefersReducedMotion } from '../lib/format';
+import { Icon } from '../world/Icon';
 
-const BASE = import.meta.env.BASE_URL;
-
-export function Home({ onPlay, assisted, onAssisted }: { onPlay: () => void; assisted: boolean; onAssisted: (on: boolean) => void }) {
+export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () => void; assisted: boolean; onAssisted: (on: boolean) => void; onNasaData: () => void }) {
   const { t } = useTranslation();
   const roles = t('home.roles', { returnObjects: true }) as string[];
   const [role, setRole] = useState(0);
-  const [how, setHow] = useState(false);
-  const panorama = cardById('photo-jezero-panorama');
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -21,44 +20,35 @@ export function Home({ onPlay, assisted, onAssisted }: { onPlay: () => void; ass
   }, [roles.length]);
 
   return (
-    <div className="home">
-      <div className="home__horizon">
-        <img src={`${BASE}images/jezero-panorama-960.webp`} srcSet={photoSrcSet('jezero-panorama')} sizes="100vw" alt="" />
-      </div>
-      <h1 className="title">{t('app.title')}</h1>
-      <p className="tagline">{t('app.tagline')}</p>
-      <p className="numbers-line">{t('home.numbersLine')}</p>
-      <p className="role" aria-live="off">
-        {t('home.rolePrefix')} <strong>{roles[role]}</strong>
-      </p>
-      <p>{t('home.intro')}</p>
-      <p>{t('home.solExplained')}</p>
-      {panorama && (
-        <p className="home__proof">
-          <Badge cardId="photo-jezero-panorama" />
+    <div className="hero">
+      <img className="hero__bg" src={`${import.meta.env.BASE_URL}images/jezero-panorama-1600.webp`} srcSet={photoSrcSet('jezero-panorama')} sizes="100vw" alt="" />
+      <div className="hero__shade" aria-hidden="true" />
+      <div className="hero__content">
+        <p className="hero__eyebrow">{t('hero.eyebrow')}</p>
+        <h1 className="hero__title">
+          MARS
+          <br />
+          TO GO
+        </h1>
+        <p className="hero__line">{t('hero.line')}</p>
+        <p className="hero__role" aria-live="off">
+          {t('home.rolePrefix')} <strong>{roles[role]}</strong>
         </p>
-      )}
-      <div className="actions">
-        <button type="button" className="btn btn--primary" onClick={onPlay}>
-          {t('home.play')}
-        </button>
-        <button type="button" className="btn btn--ghost" aria-expanded={how} onClick={() => setHow((h) => !h)}>
-          {t('home.howItWorks')}
-        </button>
-        {how && <p className="how">{t('home.howItWorksText')}</p>}
-        <button type="button" className="btn btn--ghost" disabled aria-describedby="surprise-locked">
-          {t('home.surprise')}
-        </button>
-        <span id="surprise-locked" className="muted small">
-          {t('home.surpriseLocked')}
-        </span>
+        <div className="hero__actions">
+          <button type="button" className="hero__play" onClick={onPlay}>
+            <span>{t('home.play')}</span>
+            <Icon name="rocket" size={26} />
+          </button>
+          <button type="button" className="hero__data" onClick={onNasaData}>
+            <Icon name="radiation" size={16} className="tone-rad" /> {t('hero.nasaData')}
+          </button>
+        </div>
+        <label className="hero__assist">
+          <input type="checkbox" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
+          <span>{t('home.assisted')}</span>
+        </label>
       </div>
-      <label className="toggle">
-        <input type="checkbox" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
-        <span>
-          {t('home.assisted')} — <span className="muted">{t('home.assistedHint')}</span>
-        </span>
-      </label>
+      <p className="hero__credit">{t('hero.credit')}</p>
     </div>
   );
 }

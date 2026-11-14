@@ -12,6 +12,7 @@ import { SolLogScreen } from './screens/SolLogScreen';
 import { EndScreen } from './screens/EndScreen';
 import { SolScreen } from './one/SolScreen';
 import { WorldScreen } from './world/WorldScreen';
+import { NasaDataPanel } from './world/NasaDataPanel';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
 type Ui = 'world' | 'one' | 'list';
@@ -31,6 +32,7 @@ export function App() {
   const { game } = g;
   const main = useRef<HTMLElement>(null);
   const [ui] = useState<Ui>(initialUi);
+  const [nasaOpen, setNasaOpen] = useState(false);
 
   // Each new screen starts at the top, with focus on the main region for screen readers.
   useEffect(() => {
@@ -50,7 +52,9 @@ export function App() {
         {t('app.skipToContent')}
       </a>
       <header className="top">
-        <span className="top__brand">{t('app.title')}</span>
+        <button type="button" className="top__brand" onClick={() => g.go('home')} aria-label={`${t('app.title')} · ${t('menu.home')}`}>
+          {t('app.title')}
+        </button>
         <nav aria-label={t('app.languageLabel')} className="lang">
           {LOCALES.map((locale) => (
             <button
@@ -67,10 +71,18 @@ export function App() {
         </nav>
       </header>
       <main id="main" ref={main} tabIndex={-1} className={inSol && ui !== 'list' ? 'main--one' : undefined}>
-        {game.screen === 'home' && <Home onPlay={() => g.startMission()} assisted={game.assisted} onAssisted={g.setAssisted} />}
+        {game.screen === 'home' && <Home onPlay={() => g.startMission()} assisted={game.assisted} onAssisted={g.setAssisted} onNasaData={() => setNasaOpen(true)} />}
         {game.screen === 'briefing' && <Briefing onStart={() => g.go('morning')} />}
         {inSol && ui === 'world' && (
-          <WorldScreen key={`${game.def.id}-${game.checkpoints.length}`} game={game} onLock={g.lockPlan} onNightDone={nightDone} />
+          <WorldScreen
+            key={`${game.def.id}-${game.checkpoints.length}`}
+            game={game}
+            onLock={g.lockPlan}
+            onNightDone={nightDone}
+            onRestart={() => g.startMission(game.def)}
+            onHome={() => g.go('home')}
+            onNasaData={() => setNasaOpen(true)}
+          />
         )}
         {inSol && ui === 'one' && <SolScreen key={`${game.def.id}-${game.checkpoints.length}`} game={game} onLock={g.lockPlan} onNightDone={nightDone} />}
         {ui === 'list' && game.screen === 'morning' && (
@@ -80,6 +92,7 @@ export function App() {
         {ui === 'list' && game.screen === 'log' && <SolLogScreen game={game} onNext={g.nextSol} />}
         {game.screen === 'end' && <EndScreen game={game} onReplay={() => g.startMission(game.def)} onGoBack={g.goBackToSol} onHome={() => g.go('home')} />}
       </main>
+      <NasaDataPanel open={nasaOpen} onClose={() => setNasaOpen(false)} />
       {game.screen === 'home' && (
         <footer className="footer">
           <p>{t('footer.madeBy')}</p>

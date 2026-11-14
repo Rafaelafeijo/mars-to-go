@@ -230,7 +230,13 @@
     "goBack": "Go back to the sol where everything changed (sol {{n}})",
     "backHome": "Back to home",
     "discoveries_zero": "no discoveries",
-    "margin_zero": "No air or food to spare: the crew made it with nothing left over."
+    "margin_zero": "No air or food to spare: the crew made it with nothing left over.",
+    "why": {
+      "air": "Why? On sol {{n}} the air machine made {{made}}, but four people breathe {{breathed}} every night. The tank went from {{before}} to {{after}}.",
+      "food": "Why? On sol {{n}} the harvest gave {{harvested}}, but the crew eats {{eaten}} every night. Food went from {{before}} to {{after}}. Plants take 2 sols: plant earlier."
+    },
+    "chart": "Air and food after each night",
+    "next": "Next: Mission 2 · The May storm (a real solar storm measured on Mars)."
   },
   "card": {
     "labels": {
@@ -444,7 +450,8 @@
       "airBad": "Air runs out on sol {{n}}",
       "foodOk": "Food reaches the rocket",
       "foodBad": "Food runs out on sol {{n}}",
-      "today": "today"
+      "today": "today",
+      "airCritical": "Air critical! Feed the air machine"
     },
     "float": {
       "lifeSupport": "+{{n}} air",
@@ -454,6 +461,80 @@
       "askEarth": "answer tonight"
     },
     "night": "Night falls on Jezero…",
-    "sceneLabel": "Mars base scene. Use the bar below to play without the 3D view."
+    "sceneLabel": "Mars base scene. Use the bar below to play without the 3D view.",
+    "missionPlace": "Mission 1 · Jezero Crater · Sol {{n}} of {{total}}",
+    "tank": {
+      "label": "Air tank: {{n}}",
+      "critical": "AIR CRITICAL: {{n}}"
+    },
+    "thermo": {
+      "aria": "Mars temperature: {{day}} °C by day, {{night}} °C at night.",
+      "source": "Mars is very cold: −31 °C by day, −89 °C at night (measured by NASA's Viking 1 lander). Heating always takes 3 cells."
+    },
+    "does": {
+      "lifeSupport": "turns Mars air (CO₂) into oxygen, like MOXIE.",
+      "greenhouse": "plants grow and give food 2 sols later.",
+      "shield": "protects the crew from solar particles tonight.",
+      "expedition": "drives to a real Jezero site and brings a discovery; uses air.",
+      "askEarth": "asks Earth about tomorrow; the answer takes minutes to travel."
+    },
+    "banner": {
+      "event": "Solar event detected!",
+      "calm": "Calm Sun today",
+      "record": "Real NASA DONKI record {{id}}, {{date}}.",
+      "shieldHint": "If it reaches Mars tonight, only the Shield protects the crew.",
+      "tomorrow": "Tomorrow: {{what}}",
+      "go": "Plan the sol"
+    },
+    "nightStrike": "The solar particles are reaching Mars!",
+    "nightMiss": "The solar event did not come to Mars.",
+    "nightRover": "The rover is driving to the delta…",
+    "report": {
+      "title": "Sol {{n}} report",
+      "air": "Machine made +{{made}} · crew breathed −{{breathed}} · suits −{{suits}}",
+      "food": "Harvest +{{harvested}} · crew ate −{{eaten}}",
+      "noEvent": "No solar event tonight.",
+      "hit": "The event hit Mars: risk {{risk}} − shield {{shield}} → exposure +{{delta}}",
+      "miss": "The event did not reach Mars. The shield cells were spent anyway.",
+      "discovery": "Rover discovery: {{site}}",
+      "realNasa": "REAL NASA DATA"
+    },
+    "sites": {
+      "rochette": "the rock Rochette",
+      "kodiak": "Kodiak butte",
+      "delta-front": "the delta front"
+    }
+  },
+  "hero": {
+    "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
+    "line": "Bring four astronauts home. 7 sols. No choice is free.",
+    "nasaData": "Real NASA data in this game",
+    "credit": "REAL PHOTO · Jezero Crater, Mars · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · enhanced color"
+  },
+  "brief": {
+    "portrait": "Your character: the base commander, in a white space suit.",
+    "eyebrow": "Mission 1 · First sols",
+    "title": "You are the base commander",
+    "intro": "Four astronauts live in your base on Mars. They trust your plan.",
+    "goal": "In 7 sols a rocket takes everyone home.",
+    "air": "Air: the crew breathes every night. You make it with power.",
+    "food": "Food: plants take time. Plant early to eat later.",
+    "power": "Power: 10 cells a sol. Never enough for everything."
+  },
+  "menu": {
+    "label": "Menu",
+    "restart": "Restart this mission",
+    "home": "Back to home",
+    "close": "Close menu",
+    "nasa": "Real NASA data"
+  },
+  "nasa": {
+    "title": "Real NASA data in this game",
+    "intro": "Every number with real data comes from these NASA sources. Tap a name to open it.",
+    "where": "In the game",
+    "mode": {
+      "live": "LIVE",
+      "archive": "ARCHIVE"
+    }
   }
 }

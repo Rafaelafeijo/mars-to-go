@@ -34,12 +34,12 @@ const T = {
   en: {
     play: 'Play', start: 'Start sol 1', add: 'Add a cell to', lock: 'Lock the plan', skip: 'Just show me', toLog: 'See the sol log',
     next: /Next sol|See how the mission ended/, home: 'Everyone came home!', names: ['Life Support', 'Greenhouse', 'Shield'],
-    machines: ['Air machine', 'Greenhouse', 'Shield'], worldAdd: 'Add a cell to the', pass: 'Pass the night',
+    machines: ['Air machine', 'Greenhouse', 'Shield'], worldAdd: 'Add a cell to the', pass: 'Pass the night', planSol: 'Plan the sol',
   },
   'pt-BR': {
     play: 'Jogar', start: 'Começar o sol 1', add: 'Pôr uma célula em', lock: 'Travar o plano', skip: 'Só me mostre', toLog: 'Ver o diário do sol',
     next: /Próximo sol|Ver como a missão terminou/, home: 'Voltamos todos!', names: ['Suporte à Vida', 'Estufa', 'Escudo'],
-    machines: ['Máquina de ar', 'Estufa', 'Escudo'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite',
+    machines: ['Máquina de ar', 'Estufa', 'Escudo'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite', planSol: 'Planejar o sol',
   },
 }[lang];
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -64,8 +64,10 @@ try {
     if (mode === 'world') {
       if (sol === 1) {
         await page.waitForTimeout(2500); // models load
-        await shot('02-world-sol1-start', false);
+        await shot('02-world-sol1-banner', false);
       }
+      if (sol === 3) await shot('02-world-sol3-banner-event', false);
+      await page.getByRole('button', { name: T.planSol }).click();
       for (let i = 0; i < row.length; i++) {
         const slot = page.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[i]}`)}`) });
         for (let k = 0; k < row[i]; k++) {
@@ -75,7 +77,9 @@ try {
       }
       if (sol === 1 || sol === 5) await shot(`04-world-sol${sol}-planned`, false);
       await page.getByRole('button', { name: T.pass }).click();
-      if (sol < 7) await page.getByText(new RegExp(`(Sol|Sol) ${sol + 1} (of|de) 7`)).first().waitFor();
+      await page.getByRole('button', { name: T.next }).waitFor();
+      if (sol === 1 || sol === 5) await shot(`05-world-report-sol${sol}`, false);
+      await page.getByRole('button', { name: T.next }).click();
       continue;
     }
     if (mode === 'one') {
@@ -109,6 +113,7 @@ try {
     await desk.getByRole('button', { name: T.play, exact: true }).click();
     await desk.getByRole('button', { name: T.start }).click();
     await desk.waitForTimeout(3000);
+    await desk.getByRole('button', { name: T.planSol }).click();
     for (let k = 0; k < 4; k++) await desk.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[0]}`)}`) }).click();
     await desk.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[1]}`)}`) }).click();
     await desk.waitForTimeout(600);
@@ -123,6 +128,7 @@ try {
       await p.goto(url);
       await p.getByRole('button', { name: T.play, exact: true }).click();
       await p.getByRole('button', { name: T.start }).click();
+      await p.getByRole('button', { name: T.planSol }).click();
       await p.waitForTimeout(7000);
       perf[`fps_cpu${rate}x`] = await p.evaluate(() => globalThis.__marsFps ?? null);
       if (rate === 1) {
