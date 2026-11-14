@@ -390,5 +390,70 @@
     "next": "Next sol",
     "finish": "See how the mission ended",
     "replay": "Watch the night again"
+  },
+  "world": {
+    "place": "Jezero Crater · Sol {{n}} of {{total}}",
+    "illustration": "Illustrated terrain inspired by Jezero Crater, not a photo.",
+    "mission": {
+      "title": "Mission Control",
+      "challenge": "Get air and food to the rocket.",
+      "placeAll": "Place all {{free}} cells ({{used}}/{{free}})",
+      "airHome": "Air reaches the rocket",
+      "foodHome": "Food reaches the rocket",
+      "done": "done",
+      "todo": "not yet"
+    },
+    "forecast": {
+      "title": "Sky today",
+      "calm": "Calm Sun.",
+      "event": "{{kind}} {{label}}. Maybe it reaches Mars.",
+      "dust": "Dust storm: only {{n}} cells today.",
+      "tomorrow": "Tomorrow:",
+      "tomorrowCalm": "calm Sun.",
+      "tomorrowEvent": "{{kind}} {{label}}, maybe."
+    },
+    "hand": {
+      "title": "Cells in hand",
+      "count_zero": "all placed",
+      "count_one": "{{count}} cell",
+      "count_other": "{{count}} cells",
+      "heating": "{{n}} keep the base warm",
+      "pass": "Pass the night",
+      "placeFirst_one": "Place {{count}} more cell",
+      "placeFirst_other": "Place {{count}} more cells"
+    },
+    "machines": {
+      "lifeSupport": "Air machine",
+      "greenhouse": "Greenhouse",
+      "shield": "Shield",
+      "expedition": "Rover",
+      "askEarth": "Antenna"
+    },
+    "hotbar": "Machines",
+    "add": "Add a cell to the {{name}}",
+    "remove": "Take a cell from the {{name}}",
+    "locked": "{{name}}: opens on sol {{n}}",
+    "state": "{{name}}: {{count}} cells. {{effect}}",
+    "walkCloser": "Walk closer to the {{name}}, or use the bar below.",
+    "walkHint": "Tap the ground to walk. Keys: WASD or arrows.",
+    "fallback": "3D is off on this device. Everything works with the panels.",
+    "trail": {
+      "label": "The 7 sols to the rocket",
+      "rocket": "Rocket home",
+      "airOk": "Air reaches the rocket",
+      "airBad": "Air runs out on sol {{n}}",
+      "foodOk": "Food reaches the rocket",
+      "foodBad": "Food runs out on sol {{n}}",
+      "today": "today"
+    },
+    "float": {
+      "lifeSupport": "+{{n}} air",
+      "greenhouse": "+{{n}} food on sol {{sol}}",
+      "shield": "+{{n}} shield",
+      "expedition": "−{{n}} air",
+      "askEarth": "answer tonight"
+    },
+    "night": "Night falls on Jezero…",
+    "sceneLabel": "Mars base scene. Use the bar below to play without the 3D view."
   }
 }

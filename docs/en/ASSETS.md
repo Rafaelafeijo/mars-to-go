@@ -23,6 +23,17 @@ Chosen by the team on 2026-11-14 (IMAGES.md). Originals in `assets-src/` (not co
 
 Checks done on 2026-11-14: no NASA logo or insignia as subject; image 10 shows no person (checked visually at 1600 px); no minors in any image. Crops: 1 (right part of the panorama, no mosaic edges), 6 (rock centered, rover wheel out), 8 (layered cliff, rover arm out).
 
+## 3D models
+
+Used by the 3D world prototype (ADR-0032), in `apps/web/public/models/kenney/` with the original license files.
+
+| Pack | Author | License | Source | Files used |
+| --- | --- | --- | --- | --- |
+| Space Kit 2.0 | Kenney (www.kenney.nl) | CC0 1.0 (public domain) | https://kenney.nl/assets/space-kit | astronautA, machine_generatorLarge (air machine), hangar_roundGlass (greenhouse), machine_wireless (shield), rover, satelliteDish_large (antenna), hangar_largeA (habitat), corridor, rock_largeA, rock_largeB, rocks_smallA, craterLarge (`.glb`, colors embedded) |
+| Space Station Kit | Kenney (www.kenney.nl) | CC0 1.0 (public domain) | https://kenney.nl/assets/space-station-kit | container-tall (`.glb`) + `Textures/colormap.png` |
+
+The terrain, sky and Sun are drawn in code (illustration inspired by Jezero Crater, declared on screen as illustration, not a photo).
+
 ## Fonts
 
 None yet; the game uses system fonts. Open-license fonts will be recorded here before use (ADR-0023).

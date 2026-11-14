@@ -23,6 +23,17 @@ Escolhidas pelo time em 14/11/2026 (IMAGES.md). Originais em `assets-src/` (fora
 
 Conferências feitas em 14/11/2026: nenhum logo ou insígnia da NASA como assunto; a imagem 10 não mostra nenhuma pessoa (conferida a 1600 px); nenhum menor em nenhuma imagem. Recortes: 1 (parte direita do panorama, sem bordas do mosaico), 6 (rocha no centro, sem a roda do rover), 8 (penhasco com camadas, sem o braço do rover).
 
+## Modelos 3D
+
+Usados pelo protótipo do mundo 3D (ADR-0032), em `apps/web/public/models/kenney/` com os arquivos de licença originais.
+
+| Pacote | Autor | Licença | Fonte | Arquivos usados |
+| --- | --- | --- | --- | --- |
+| Space Kit 2.0 | Kenney (www.kenney.nl) | CC0 1.0 (domínio público) | https://kenney.nl/assets/space-kit | astronautA, machine_generatorLarge (máquina de ar), hangar_roundGlass (estufa), machine_wireless (escudo), rover, satelliteDish_large (antena), hangar_largeA (habitat), corridor, rock_largeA, rock_largeB, rocks_smallA, craterLarge (`.glb`, cores embutidas) |
+| Space Station Kit | Kenney (www.kenney.nl) | CC0 1.0 (domínio público) | https://kenney.nl/assets/space-station-kit | container-tall (`.glb`) + `Textures/colormap.png` |
+
+O terreno, o céu e o Sol são desenhados em código (ilustração inspirada na cratera Jezero, declarada na tela como ilustração, não foto).
+
 ## Fontes tipográficas
 
 Nenhuma ainda; o jogo usa as fontes do sistema. Fontes com licença aberta serão registradas aqui antes do uso (ADR-0023).

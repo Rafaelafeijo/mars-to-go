@@ -1,25 +1,25 @@
-// End-to-end playthrough of mission 1, with screenshots.
-// Usage: node scripts/playthrough.mjs <outDir> [en|pt-BR] [scene|list]
+// End-to-end playthrough of mission 1, with screenshots and (world mode) a performance probe.
+// Usage: node scripts/playthrough.mjs <outDir> [en|pt-BR] [world|one|list]
 // Builds the game, serves it with `vite preview`, plays all 7 sols on a 360 px phone,
 // and fails if the mission does not end with everyone home. Base for the demo recording.
 import { spawn, execSync } from 'node:child_process';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const out = process.argv[2] ?? 'playthrough';
 const lang = process.argv[3] ?? 'en';
-const mode = process.argv[4] ?? 'scene';
+const mode = process.argv[4] ?? 'world';
 const PORT = 4179;
 mkdirSync(out, { recursive: true });
 
 execSync('pnpm --filter @mars-to-go/web build', { stdio: 'ignore' });
 const server = spawn('pnpm', ['--filter', '@mars-to-go/web', 'exec', 'vite', 'preview', '--port', String(PORT), '--strictPort'], { stdio: 'ignore' });
-const url = `http://localhost:${PORT}/`;
+const url = `http://localhost:${PORT}/${mode === 'world' ? '' : `?ui=${mode}`}`;
 
 async function waitForServer() {
   for (let i = 0; i < 60; i++) {
     try {
-      if ((await fetch(url)).ok) return;
+      if ((await fetch(`http://localhost:${PORT}/`)).ok) return;
     } catch {
       /* not up yet */
     }
@@ -34,19 +34,20 @@ const T = {
   en: {
     play: 'Play', start: 'Start sol 1', add: 'Add a cell to', lock: 'Lock the plan', skip: 'Just show me', toLog: 'See the sol log',
     next: /Next sol|See how the mission ended/, home: 'Everyone came home!', names: ['Life Support', 'Greenhouse', 'Shield'],
-    objects: ['Air machine', 'Greenhouse', 'Shield cover'], forecastNext: 'Next', outside: 'Outside', inside: 'Inside', close: 'Close', listMode: 'List mode',
+    machines: ['Air machine', 'Greenhouse', 'Shield'], worldAdd: 'Add a cell to the', pass: 'Pass the night',
   },
   'pt-BR': {
     play: 'Jogar', start: 'Começar o sol 1', add: 'Pôr uma célula em', lock: 'Travar o plano', skip: 'Só me mostre', toLog: 'Ver o diário do sol',
     next: /Próximo sol|Ver como a missão terminou/, home: 'Voltamos todos!', names: ['Suporte à Vida', 'Estufa', 'Escudo'],
-    objects: ['Máquina de ar', 'Estufa', 'Cobertura do escudo'], forecastNext: 'Seguir', outside: 'Fora', inside: 'Dentro', close: 'Fechar', listMode: 'Modo lista',
+    machines: ['Máquina de ar', 'Estufa', 'Escudo'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite',
   },
 }[lang];
+const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 let failed = false;
 try {
   await waitForServer();
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const page = await browser.newPage({ viewport: { width: 360, height: 780 }, deviceScaleFactor: 2, reducedMotion: 'reduce' });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
@@ -54,55 +55,86 @@ try {
 
   await page.goto(url);
   if (lang === 'pt-BR') await page.getByRole('button', { name: 'Portuguese' }).click();
-  if (mode === 'list') await page.getByRole('button', { name: T.listMode }).click();
   await shot('01-home');
   await page.getByRole('button', { name: T.play, exact: true }).click();
   await page.getByRole('button', { name: T.start }).click();
 
   for (let sol = 1; sol <= 7; sol++) {
     const row = PLAN[sol - 1];
-    if (mode === 'scene') {
-      if (sol === 1) await shot('02-one-sol1-empty', false);
+    if (mode === 'world') {
+      if (sol === 1) {
+        await page.waitForTimeout(2500); // models load
+        await shot('02-world-sol1-start', false);
+      }
       for (let i = 0; i < row.length; i++) {
-        const tile = page.getByRole('button', { name: new RegExp(`^${T.names[i]}:`) });
+        const slot = page.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[i]}`)}`) });
         for (let k = 0; k < row[i]; k++) {
-          await tile.click();
-          if (sol === 1 && i === 0 && k === 4) await shot('03-one-sol1-only-air', false);
+          await slot.click();
+          if (sol === 1 && i === 0 && k === 4) await shot('03-world-sol1-only-air', false);
         }
       }
-      if (sol === 1 || sol === 5) await shot(`04-one-sol${sol}-planned`, false);
-    } else {
-      await page.locator('.choices button').nth(1).click();
-      for (let i = 0; i < row.length; i++) {
-        for (let k = 0; k < row[i]; k++) await page.getByRole('button', { name: `${T.add} ${T.names[i]}` }).click();
-      }
-      if (sol === 1) await shot('03-list-morning');
+      if (sol === 1 || sol === 5) await shot(`04-world-sol${sol}-planned`, false);
+      await page.getByRole('button', { name: T.pass }).click();
+      if (sol < 7) await page.getByText(new RegExp(`(Sol|Sol) ${sol + 1} (of|de) 7`)).first().waitFor();
+      continue;
     }
-    await page.getByRole('button', { name: T.lock }).click();
-    if (mode === 'scene') {
-      if (sol === 5) await shot('05-one-night-sol5', false);
+    if (mode === 'one') {
+      for (let i = 0; i < row.length; i++) {
+        const tile = page.getByRole('button', { name: new RegExp(`^${T.names[i]}:`) });
+        for (let k = 0; k < row[i]; k++) await tile.click();
+      }
+      await page.getByRole('button', { name: T.lock }).click();
       await page.getByRole('button', { name: T.next }).click();
       continue;
     }
+    await page.locator('.choices button').nth(1).click();
+    for (let i = 0; i < row.length; i++) {
+      for (let k = 0; k < row[i]; k++) await page.getByRole('button', { name: `${T.add} ${T.names[i]}` }).click();
+    }
+    await page.getByRole('button', { name: T.lock }).click();
     await page.getByRole('button', { name: T.skip }).click();
     await page.getByRole('button', { name: T.toLog }).click();
-    if (sol === 5) await shot(`06-${mode}-log-sol5`, mode === 'list');
     await page.getByRole('button', { name: T.next }).click();
   }
+  await page.getByRole('heading', { name: T.home }).waitFor({ timeout: 10000 }).catch(() => {});
   await shot('07-end');
   const ok = await page.getByRole('heading', { name: T.home }).isVisible();
   console.log(ok ? `PLAYTHROUGH OK (${lang}, ${mode}): everyone came home` : `PLAYTHROUGH FAILED (${lang}, ${mode})`);
   if (!ok) failed = true;
 
-  if (mode === 'scene' && lang === 'en') {
-    // Computer layout: wide stage with the side panel.
+  if (mode === 'world' && lang === 'en') {
+    // Computer layout.
     const desk = await browser.newPage({ viewport: { width: 1366, height: 800 }, reducedMotion: 'reduce' });
     await desk.goto(url);
     await desk.getByRole('button', { name: T.play, exact: true }).click();
     await desk.getByRole('button', { name: T.start }).click();
-    for (let k = 0; k < 4; k++) await desk.getByRole('button', { name: new RegExp(`^${T.names[0]}:`) }).click();
-    await desk.getByRole('button', { name: new RegExp(`^${T.names[1]}:`) }).click();
+    await desk.waitForTimeout(3000);
+    for (let k = 0; k < 4; k++) await desk.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[0]}`)}`) }).click();
+    await desk.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[1]}`)}`) }).click();
+    await desk.waitForTimeout(600);
     await desk.screenshot({ path: `${out}/08-desktop-sol1.png` });
+
+    // Performance probe on a phone-size page: normal CPU, then 4× slower CPU (low-end phone stand-in).
+    const perf = {};
+    for (const rate of [1, 4]) {
+      const p = await browser.newPage({ viewport: { width: 360, height: 780 }, deviceScaleFactor: 2 });
+      const cdp = await p.context().newCDPSession(p);
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate });
+      await p.goto(url);
+      await p.getByRole('button', { name: T.play, exact: true }).click();
+      await p.getByRole('button', { name: T.start }).click();
+      await p.waitForTimeout(7000);
+      perf[`fps_cpu${rate}x`] = await p.evaluate(() => globalThis.__marsFps ?? null);
+      if (rate === 1) {
+        perf.bytes = await p.evaluate(() =>
+          performance.getEntriesByType('resource').reduce((s, e) => s + (e.transferSize || e.encodedBodySize || 0), 0) +
+          (performance.getEntriesByType('navigation')[0]?.transferSize ?? 0),
+        );
+      }
+      await p.close();
+    }
+    console.log('PERF', JSON.stringify(perf));
+    writeFileSync(`${out}/perf.json`, JSON.stringify(perf, null, 2));
   }
   if (errors.length) {
     console.log('page errors:', errors);

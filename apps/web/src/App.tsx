@@ -11,18 +11,18 @@ import { NightScreen } from './screens/NightScreen';
 import { SolLogScreen } from './screens/SolLogScreen';
 import { EndScreen } from './screens/EndScreen';
 import { SolScreen } from './one/SolScreen';
+import { WorldScreen } from './world/WorldScreen';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
-const MODE_KEY = 'mars-to-go:mode';
-type Mode = 'scene' | 'list';
+type Ui = 'world' | 'one' | 'list';
 
-/** Scene by default; list mode is the accessible version (ADR-0030), saved on the device. */
-function initialMode(): Mode {
-  try {
-    return localStorage.getItem(MODE_KEY) === 'list' ? 'list' : 'scene';
-  } catch {
-    return 'scene';
-  }
+/**
+ * The 3D world is the game (ADR-0032). The Phase 3B single screen (?ui=one) and the
+ * Phase 3 list (?ui=list) stay reachable as the fallback plan; they are not shown in the menu.
+ */
+function initialUi(): Ui {
+  const p = new URLSearchParams(window.location.search).get('ui');
+  return p === 'one' || p === 'list' ? p : 'world';
 }
 
 export function App() {
@@ -30,15 +30,7 @@ export function App() {
   const g = useGame();
   const { game } = g;
   const main = useRef<HTMLElement>(null);
-  const [mode, setModeState] = useState<Mode>(initialMode);
-  const setMode = (m: Mode) => {
-    setModeState(m);
-    try {
-      localStorage.setItem(MODE_KEY, m);
-    } catch {
-      // Not saved; applies to this visit.
-    }
-  };
+  const [ui] = useState<Ui>(initialUi);
 
   // Each new screen starts at the top, with focus on the main region for screen readers.
   useEffect(() => {
@@ -47,6 +39,10 @@ export function App() {
   }, [game.screen, game.state.sol]);
 
   const inSol = game.screen === 'morning' || game.screen === 'night' || game.screen === 'log';
+  const nightDone = () => {
+    g.endNight();
+    g.nextSol();
+  };
 
   return (
     <CardProvider>
@@ -55,9 +51,6 @@ export function App() {
       </a>
       <header className="top">
         <span className="top__brand">{t('app.title')}</span>
-        <button type="button" className="btn btn--ghost btn--small" onClick={() => setMode(mode === 'scene' ? 'list' : 'scene')} title={t('scene.mode.hint')}>
-          {mode === 'scene' ? t('scene.mode.list') : t('scene.mode.scene')}
-        </button>
         <nav aria-label={t('app.languageLabel')} className="lang">
           {LOCALES.map((locale) => (
             <button
@@ -73,25 +66,18 @@ export function App() {
           ))}
         </nav>
       </header>
-      <main id="main" ref={main} tabIndex={-1} className={inSol && mode === 'scene' ? 'main--one' : undefined}>
+      <main id="main" ref={main} tabIndex={-1} className={inSol && ui !== 'list' ? 'main--one' : undefined}>
         {game.screen === 'home' && <Home onPlay={() => g.startMission()} assisted={game.assisted} onAssisted={g.setAssisted} />}
         {game.screen === 'briefing' && <Briefing onStart={() => g.go('morning')} />}
-        {inSol && mode === 'scene' && (
-          <SolScreen
-            key={`${game.def.id}-${game.checkpoints.length}`}
-            game={game}
-            onLock={g.lockPlan}
-            onNightDone={() => {
-              g.endNight();
-              g.nextSol();
-            }}
-          />
+        {inSol && ui === 'world' && (
+          <WorldScreen key={`${game.def.id}-${game.checkpoints.length}`} game={game} onLock={g.lockPlan} onNightDone={nightDone} />
         )}
-        {mode === 'list' && game.screen === 'morning' && (
+        {inSol && ui === 'one' && <SolScreen key={`${game.def.id}-${game.checkpoints.length}`} game={game} onLock={g.lockPlan} onNightDone={nightDone} />}
+        {ui === 'list' && game.screen === 'morning' && (
           <Morning key={`${game.state.missionId}-${game.state.sol}-${game.checkpoints.length}`} game={game} onAnswer={g.answerQuestion} onLock={g.lockPlan} />
         )}
-        {mode === 'list' && game.screen === 'night' && <NightScreen key={game.state.sol} game={game} onPick={g.pickResult} onDone={g.endNight} />}
-        {mode === 'list' && game.screen === 'log' && <SolLogScreen game={game} onNext={g.nextSol} />}
+        {ui === 'list' && game.screen === 'night' && <NightScreen key={game.state.sol} game={game} onPick={g.pickResult} onDone={g.endNight} />}
+        {ui === 'list' && game.screen === 'log' && <SolLogScreen game={game} onNext={g.nextSol} />}
         {game.screen === 'end' && <EndScreen game={game} onReplay={() => g.startMission(game.def)} onGoBack={g.goBackToSol} onHome={() => g.go('home')} />}
       </main>
       {game.screen === 'home' && (

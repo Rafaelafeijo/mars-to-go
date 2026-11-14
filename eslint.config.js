@@ -27,6 +27,11 @@ export default tseslint.config(
     languageOptions: { globals: globals.node },
   },
   {
+    // react-three-fiber uses three.js props (position, args, geometry…) that eslint-plugin-react does not know.
+    files: ['apps/web/src/world/Scene3D.tsx'],
+    rules: { 'react/no-unknown-property': 'off' },
+  },
+  {
     // The simulation is pure: no DOM, no network, no clock (ADR-0009).
     files: ['packages/sim/src/**/*.ts'],
     rules: {

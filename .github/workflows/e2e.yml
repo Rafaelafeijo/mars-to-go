@@ -20,8 +20,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
-      - run: node scripts/playthrough.mjs e2e-shots/en en scene
-      - run: node scripts/playthrough.mjs e2e-shots/pt-BR pt-BR scene
+      - run: node scripts/playthrough.mjs e2e-shots/en en world
+      - run: node scripts/playthrough.mjs e2e-shots/pt-BR pt-BR world
+      - run: node scripts/playthrough.mjs e2e-shots/one-en en one
       - run: node scripts/playthrough.mjs e2e-shots/list-en en list
       - uses: actions/upload-artifact@v4
         if: always()

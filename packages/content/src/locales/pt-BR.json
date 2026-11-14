@@ -390,5 +390,70 @@
     "next": "Próximo sol",
     "finish": "Ver como a missão terminou",
     "replay": "Ver a noite de novo"
+  },
+  "world": {
+    "place": "Cratera Jezero · Sol {{n}} de {{total}}",
+    "illustration": "Terreno ilustrado, inspirado na cratera Jezero; não é foto.",
+    "mission": {
+      "title": "Controle da Missão",
+      "challenge": "Leve o ar e a comida até o foguete.",
+      "placeAll": "Distribua as {{free}} células ({{used}}/{{free}})",
+      "airHome": "O ar chega ao foguete",
+      "foodHome": "A comida chega ao foguete",
+      "done": "feito",
+      "todo": "ainda não"
+    },
+    "forecast": {
+      "title": "O céu hoje",
+      "calm": "Sol calmo.",
+      "event": "{{kind}} {{label}}. Talvez chegue a Marte.",
+      "dust": "Tempestade de poeira: só {{n}} células hoje.",
+      "tomorrow": "Amanhã:",
+      "tomorrowCalm": "Sol calmo.",
+      "tomorrowEvent": "{{kind}} {{label}}, talvez."
+    },
+    "hand": {
+      "title": "Células na mão",
+      "count_zero": "todas no lugar",
+      "count_one": "{{count}} célula",
+      "count_other": "{{count}} células",
+      "heating": "{{n}} aquecem a base",
+      "pass": "Passar a noite",
+      "placeFirst_one": "Falta pôr {{count}} célula",
+      "placeFirst_other": "Faltam pôr {{count}} células"
+    },
+    "machines": {
+      "lifeSupport": "Máquina de ar",
+      "greenhouse": "Estufa",
+      "shield": "Escudo",
+      "expedition": "Rover",
+      "askEarth": "Antena"
+    },
+    "hotbar": "Máquinas",
+    "add": "Pôr uma célula em: {{name}}",
+    "remove": "Tirar uma célula de: {{name}}",
+    "locked": "{{name}}: abre no sol {{n}}",
+    "state": "{{name}}: {{count}} células. {{effect}}",
+    "walkCloser": "Chegue mais perto: {{name}}. Ou use a barra de baixo.",
+    "walkHint": "Toque no chão para andar. Teclas: WASD ou setas.",
+    "fallback": "O 3D está desligado neste aparelho. Tudo funciona pelos painéis.",
+    "trail": {
+      "label": "Os 7 sóis até o foguete",
+      "rocket": "Foguete para casa",
+      "airOk": "O ar chega ao foguete",
+      "airBad": "O ar acaba no sol {{n}}",
+      "foodOk": "A comida chega ao foguete",
+      "foodBad": "A comida acaba no sol {{n}}",
+      "today": "hoje"
+    },
+    "float": {
+      "lifeSupport": "+{{n}} de ar",
+      "greenhouse": "+{{n}} de comida no sol {{sol}}",
+      "shield": "+{{n}} de escudo",
+      "expedition": "−{{n}} de ar",
+      "askEarth": "resposta à noite"
+    },
+    "night": "A noite cai em Jezero…",
+    "sceneLabel": "Cena da base em Marte. Use a barra de baixo para jogar sem a vista 3D."
   }
 }
