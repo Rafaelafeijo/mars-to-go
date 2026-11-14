@@ -180,7 +180,7 @@ export function Morning({ game, onAnswer, onLock }: { game: Game; onAnswer: (a: 
           {t('alloc.wrongTotal', { free, used })}
         </p>
       )}
-      <button type="button" className="btn btn--primary btn--sticky" disabled={errors.length > 0} onClick={() => onLock(a)}>
+      <button type="button" className="btn btn--primary" disabled={errors.length > 0} onClick={() => onLock(a)}>
         {t('alloc.lockPlan')}
       </button>
     </div>

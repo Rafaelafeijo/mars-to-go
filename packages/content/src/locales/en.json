@@ -269,5 +269,59 @@
     "dataInGame": "Real data in this version: {{sources}}.",
     "everyNumberBadge": "Every number shows its source.",
     "source": "Source code"
+  },
+  "scene": {
+    "views": {
+      "label": "View",
+      "inside": "Inside",
+      "outside": "Outside",
+      "sky": "Sky",
+      "soon": "soon"
+    },
+    "objects": {
+      "battery": "Battery",
+      "heater": "Heater",
+      "lifeSupport": "Air machine",
+      "greenhouse": "Greenhouse",
+      "shield": "Shield cover",
+      "askEarth": "Radio to Earth",
+      "expedition": "Airlock"
+    },
+    "objectState": "{{name}}: {{count}} cells. Tap to add a cell.",
+    "objectLocked": "{{name}}: opens on sol {{n}}.",
+    "removeCell": "Take a cell back from {{name}}",
+    "cellsLeft": "{{count}} cells to place",
+    "tapHint": "Tap a machine to give it a cell.",
+    "tonight": "Tonight: air {{air0}} → {{air1}} · food {{food0}} → {{food1}}",
+    "float": {
+      "air": "+{{n}} air",
+      "food": "+{{n}} food in 2 sols",
+      "shield": "+{{n}} shield",
+      "expedition": "−2 air, a discovery",
+      "askEarth": "answer tonight"
+    },
+    "next": "Next",
+    "mode": {
+      "list": "List mode",
+      "scene": "Scene mode",
+      "hint": "List mode works best with a screen reader."
+    },
+    "outsideBadge": "REAL PHOTO: ground and sky (Jezero, Perseverance). ILLUSTRATION: base, panels, antenna, rover.",
+    "drag": "Drag to look around",
+    "markers": {
+      "delta": "Delta front",
+      "kodiak": "Kodiak →",
+      "rochette": "← Rochette"
+    },
+    "props": {
+      "panels": "Solar panels",
+      "antenna": "Antenna",
+      "dome": "Base with shield cover",
+      "rover": "Rover"
+    },
+    "crew": {
+      "happy": "The crew is calm.",
+      "worried": "The crew is worried."
+    }
   }
 }

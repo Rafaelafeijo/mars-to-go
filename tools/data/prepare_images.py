@@ -25,6 +25,25 @@ IMAGES = {
 }
 WIDTHS = (480, 960, 1600)
 
+# Wide strips for the Outside view (ADR-0030): exported by height, dragged sideways.
+WIDE = {
+    "jezero-wide": ("01-PIA24921.jpg", (0.43, 0.05, 0.985, 0.74)),
+}
+HEIGHTS = (480, 840)
+
+
+def export_wide(src: str, out: str) -> None:
+    for slug, (name, (l, t, r, b)) in WIDE.items():
+        with Image.open(os.path.join(src, name)) as im:
+            im = im.convert("RGB")
+            w, h = im.size
+            im = im.crop((round(l * w), round(t * h), round(r * w), round(b * h)))
+            for target in HEIGHTS:
+                scaled = im.resize((round(im.width * target / im.height), target), Image.LANCZOS)
+                path = os.path.join(out, f"{slug}-h{target}.webp")
+                scaled.save(path, "WEBP", quality=74, method=4)
+                print(f"{path} {scaled.size} {os.path.getsize(path) // 1024} KB")
+
 
 def main(src: str, out: str, only: str | None = None) -> None:
     os.makedirs(out, exist_ok=True)
@@ -46,4 +65,8 @@ def main(src: str, out: str, only: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
+    only = sys.argv[3] if len(sys.argv) > 3 else None
+    if only == "wide":
+        export_wide(sys.argv[1], sys.argv[2])
+    else:
+        main(sys.argv[1], sys.argv[2], only)

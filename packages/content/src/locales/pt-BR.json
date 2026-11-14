@@ -269,5 +269,59 @@
     "dataInGame": "Dados reais nesta versão: {{sources}}.",
     "everyNumberBadge": "Todo número mostra a fonte.",
     "source": "Código-fonte"
+  },
+  "scene": {
+    "views": {
+      "label": "Vista",
+      "inside": "Dentro",
+      "outside": "Fora",
+      "sky": "Céu",
+      "soon": "em breve"
+    },
+    "objects": {
+      "battery": "Bateria",
+      "heater": "Aquecedor",
+      "lifeSupport": "Máquina de ar",
+      "greenhouse": "Estufa",
+      "shield": "Cobertura do escudo",
+      "askEarth": "Rádio para a Terra",
+      "expedition": "Câmara de saída"
+    },
+    "objectState": "{{name}}: {{count}} células. Toque para pôr uma célula.",
+    "objectLocked": "{{name}}: abre no sol {{n}}.",
+    "removeCell": "Tirar uma célula de {{name}}",
+    "cellsLeft": "{{count}} células para distribuir",
+    "tapHint": "Toque numa máquina para dar uma célula a ela.",
+    "tonight": "Esta noite: ar {{air0}} → {{air1}} · comida {{food0}} → {{food1}}",
+    "float": {
+      "air": "+{{n}} de ar",
+      "food": "+{{n}} de comida em 2 sóis",
+      "shield": "+{{n}} de escudo",
+      "expedition": "−2 de ar, uma descoberta",
+      "askEarth": "resposta hoje à noite"
+    },
+    "next": "Seguir",
+    "mode": {
+      "list": "Modo lista",
+      "scene": "Modo cena",
+      "hint": "O modo lista funciona melhor com leitor de tela."
+    },
+    "outsideBadge": "FOTO REAL: chão e céu (Jezero, Perseverance). ILUSTRAÇÃO: base, painéis, antena, rover.",
+    "drag": "Arraste para olhar em volta",
+    "markers": {
+      "delta": "Frente do delta",
+      "kodiak": "Kodiak →",
+      "rochette": "← Rochette"
+    },
+    "props": {
+      "panels": "Painéis solares",
+      "antenna": "Antena",
+      "dome": "Base com cobertura do escudo",
+      "rover": "Rover"
+    },
+    "crew": {
+      "happy": "A tripulação está tranquila.",
+      "worried": "A tripulação está preocupada."
+    }
   }
 }
