@@ -491,13 +491,14 @@
     "nightRover": "The rover is driving to the delta…",
     "report": {
       "title": "Sol {{n}} report",
-      "air": "Machine made +{{made}} · crew breathed −{{breathed}} · suits −{{suits}}",
+      "air": "Machine made +{{made}} · crew breathed −{{breathed}}",
       "food": "Harvest +{{harvested}} · crew ate −{{eaten}}",
       "noEvent": "No solar event tonight.",
       "hit": "The event hit Mars: risk {{risk}} − shield {{shield}} → exposure +{{delta}}",
       "miss": "The event did not reach Mars. The shield cells were spent anyway.",
       "discovery": "Rover discovery: {{site}}",
-      "realNasa": "REAL NASA DATA"
+      "realNasa": "REAL NASA DATA",
+      "suits": "suits −{{suits}}"
     },
     "sites": {
       "rochette": "the rock Rochette",

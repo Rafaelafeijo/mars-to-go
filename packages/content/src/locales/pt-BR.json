@@ -491,13 +491,14 @@
     "nightRover": "O rover está indo até o delta…",
     "report": {
       "title": "Relatório do sol {{n}}",
-      "air": "Máquina fez +{{made}} · tripulação respirou −{{breathed}} · trajes −{{suits}}",
+      "air": "Máquina fez +{{made}} · tripulação respirou −{{breathed}}",
       "food": "Colheita +{{harvested}} · tripulação comeu −{{eaten}}",
       "noEvent": "Nenhum evento solar esta noite.",
       "hit": "O evento chegou a Marte: risco {{risk}} − escudo {{shield}} → exposição +{{delta}}",
       "miss": "O evento não chegou a Marte. As células do escudo foram gastas mesmo assim.",
       "discovery": "Descoberta do rover: {{site}}",
-      "realNasa": "DADO REAL DA NASA"
+      "realNasa": "DADO REAL DA NASA",
+      "suits": "trajes −{{suits}}"
     },
     "sites": {
       "rochette": "a rocha Rochette",

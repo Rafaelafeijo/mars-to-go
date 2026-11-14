@@ -382,7 +382,10 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             <ul className="report__rows">
               <li className="tone-air">
                 <Icon name="air" size={18} />
-                <span className="report__what">{t('world.report.air', { made, breathed, suits })}</span>
+                <span className="report__what">
+                  {t('world.report.air', { made, breathed })}
+                  {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
+                </span>
                 <strong>
                   {base.air} → {after.air}
                 </strong>

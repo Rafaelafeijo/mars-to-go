@@ -45,7 +45,7 @@ const MACHINES: MachineSpec[] = [
   { d: 'lifeSupport', model: 'machine_generatorLarge', pos: [-5.5, -2.5], scale: 2.1, rot: 0.6 },
   { d: 'greenhouse', model: 'hangar_roundGlass', pos: [5.5, -3], scale: 1.8, rot: -0.5 },
   { d: 'shield', model: 'machine_wireless', pos: [-2.6, -9], scale: 2.2 },
-  { d: 'expedition', model: 'rover', pos: [8.5, 3.5], scale: 2.4, rot: -0.9 },
+  { d: 'expedition', model: 'rover', pos: [9, 1], scale: 1.6, rot: -0.9 },
   { d: 'askEarth', model: 'satelliteDish_large', pos: [-8.5, 3], scale: 2, rot: 0.8 },
 ];
 const AT = Object.fromEntries(MACHINES.map((m) => [m.d, m])) as Record<Destination, MachineSpec>;
