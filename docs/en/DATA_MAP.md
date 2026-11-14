@@ -178,8 +178,9 @@ All values in SIM_MODEL §2 labeled scenario/simplification. Each card says "Gam
 ## Pending (hidden from screens until closed)
 
 1. RadLab: grouping of Mars readings; ISS card out of the MVP if not closed (D9).
-2. NASA source naming Gale Crater for the D7 card.
-3. Mars Trek and CSA reuse terms.
-4. OSDR card findings in kid language.
+2. Mars Trek and CSA reuse terms.
+3. OSDR card findings in kid language.
+
+Closed in Phase 3: NASA source for Gale Crater (D7) — https://science.nasa.gov/mission/msl-curiosity/ : "Curiosity explores Gale Crater".
 
 Closed on 2026-11-14: light vs particles (NASA wording, D1); distances (only the delta's 2.3 km; fixed expedition cost); geomagnetic storm out of the game; Veggie as the greenhouse's primary source.

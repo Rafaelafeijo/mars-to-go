@@ -19,6 +19,7 @@
 | 2026-11-14 | Claude Code | Download, recorte e redimensionamento das 10 imagens da NASA escolhidas (sem melhoria por IA) | Time |
 | 2026-11-14 | Claude Code | Criação do projeto e publicação no Railway, com o aval do time | Time |
 | 2026-11-14 | Claude Code | Fase 2: código e testes da simulação (`packages/sim`) a partir do SIM_MODEL aprovado | Time |
+| 2026-11-14 | Claude Code | Fase 3: telas, texto das fichas em EN e PT (redigido a partir do DATA_MAP, fontes conferidas), teste automático de ponta a ponta | Time |
 
 ## Mídia gerada
 

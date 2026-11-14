@@ -4,21 +4,22 @@
 
 Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer · ✂️ cortado (com motivo e aval do time)
 
-Última atualização: 14/11/2026, fim da Fase 2 (todas as regras em `packages/sim`, 41 testes; as telas começam na Fase 3).
+Última atualização: 14/11/2026, fim da Fase 3 (missão 1 jogável de ponta a ponta num celular de 360 px em EN e PT, conferida por um teste automático no CI).
 
 | Parte do jogo completo | Fase | Situação | Nota |
 | --- | --- | --- | --- |
 | Abertura (20 a 30 s, pulável) | 7 | ⬜ | A primeira a simplificar se faltar tempo (imagem + uma frase) |
-| Tela inicial com a carreira | 3 / 6 | ⬜ | Linha "7 sóis · 10 células · 5 decisões" + um selo de dado real |
-| Missão 1 "Primeiros sóis" (guiada) | 3 | ⬜ | |
+| Tela inicial com a carreira | 3 / 6 | 🔄 | Feito: linha de números, selo da foto real, papel que alterna, rodapé honesto. Lista da carreira na Fase 6 |
+| Missão 1 "Primeiros sóis" (guiada) | 3 | ✅ | Eventos reais: erupção M1.3 (sol 3), CME com previsão de chegada a Marte (sol 5) |
 | Missão 2 "A tempestade de maio" | 6 | ⬜ | Evento-âncora de 20/05/2024 |
 | Missão 3 "Céu de poeira" | 6 | ⬜ | |
 | "Me surpreenda" | 6 | ⬜ | |
 | "Hoje no espaço" | 4 | ⬜ | O retrato já é publicado pelo workflow do Pages |
 | Cinco destinos | 2 (regras) · 3 · 5 | 🔄 | Regras na Fase 2 |
 | Crises (tempestade solar, poeira, estufa, silêncio de rádio) | 2 (regras) · 4 · 5 | 🔄 | |
-| Conta ao vivo (passos da noite) | 2 (regras) · 3 | 🔄 | |
-| Fichas de dado em toda tela | 3 → 7 | ⬜ | Ficha pendente fica oculta (ADR-0024) |
+| Conta ao vivo (passos da noite) | 2 (regras) · 3 | ✅ | Atualiza a cada célula movida; noite animada passo a passo; palpite opcional; rever |
+| Fichas de dado em toda tela | 3 → 7 | 🔄 | 18 fichas em EN e PT, selo em todo número, "Quero entender melhor". Fichas das crises na Fase 4. Ficha de Perguntar à Terra a ajustar para a missão 2 (lá a resposta é uma medição em Marte) |
+| Teste de ponta a ponta (CI, 360 px, EN + PT) | 3 | ✅ | `.github/workflows/e2e.yml`, base da gravação da demo |
 | Clima espacial em três camadas | 1 (API, retrato) · 4 (jogo) | 🔄 | API e retrato no ar; lado do jogo na Fase 4 |
 | Fim: a Terra no céu, jogar de novo, voltar ao sol | 6 | ⬜ | |
 | Salvar no aparelho + código da carreira | 2 (regras do código) · 6 | 🔄 | |

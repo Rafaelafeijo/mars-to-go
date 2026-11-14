@@ -19,6 +19,7 @@
 | 2026-11-14 | Claude Code | Download, crop and resize of the 10 chosen NASA images (no AI enhancement) | Team |
 | 2026-11-14 | Claude Code | Railway project creation and deploy, with the team's approval | Team |
 | 2026-11-14 | Claude Code | Phase 2: simulation code and tests (`packages/sim`) from the approved SIM_MODEL | Team |
+| 2026-11-14 | Claude Code | Phase 3: screens, data-card text in EN and PT (drafted from DATA_MAP, sources checked), automated playthrough | Team |
 
 ## Generated media
 

@@ -70,7 +70,8 @@
       "low": "baixa",
       "medium": "média",
       "high": "alta"
-    }
+    },
+    "solsOfReserve_zero": "0 sóis de reserva"
   },
   "forecast": {
     "title": "Previsão",
@@ -227,7 +228,9 @@
     "turningPoint": "O sol em que tudo mudou: sol {{n}}.",
     "playAgain": "Quer jogar esta missão de novo com outro plano?",
     "goBack": "Voltar ao sol em que tudo mudou (sol {{n}})",
-    "backHome": "Voltar ao início"
+    "backHome": "Voltar ao início",
+    "discoveries_zero": "nenhuma descoberta",
+    "margin_zero": "Não sobrou ar nem comida: a tripulação chegou sem nenhuma reserva."
   },
   "card": {
     "labels": {

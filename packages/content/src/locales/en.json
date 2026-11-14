@@ -70,7 +70,8 @@
       "low": "low",
       "medium": "medium",
       "high": "high"
-    }
+    },
+    "solsOfReserve_zero": "0 sols of reserve"
   },
   "forecast": {
     "title": "Forecast",
@@ -227,7 +228,9 @@
     "turningPoint": "The sol where everything changed: sol {{n}}.",
     "playAgain": "Play this mission again with another plan?",
     "goBack": "Go back to the sol where everything changed (sol {{n}})",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "discoveries_zero": "no discoveries",
+    "margin_zero": "No air or food to spare: the crew made it with nothing left over."
   },
   "card": {
     "labels": {

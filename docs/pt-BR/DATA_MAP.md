@@ -178,7 +178,7 @@ Todos os valores de SIM_MODEL §2 rotulados como cenário/simplificação. Cada 
 ## Pendentes (escondidos das telas até serem resolvidos)
 
 1. RadLab: agrupamento das leituras de Marte; a ficha da ISS fica fora do MVP se não for resolvido (D9).
-2. Fonte da NASA que cite a Cratera Gale para a ficha D7.
+2. ~~Fonte da NASA que cite a Cratera Gale para a ficha D7.~~ Resolvido na Fase 3: https://science.nasa.gov/mission/msl-curiosity/ — "Curiosity explores Gale Crater".
 3. Termos de reúso do Mars Trek e da CSA.
 4. Achados das fichas do OSDR em linguagem infantil.
 

@@ -4,21 +4,22 @@
 
 Legend: ✅ done · 🔄 in progress · ⬜ to do · ✂️ cut (with reason and the team's OK)
 
-Last update: 2026-11-14, end of Phase 2 (all rules in `packages/sim`, 41 tests; screens start in Phase 3).
+Last update: 2026-11-14, end of Phase 3 (mission 1 playable end to end on a 360 px phone in EN and PT, checked by an automated playthrough in CI).
 
 | Part of the complete game | Phase | Status | Note |
 | --- | --- | --- | --- |
 | Opening (20–30 s, skippable) | 7 | ⬜ | First to simplify if time is short (image + one sentence) |
-| Home with the career | 3 / 6 | ⬜ | Line "7 sols · 10 cells · 5 decisions" + one real data badge |
-| Mission 1 "First sols" (guided) | 3 | ⬜ | |
+| Home with the career | 3 / 6 | 🔄 | Done: numbers line, real photo badge, rotating role, honest footer. Career list in Phase 6 |
+| Mission 1 "First sols" (guided) | 3 | ✅ | Real events: M1.3 flare (sol 3), CME with a Mars arrival forecast (sol 5) |
 | Mission 2 "The May storm" | 6 | ⬜ | 2024-05-20 anchor event |
 | Mission 3 "Dusty sky" | 6 | ⬜ | |
 | "Surprise me" | 6 | ⬜ | |
 | "Today in space" | 4 | ⬜ | Snapshot already published by the Pages workflow |
 | Five destinations | 2 (rules) · 3 · 5 | 🔄 | Rules in Phase 2 |
 | Crises (solar storm, dust, greenhouse, radio silence) | 2 (rules) · 4 · 5 | 🔄 | |
-| Live math (night steps) | 2 (rules) · 3 | 🔄 | |
-| Data cards on every screen | 3 → 7 | ⬜ | Pending cards are hidden (ADR-0024) |
+| Live math (night steps) | 2 (rules) · 3 | ✅ | Updates on every cell moved; night animated step by step; optional pick-the-result; replay |
+| Data cards on every screen | 3 → 7 | 🔄 | 18 cards in EN and PT, badge on every number, "I want to understand more". Crisis cards in Phase 4. Ask Earth card to adjust for mission 2 (answer is a Mars measurement there) |
+| End-to-end test (CI playthrough, 360 px, EN + PT) | 3 | ✅ | `.github/workflows/e2e.yml`, base for the demo recording |
 | Space weather in three layers | 1 (API, snapshot) · 4 (game) | 🔄 | API and snapshot live; game side in Phase 4 |
 | End: Earth in the sky, play again, go back to the sol | 6 | ⬜ | |
 | Save on device + career code | 2 (code rules) · 6 | 🔄 | |
