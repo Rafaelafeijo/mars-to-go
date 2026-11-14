@@ -350,7 +350,8 @@
       "food": "Comida",
       "exposure": "Exposição",
       "todayTomorrow": "{{today}} → {{tomorrow}}",
-      "todayTomorrowLabel": "{{name}}: {{today}} hoje, {{tomorrow}} amanhã, {{word}}"
+      "todayTomorrowLabel": "{{name}}: {{today}} hoje, {{tomorrow}} amanhã, {{word}}",
+      "cellsLeft_zero": "todas no lugar"
     },
     "battery": {
       "label": "Bateria: {{free}} células livres, {{heating}} travadas no aquecimento",

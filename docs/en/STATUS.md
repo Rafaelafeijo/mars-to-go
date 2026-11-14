@@ -17,6 +17,10 @@ Last update: 2026-11-14, end of Phase 3 (mission 1 playable end to end on a 360 
 | "Today in space" | 4 | ⬜ | Snapshot already published by the Pages workflow |
 | Five destinations | 2 (rules) · 3 · 5 | 🔄 | Rules in Phase 2 |
 | Crises (solar storm, dust, greenhouse, radio silence) | 2 (rules) · 4 · 5 | 🔄 | |
+| Phase 3B A: projection "if every sol were like today" | 3B | ✅ | `packages/sim/src/projection.ts`, 11 tests, SIM_MODEL §16 |
+| Phase 3B B: one screen — trail of 7 sols with air/food lines, today→tomorrow meters, plan by tap, animated night | 3B | 🔄 | Branch `phase-3b`, waiting for the team to play sols 1–2. Main and the published game unchanged |
+| Phase 3B C–F: hint instead of badges, teaching, guided sol 1, Laboratory, art | 3B | ⬜ | ADR-0031 order |
+| Cut (ADR-0031): avatar, career code, mission 3, OSDR cards, backpack (only if time) | — | ✂️ | Approved by the team |
 | Live math (night steps) | 2 (rules) · 3 | ✅ | Updates on every cell moved; night animated step by step; optional pick-the-result; replay |
 | Data cards on every screen | 3 → 7 | 🔄 | 18 cards in EN and PT, badge on every number, "I want to understand more". Crisis cards in Phase 4. Ask Earth card to adjust for mission 2 (answer is a Mars measurement there) |
 | End-to-end test (CI playthrough, 360 px, EN + PT) | 3 | ✅ | `.github/workflows/e2e.yml`, base for the demo recording |

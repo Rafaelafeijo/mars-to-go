@@ -1016,9 +1016,8 @@ main.main--one {
 .m__name {
   font-size: 0.66rem;
   color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 .m__big {
   font-family: var(--font-mono);

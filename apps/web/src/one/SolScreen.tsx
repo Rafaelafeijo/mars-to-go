@@ -108,7 +108,7 @@ export function SolScreen({ game, onLock, onNightDone }: Props) {
 
   const effect = (d: Destination): string => {
     const n = plan[d];
-    if (n === 0) return t('one.tiles.tapToAdd');
+    if (n === 0) return night ? '' : t('one.tiles.tapToAdd');
     switch (d) {
       case 'lifeSupport':
         return t('one.tiles.effect.lifeSupport', { n: n * V.AIR_PER_LIFE_SUPPORT_CELL });

@@ -17,6 +17,10 @@ Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer · ✂️ cortado (com mo
 | "Hoje no espaço" | 4 | ⬜ | O retrato já é publicado pelo workflow do Pages |
 | Cinco destinos | 2 (regras) · 3 · 5 | 🔄 | Regras na Fase 2 |
 | Crises (tempestade solar, poeira, estufa, silêncio de rádio) | 2 (regras) · 4 · 5 | 🔄 | |
+| Fase 3B A: projeção "se todo sol fosse igual a hoje" | 3B | ✅ | `packages/sim/src/projection.ts`, 11 testes, SIM_MODEL §16 |
+| Fase 3B B: tela única — trilha dos 7 sóis com linhas de ar e comida, medidores hoje→amanhã, plano por toque, noite animada | 3B | 🔄 | Ramo `phase-3b`, esperando o time jogar os sóis 1 e 2. O ramo principal e o jogo publicado não mudaram |
+| Fase 3B C a F: dica no lugar dos selos, ensino, sol 1 guiado, Laboratório, arte | 3B | ⬜ | Ordem da ADR-0031 |
+| Cortes (ADR-0031): avatar, código da carreira, missão 3, cartões do OSDR, mochila (só se sobrar tempo) | — | ✂️ | Aprovado pelo time |
 | Conta ao vivo (passos da noite) | 2 (regras) · 3 | ✅ | Atualiza a cada célula movida; noite animada passo a passo; palpite opcional; rever |
 | Fichas de dado em toda tela | 3 → 7 | 🔄 | 18 fichas em EN e PT, selo em todo número, "Quero entender melhor". Fichas das crises na Fase 4. Ficha de Perguntar à Terra a ajustar para a missão 2 (lá a resposta é uma medição em Marte) |
 | Teste de ponta a ponta (CI, 360 px, EN + PT) | 3 | ✅ | `.github/workflows/e2e.yml`, base da gravação da demo |
