@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "Mars to Go",
+    "tagline": "10 segundos para decidir.",
+    "skipToContent": "Pular para o conteúdo",
+    "languageLabel": "Idioma",
+    "languages": {
+      "en": "EN",
+      "pt-BR": "PT"
+    },
+    "languageNames": {
+      "en": "Inglês",
+      "pt-BR": "Português"
+    }
+  },
+  "home": {
+    "intro": "Comande uma base tripulada em Marte por 7 sóis. Nenhuma escolha é grátis.",
+    "solExplained": "Em Marte, o dia tem nome: sol. Ele dura 40 minutos a mais que o nosso.",
+    "comingSoon": "O jogo está sendo construído durante o NASA Space Apps 2026. Volte logo."
+  },
+  "footer": {
+    "madeBy": "Feito pelo Time Rochette para o NASA Space Apps Challenge 2026.",
+    "ai": "Código escrito com o Claude Code (IA) e revisado pelo time.",
+    "data": "Dados: dados abertos da NASA (DONKI, OSDR, Mars Trek). Todo número mostra a fonte.",
+    "source": "Código-fonte"
+  }
+}

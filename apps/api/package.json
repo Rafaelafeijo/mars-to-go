@@ -1,0 +1,19 @@
+{
+  "name": "@mars-to-go/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.8",
+    "@mars-to-go/content": "workspace:*",
+    "@mars-to-go/sim": "workspace:*",
+    "hono": "^4.13.18",
+    "tsx": "^4.23.15"
+  }
+}

@@ -5,10 +5,13 @@ NASA Space Apps Challenge 2026, challenge "Build a Junior Astronaut Mission Trai
 ## Read first
 
 1. `docs/CHALLENGE_STATEMENT.md` — the official challenge text. Source of truth.
-2. `docs/CHALLENGE_CHECKLIST.md` — check it before planning each slice and before each commit that changes the game.
-3. `docs/PROJECT_BRIEF.md` — the game design.
-4. `docs/adr/` — decisions already taken.
-5. `docs/SUBMISSION.md` — what the project page needs.
+2. `docs/en/CHALLENGE_CHECKLIST.md` — check it before planning each slice and before each commit that changes the game.
+3. `docs/en/PROJECT_BRIEF.md` — the game design.
+4. `docs/en/SIM_MODEL.md`, `docs/en/DATA_MAP.md`, `docs/en/ARCHITECTURE.md` — approved in Phase 0.
+5. `docs/en/adr/` — decisions already taken.
+6. `docs/en/SUBMISSION.md` — what the project page needs.
+
+Docs live in `docs/en/` (default) and `docs/pt-BR/`; references below to `docs/X.md` mean both.
 
 ## The one question
 
@@ -50,4 +53,11 @@ Does a 7–12-year-old walk away understanding a real constraint of deep-space s
 
 ## Commands
 
-To be filled in when the skeleton exists: install, dev, test, typecheck, lint, build, deploy.
+Node 22 (`nvm use 22`; Node 25+ has no corepack), pnpm via `corepack enable`. Run in WSL.
+
+- Install: `pnpm install`
+- Dev: `pnpm dev` (game, :5173) · `pnpm dev:api` (API, :8787)
+- Test: `pnpm test` · Typecheck: `pnpm typecheck` · Lint: `pnpm lint` · All three: `pnpm check`
+- Build: `pnpm build` (Pages build: `BASE_PATH=/mars-to-go/ pnpm --filter @mars-to-go/web build`)
+- Deploy: push to `main` → GitHub Pages (`.github/workflows/pages.yml`, also twice a day for the DONKI snapshot); Railway builds from `railway.json` (API + game mirror, `pnpm start`).
+- TypeScript is pinned to 6.x: typescript-eslint does not support TS 7 yet.

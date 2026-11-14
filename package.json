@@ -1,0 +1,33 @@
+{
+  "name": "mars-to-go",
+  "private": true,
+  "description": "Mars to Go — a browser game where kids 7–12 run a crewed base in Jezero Crater, Mars. NASA Space Apps Challenge 2026.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @mars-to-go/web dev",
+    "dev:api": "pnpm --filter @mars-to-go/api dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "start": "pnpm --filter @mars-to-go/api start"
+  },
+  "packageManager": "pnpm@12.18.0",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  }
+}

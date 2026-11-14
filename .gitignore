@@ -13,6 +13,9 @@ coverage/
 *.tsbuildinfo
 .vite/
 
+# Generated at deploy time (DONKI snapshot, layer 2)
+apps/web/public/data/space-weather.json
+
 # Image originals stay out of the site
 assets-src/
 

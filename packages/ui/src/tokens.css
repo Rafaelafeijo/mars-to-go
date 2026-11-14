@@ -1,0 +1,22 @@
+/*
+ * Design tokens (ADR-0023). Dark background, one warm Mars accent.
+ * Contrast: text pairs below are ≥ 4.5:1 on --color-bg.
+ * Fonts are system stacks until open-license fonts are chosen and recorded in docs/ASSETS.md.
+ */
+:root {
+  --color-bg: #14100e;
+  --color-surface: #1f1916;
+  --color-text: #f3ece6;
+  --color-text-muted: #c4b5a8;
+  --color-accent: #e8703a;
+  --color-accent-text: #14100e;
+  --color-line: #3a2f29;
+  --color-focus: #ffd27a;
+
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --radius: 12px;
+  --tap: 44px;
+  --space: 16px;
+}

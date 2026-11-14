@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "Mars to Go",
+    "tagline": "10 seconds to go.",
+    "skipToContent": "Skip to content",
+    "languageLabel": "Language",
+    "languages": {
+      "en": "EN",
+      "pt-BR": "PT"
+    },
+    "languageNames": {
+      "en": "English",
+      "pt-BR": "Portuguese"
+    }
+  },
+  "home": {
+    "intro": "Run a crewed base on Mars for 7 sols. No choice is free.",
+    "solExplained": "On Mars, a day has a name: sol. It lasts 40 minutes longer than ours.",
+    "comingSoon": "The game is being built during NASA Space Apps 2026. Come back soon."
+  },
+  "footer": {
+    "madeBy": "Made by Team Rochette for the NASA Space Apps Challenge 2026.",
+    "ai": "Code written with Claude Code (AI) and reviewed by the team.",
+    "data": "Data: NASA open data (DONKI, OSDR, Mars Trek). Every number shows its source.",
+    "source": "Source code"
+  }
+}
