@@ -82,6 +82,8 @@ Start: `air = 10`, `food = 6`, `exposure = 0`, `sol = 1`.
    6. Radiation: if the event really reaches Mars, `exposure += max(0, risk − shield)`; otherwise `+0` (shield cells were spent anyway)
    7. Earth: if asked, the answer about tomorrow's event appears in tonight's log, with the signal travel time
    8. End check (§7)
+
+   Crisis effects in the same night (implemented in Phase 2): the solar-storm shield swap changes the allocation before step 1; the greenhouse crisis adds a step right after step 1 (`greenhouseRescue`, −2 air, or `harvestLost`); a recalled expedition keeps its air cost but has no `outside` exposure and no discovery.
 5. **Sol log.** Prediction vs result, every line of the math above, the data source of the event, and one "what if you had…" line computed by re-running the night with one cell moved.
 
 ### What asking Earth gives (approved rule)

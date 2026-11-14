@@ -165,7 +165,7 @@ No name, no free text, no personal data. "Erase progress" clears the key. Settin
 
 ### Career code (ADR-0022)
 
-A short code that restores the whole career on another device: `codeVersion · unlocked missions (bits) · badges (verdict + stripes per mission) · discoveries (bits) · mission in progress (missionId · seed · sol · air · food · exposure · pending harvests)`. Packed into bits, written in Crockford base32 (no I/L/O/U), grouped in blocks of 4 with a check character — about 16–20 characters. It holds only game numbers. Checkpoints are not in the code; after a restore, "go back to sol N" is available from the restored sol onwards.
+A short code that restores the whole career on another device: `codeVersion · unlocked missions (bits) · badges (verdict + stripes per mission) · discoveries (bits) · mission in progress (missionId · seed · sol · air · food · exposure · pending harvests)`. Packed into bits, written in Crockford base32 (no I/L/O/U), grouped in blocks of 4 with a check character — about 20–24 characters (with a mission in progress; fewer without). It holds only game numbers. Checkpoints are not in the code; after a restore, "go back to sol N" is available from the restored sol onwards.
 
 ## 7. Screen map (mobile first, 360 px portrait)
 

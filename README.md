@@ -4,7 +4,7 @@
 
 A browser game where kids ages 7–12 run a crewed base in Jezero Crater, Mars, sol by sol — and find out that in space no choice is free: the power that protects the crew today is the oxygen missing tomorrow.
 
-- **Play:** https://rafaelafeijo.github.io/mars-to-go/ (GitHub Pages, primary) · Railway mirror: *[to be added]*
+- **Play:** https://rafaelafeijo.github.io/mars-to-go/ (GitHub Pages, primary) · Railway mirror and API: https://mars-to-go-api-production.up.railway.app/ ([/health](https://mars-to-go-api-production.up.railway.app/health))
 - **Challenge:** NASA Space Apps Challenge 2026 — *Build a Junior Astronaut Mission Trainer* ([official text](docs/CHALLENGE_STATEMENT.md))
 - **Team:** Rochette
 

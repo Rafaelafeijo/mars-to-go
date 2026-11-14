@@ -15,7 +15,10 @@
 | 2026-11-14 | Claude Code | Phase 0: real API probes (DONKI, RadLab, OSDR, Mars Trek, CSA), source verification of science constants, drafts of SIM_MODEL, DATA_MAP, ARCHITECTURE, ADR-0019 to ADR-0027 from the team's decisions | Team (approved) |
 | 2026-11-14 | Claude Code | Translations between English and Portuguese of the docs | Team |
 | 2026-11-14 | Claude Code | Phase 1: monorepo skeleton, API, CI and deploy workflows, README | Team |
-| 2026-11-14 | Claude Code | Search for real NASA image candidates (no image generated) | Team chooses |
+| 2026-11-14 | Claude Code | Search for real NASA image candidates (no image generated) | Team chose |
+| 2026-11-14 | Claude Code | Download, crop and resize of the 10 chosen NASA images (no AI enhancement) | Team |
+| 2026-11-14 | Claude Code | Railway project creation and deploy, with the team's approval | Team |
+| 2026-11-14 | Claude Code | Phase 2: simulation code and tests (`packages/sim`) from the approved SIM_MODEL | Team |
 
 ## Generated media
 

@@ -82,6 +82,8 @@ Início: `air = 10`, `food = 6`, `exposure = 0`, `sol = 1`.
    6. Radiação: se o evento realmente chega a Marte, `exposure += max(0, risk − shield)`; caso contrário, `+0` (as células do escudo foram gastas mesmo assim)
    7. Terra: se houve pergunta, a resposta sobre o evento de amanhã aparece no diário desta noite, com o tempo de viagem do sinal
    8. Verificação de fim (§7)
+
+   Efeitos das crises na mesma noite (implementado na Fase 2): a troca para o Escudo na tempestade solar muda a distribuição antes do passo 1; a crise da estufa acrescenta um passo logo depois do passo 1 (`greenhouseRescue`, −2 de ar, ou `harvestLost`); uma expedição recolhida mantém o custo de ar, mas não tem a exposição `outside` nem descoberta.
 5. **Diário do sol.** Previsão vs. resultado, cada linha da conta acima, a fonte de dados do evento e uma linha "e se você tivesse…" calculada refazendo a noite com uma célula movida.
 
 ### O que perguntar à Terra dá (regra aprovada)

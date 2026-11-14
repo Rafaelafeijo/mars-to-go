@@ -4,7 +4,7 @@
 
 Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer · ✂️ cortado (com motivo e aval do time)
 
-Última atualização: 14/11/2026, começo da Fase 2.
+Última atualização: 14/11/2026, fim da Fase 2 (todas as regras em `packages/sim`, 41 testes; as telas começam na Fase 3).
 
 | Parte do jogo completo | Fase | Situação | Nota |
 | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer · ✂️ cortado (com mo
 | Modo de teste (`?playtest=1`, exportar JSON) | 4 | ⬜ | Antes da pausa para teste |
 | Imagens (10 escolhidas) | 1 | ✅ | Preparadas; entram a partir da Fase 3 |
 | Publicação: GitHub Pages | 1 | ✅ | https://rafaelafeijo.github.io/mars-to-go/ |
-| Publicação: Railway (API + espelho) | 1 | ⬜ | Esperando o aval do time para criar o projeto |
+| Publicação: Railway (API + espelho) | 1 | ✅ | https://mars-to-go-api-production.up.railway.app/health — publicado com `railway up`; publicar a cada push exige ligar o repositório do GitHub no painel do Railway |
 | Documentação bilíngue | 0 → todas | 🔄 | |
 | Material de submissão (página, vídeo de 30 s, slides) | 8 | ⬜ | |
 | Avatar, base tocável | 6 | ⬜ | Primeiros a sair (brief §10) |

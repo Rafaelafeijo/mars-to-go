@@ -178,7 +178,7 @@ Nenhum nome, nenhum texto livre, nenhum dado pessoal. "Apagar progresso" limpa a
 
 ### Código da carreira (ADR-0022)
 
-Um código curto que restaura a carreira inteira em outro aparelho: `codeVersion · unlocked missions (bits) · badges (verdict + stripes per mission) · discoveries (bits) · mission in progress (missionId · seed · sol · air · food · exposure · pending harvests)`. Compactado em bits, escrito em base32 de Crockford (sem I/L/O/U), agrupado em blocos de 4 com um caractere de verificação — cerca de 16–20 caracteres. Ele guarda só números do jogo. Os checkpoints não estão no código; depois de uma restauração, "voltar ao sol N" fica disponível do sol restaurado em diante.
+Um código curto que restaura a carreira inteira em outro aparelho: `codeVersion · unlocked missions (bits) · badges (verdict + stripes per mission) · discoveries (bits) · mission in progress (missionId · seed · sol · air · food · exposure · pending harvests)`. Compactado em bits, escrito em base32 de Crockford (sem I/L/O/U), agrupado em blocos de 4 com um caractere de verificação — cerca de 20–24 caracteres (com missão em andamento; menos sem ela). Ele guarda só números do jogo. Os checkpoints não estão no código; depois de uma restauração, "voltar ao sol N" fica disponível do sol restaurado em diante.
 
 ## 7. Mapa de telas (mobile first, 360 px em retrato)
 
