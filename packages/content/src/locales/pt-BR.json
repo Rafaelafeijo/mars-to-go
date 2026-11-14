@@ -4,15 +4,26 @@
     "tagline": "10 segundos para decidir.",
     "skipToContent": "Pular para o conteúdo",
     "languageLabel": "Idioma",
-    "languages": { "en": "EN", "pt-BR": "PT" },
-    "languageNames": { "en": "Inglês", "pt-BR": "Português" }
+    "languages": {
+      "en": "EN",
+      "pt-BR": "PT"
+    },
+    "languageNames": {
+      "en": "Inglês",
+      "pt-BR": "Português"
+    }
   },
   "home": {
     "numbersLine": "7 sóis · 10 células · 5 decisões",
     "intro": "Comande uma base tripulada em Marte. Nenhuma escolha é grátis: a energia que protege a tripulação hoje é o oxigênio que falta amanhã.",
     "solExplained": "Em Marte, o dia tem nome: sol. Ele dura 40 minutos a mais que o nosso.",
     "rolePrefix": "Hoje você é",
-    "roles": ["piloto", "engenheira", "cientista", "agricultora de Marte"],
+    "roles": [
+      "piloto",
+      "engenheira",
+      "cientista",
+      "agricultora de Marte"
+    ],
     "play": "Jogar",
     "continue": "Continuar no sol {{sol}}",
     "howItWorks": "Como funciona",
@@ -49,16 +60,34 @@
     "solsOfReserve_one": "{{count}} sol de reserva",
     "solsOfReserve_other": "{{count}} sóis de reserva",
     "solsCaption": "sol é o dia em Marte",
-    "words": { "critical": "crítico", "tight": "apertado", "safe": "seguro", "plenty": "folgado" },
-    "exposureWords": { "low": "baixa", "medium": "média", "high": "alta" }
+    "words": {
+      "critical": "crítico",
+      "tight": "apertado",
+      "safe": "seguro",
+      "plenty": "folgado"
+    },
+    "exposureWords": {
+      "low": "baixa",
+      "medium": "média",
+      "high": "alta"
+    }
   },
   "forecast": {
     "title": "Previsão",
     "calm": "Sol calmo hoje: nenhum evento visto.",
     "event": "Evento solar: {{kind}} {{label}}, visto em {{date}}.",
-    "kinds": { "flare": "erupção", "cme": "nuvem de partículas (CME)", "sep": "tempestade de partículas" },
+    "kinds": {
+      "flare": "erupção",
+      "cme": "nuvem de partículas (CME)",
+      "sep": "tempestade de partículas"
+    },
     "risk": "Risco se chegar a Marte: {{word}}.",
-    "riskWords": ["nenhum", "baixo", "médio", "alto"],
+    "riskWords": [
+      "nenhum",
+      "baixo",
+      "médio",
+      "alto"
+    ],
     "maybe": "Talvez chegue a Marte. Talvez não.",
     "tomorrow": "Amanhã:",
     "tomorrowCalm": "Sol calmo, pelo que sabemos.",
@@ -68,11 +97,23 @@
   "question": {
     "title": "O que você acha?",
     "greenhouse": "Se você plantar hoje, quando a tripulação pode comer?",
-    "greenhouseOptions": ["Hoje à noite", "Daqui a 2 sóis", "Nunca"],
+    "greenhouseOptions": [
+      "Hoje à noite",
+      "Daqui a 2 sóis",
+      "Nunca"
+    ],
     "shield": "Se o evento chegar a Marte hoje à noite, o que protege a tripulação?",
-    "shieldOptions": ["Suporte à Vida", "Estufa", "Escudo"],
+    "shieldOptions": [
+      "Suporte à Vida",
+      "Estufa",
+      "Escudo"
+    ],
     "air": "Se você não puser nenhuma célula no Suporte à Vida, o que acontece com o ar hoje à noite?",
-    "airOptions": ["Sobe", "Desce", "Fica igual"],
+    "airOptions": [
+      "Sobe",
+      "Desce",
+      "Fica igual"
+    ],
     "saved": "Guardado. Vamos conferir à noite.",
     "skip": "Pular"
   },
@@ -89,11 +130,31 @@
     "lockPlan": "Travar o plano",
     "wrongTotal": "Distribua todas as {{free}} células ({{used}} distribuídas).",
     "destinations": {
-      "lifeSupport": { "name": "Suporte à Vida", "does": "+1 de ar nesta noite por célula", "cost": "só células" },
-      "greenhouse": { "name": "Estufa", "does": "+2 de comida por célula, daqui a 2 sóis", "cost": "nada nesta noite" },
-      "shield": { "name": "Escudo", "does": "bloqueia 1 ponto de risco por célula nesta noite", "cost": "gasta mesmo se o evento não vier" },
-      "expedition": { "name": "Expedição", "does": "uma descoberta real num lugar de Jezero", "cost": "2 células, 2 de ar, tripulação lá fora" },
-      "askEarth": { "name": "Perguntar à Terra", "does": "uma resposta sobre amanhã, hoje à noite", "cost": "1 célula; a resposta demora" }
+      "lifeSupport": {
+        "name": "Suporte à Vida",
+        "does": "+1 de ar nesta noite por célula",
+        "cost": "só células"
+      },
+      "greenhouse": {
+        "name": "Estufa",
+        "does": "+2 de comida por célula, daqui a 2 sóis",
+        "cost": "nada nesta noite"
+      },
+      "shield": {
+        "name": "Escudo",
+        "does": "bloqueia 1 ponto de risco por célula nesta noite",
+        "cost": "gasta mesmo se o evento não vier"
+      },
+      "expedition": {
+        "name": "Expedição",
+        "does": "uma descoberta real num lugar de Jezero",
+        "cost": "2 células, 2 de ar, tripulação lá fora"
+      },
+      "askEarth": {
+        "name": "Perguntar à Terra",
+        "does": "uma resposta sobre amanhã, hoje à noite",
+        "cost": "1 célula; a resposta demora"
+      }
     }
   },
   "math": {
@@ -101,14 +162,11 @@
     "after": "Depois desta noite"
   },
   "steps": {
-    "lifeSupport": "Suporte à Vida: {{cells}} células → ar {{before}} + {{delta}} = {{after}}",
     "greenhouseRescue": "Resgate da estufa: ar {{before}} − {{abs}} = {{after}}",
     "harvestLost": "Falha na estufa: {{lostFood}} de comida plantada para o sol {{harvestSol}} se perde",
     "harvest": "Colheita: comida {{before}} + {{delta}} = {{after}}",
     "harvestNone": "Colheita: nada pronto hoje",
-    "plant": "Plantio de {{cells}} células → {{food}} de comida no sol {{harvestSol}}",
     "plantNone": "Nada plantado hoje",
-    "plantLate": "Plantio de {{cells}} células → pronto no sol {{harvestSol}}, depois do fim da missão",
     "breathe": "A tripulação respira: ar {{before}} − {{abs}} = {{after}}",
     "eat": "A tripulação come: comida {{before}} − {{abs}} = {{after}}",
     "expedition": "Trajes da expedição: ar {{before}} − {{abs}} = {{after}}",
@@ -122,7 +180,13 @@
     "earthYes": "o evento vai chegar a Marte (previsão de um modelo da NASA).",
     "earthNo": "o evento não vai chegar a Marte.",
     "earthCalm": "nenhum evento esperado.",
-    "earthTravel": "O sinal levou entre {{min}} e {{max}} minutos em cada sentido."
+    "earthTravel": "O sinal levou entre {{min}} e {{max}} minutos em cada sentido.",
+    "plant_one": "Plantio de {{count}} célula → {{food}} de comida no sol {{harvestSol}}",
+    "plant_other": "Plantio de {{count}} células → {{food}} de comida no sol {{harvestSol}}",
+    "lifeSupport_one": "Suporte à Vida: {{count}} célula → ar {{before}} + {{delta}} = {{after}}",
+    "lifeSupport_other": "Suporte à Vida: {{count}} células → ar {{before}} + {{delta}} = {{after}}",
+    "plantLate_one": "Plantio de {{count}} célula → pronto no sol {{harvestSol}}, depois do fim da missão",
+    "plantLate_other": "Plantio de {{count}} células → pronto no sol {{harvestSol}}, depois do fim da missão"
   },
   "night": {
     "title": "Noite",
@@ -166,8 +230,19 @@
     "backHome": "Voltar ao início"
   },
   "card": {
-    "labels": { "measured": "MEDIDO", "scenario": "CENÁRIO", "simplification": "SIMPLIFICADO" },
-    "places": { "Mars": "Marte", "ISS": "Estação Espacial", "Sun": "o Sol", "Earth": "Terra", "Moon": "a Lua", "game": "jogo" },
+    "labels": {
+      "measured": "MEDIDO",
+      "scenario": "CENÁRIO",
+      "simplification": "SIMPLIFICADO"
+    },
+    "places": {
+      "Mars": "Marte",
+      "ISS": "Estação Espacial",
+      "Sun": "o Sol",
+      "Earth": "Terra",
+      "Moon": "a Lua",
+      "game": "regra do jogo (não é medição)"
+    },
     "gameRule": "REGRA DO JOGO",
     "open": "De onde vem este número?",
     "source": "Fonte",

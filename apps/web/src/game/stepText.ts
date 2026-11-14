@@ -5,7 +5,7 @@ import { cardForScience } from '@mars-to-go/content';
 /** Words for one line of the live math. All text lives in packages/content (rule 7). */
 export function stepText(t: TFunction, step: NightStep): string {
   const d = step.detail ?? {};
-  const v = { ...d, before: step.before, delta: step.delta, after: step.after, abs: Math.abs(step.delta) };
+  const v = { ...d, count: typeof d.cells === 'number' ? d.cells : 0, before: step.before, delta: step.delta, after: step.after, abs: Math.abs(step.delta) };
   switch (step.id) {
     case 'harvest':
       return step.delta === 0 ? t('steps.harvestNone') : t('steps.harvest', v);

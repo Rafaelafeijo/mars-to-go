@@ -52,9 +52,10 @@ try {
 
   for (let sol = 1; sol <= 7; sol++) {
     await page.locator('.choices button').nth(1).click(); // morning question
-    PLAN[sol - 1].forEach((n, i) => {
-      for (let k = 0; k < n; k++) page.getByRole('button', { name: `${T.add} ${T.names[i]}` }).click();
-    });
+    const row = PLAN[sol - 1];
+    for (let i = 0; i < row.length; i++) {
+      for (let k = 0; k < row[i]; k++) await page.getByRole('button', { name: `${T.add} ${T.names[i]}` }).click();
+    }
     await page.waitForTimeout(300);
     if (sol === 1 || sol === 5) await shot(`03-morning-sol${sol}`);
     if (sol === 1) {
