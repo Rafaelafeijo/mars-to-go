@@ -1303,7 +1303,7 @@ main.main--one {
   color: #14100e;
   font-weight: 700;
 }
-.panel {
+.wpanel {
   position: absolute;
   background: rgb(20 16 14 / 0.82);
   border: 1px solid rgb(255 255 255 / 0.12);
@@ -1312,14 +1312,14 @@ main.main--one {
   color: var(--color-text);
   padding: 6px 8px;
 }
-.panel h2 {
+.wpanel h2 {
   font-size: 0.8rem;
   margin: 0 0 2px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-muted);
 }
-.panel p {
+.wpanel p {
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.25;
@@ -1734,7 +1734,7 @@ main.main--one {
   .slot__name {
     font-size: 0.75rem;
   }
-  .panel p {
+  .wpanel p {
     font-size: 0.92rem;
   }
 }

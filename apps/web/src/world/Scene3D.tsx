@@ -111,7 +111,11 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
   const obj = useMemo(() => scene.clone(true), [scene]);
   const keys = useRef<Record<string, boolean>>({});
   const near = useRef<Destination | null>(null);
-  const { camera } = useThree();
+  const { camera, size } = useThree();
+  // Portrait phones see less to the sides: pull the camera up and back.
+  const portrait = size.width < size.height;
+  const camUp = portrait ? 9 : 5;
+  const camBack = portrait ? 14 : 8.5;
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -149,7 +153,7 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
     }
     p.position.y = groundHeight(p.position.x, p.position.z);
     // Camera follows behind.
-    const want = new THREE.Vector3(p.position.x, p.position.y + 5, p.position.z + 8.5);
+    const want = new THREE.Vector3(p.position.x, p.position.y + camUp, p.position.z + camBack);
     camera.position.lerp(want, 1 - Math.pow(0.001, Math.min(dt, 0.05)));
     camera.lookAt(p.position.x, p.position.y + 0.8, p.position.z - 3);
     // Nearest machine within reach.

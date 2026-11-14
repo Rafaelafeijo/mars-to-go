@@ -141,7 +141,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
       </div>
 
       {/* Top: trail of 7 sols to the rocket, with air and food bars from the projection */}
-      <section className="hud-trail panel" aria-label={t('world.trail.label')}>
+      <section className="hud-trail wpanel" aria-label={t('world.trail.label')}>
         <ol className="hud-trail__sols">
           {sols.map((s) => {
             const c = conditionsFor(def, s);
@@ -177,7 +177,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
       </section>
 
       {/* Left: Mission Control */}
-      <section className={`hud-mission panel${missionOpen ? '' : ' is-closed'}`} aria-labelledby="mc-title">
+      <section className={`hud-mission wpanel${missionOpen ? '' : ' is-closed'}`} aria-labelledby="mc-title">
         <button type="button" className="hud-mission__head" aria-expanded={missionOpen} onClick={() => setMissionOpen((o) => !o)}>
           <Icon name="flag" size={16} />
           <span id="mc-title">{t('world.mission.title')}</span>
@@ -203,7 +203,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
       </section>
 
       {/* Right top: forecast */}
-      <section className="hud-sky panel" aria-labelledby="sky-title">
+      <section className="hud-sky wpanel" aria-labelledby="sky-title">
         <h2 id="sky-title">{t('world.forecast.title')}</h2>
         <p>
           <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} />{' '}
@@ -215,7 +215,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
       </section>
 
       {/* Right bottom: cells in hand and pass the night */}
-      <section className="hud-hand panel" aria-labelledby="hand-title">
+      <section className="hud-hand wpanel" aria-labelledby="hand-title">
         <h2 id="hand-title" className="sr-only">
           {t('world.hand.title')}
         </h2>
