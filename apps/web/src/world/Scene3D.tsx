@@ -6,13 +6,13 @@
  */
 import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
-import { Html, useGLTF } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import type { Destination } from '@mars-to-go/sim';
 
 const BASE = import.meta.env.BASE_URL;
 const M = (n: string) => `${BASE}models/kenney/${n}.glb`;
-const NEAR = 4.5;
+const NEAR = 3.2;
 const SPEED = 6;
 
 /** Height of the illustrated terrain: gentle relief, flat around the base, a delta fan and a butte far away. */
@@ -37,24 +37,24 @@ interface MachineSpec {
   rot?: number;
 }
 
+// Kenney models are about 1–2 units across; the astronaut is about 1 unit tall at scale 1.
 const MACHINES: MachineSpec[] = [
-  { d: 'lifeSupport', model: 'machine_generatorLarge', pos: [-5.5, -1], scale: 2.2, rot: 0.6 },
-  { d: 'greenhouse', model: 'hangar_roundGlass', pos: [5.5, -1], scale: 2.4, rot: -0.5 },
-  { d: 'shield', model: 'machine_wireless', pos: [-3, -8.5], scale: 2.2 },
-  { d: 'expedition', model: 'rover', pos: [8, 4.5], scale: 2.6, rot: -0.9 },
-  { d: 'askEarth', model: 'satelliteDish_large', pos: [-8, 4], scale: 2.4, rot: 0.8 },
+  { d: 'lifeSupport', model: 'machine_generatorLarge', pos: [-4.5, -2], scale: 1.3, rot: 0.6 },
+  { d: 'greenhouse', model: 'hangar_roundGlass', pos: [4.5, -2.5], scale: 1.1, rot: -0.5 },
+  { d: 'shield', model: 'machine_wireless', pos: [-2.2, -7.5], scale: 1.4 },
+  { d: 'expedition', model: 'rover', pos: [6.5, 3], scale: 1.5, rot: -0.9 },
+  { d: 'askEarth', model: 'satelliteDish_large', pos: [-6.5, 2.5], scale: 1.2, rot: 0.8 },
 ];
 
 const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: number }[] = [
-  { model: 'hangar_largeA', pos: [0, -7], scale: 2.6 },
-  { model: 'container-tall', pos: [3, -5], scale: 2.4 },
-  { model: 'corridor', pos: [-1.8, -3.4], scale: 2.2, rot: Math.PI / 2 },
-  { model: 'rock_largeA', pos: [-16, -10], scale: 4 },
-  { model: 'rock_largeB', pos: [14, -14], scale: 3.5, rot: 1 },
-  { model: 'rock_largeA', pos: [20, 8], scale: 3, rot: 2 },
-  { model: 'rocks_smallA', pos: [-12, 10], scale: 3 },
-  { model: 'rocks_smallA', pos: [9, 13], scale: 2.5, rot: 1.4 },
-  { model: 'craterLarge', pos: [-22, 16], scale: 6 },
+  { model: 'hangar_largeA', pos: [1, -8], scale: 1.2 },
+  { model: 'container-tall', pos: [3.6, -6], scale: 1.6 },
+  { model: 'rock_largeA', pos: [-14, -9], scale: 2.5 },
+  { model: 'rock_largeB', pos: [12, -12], scale: 2.2, rot: 1 },
+  { model: 'rock_largeA', pos: [16, 7], scale: 2, rot: 2 },
+  { model: 'rocks_smallA', pos: [-10, 8], scale: 2 },
+  { model: 'rocks_smallA', pos: [8, 11], scale: 1.8, rot: 1.4 },
+  { model: 'craterLarge', pos: [-18, 14], scale: 4 },
 ];
 
 function Model({ name, x, z, scale, rot = 0 }: { name: string; x: number; z: number; scale: number; rot?: number }) {
@@ -149,9 +149,9 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
     }
     p.position.y = groundHeight(p.position.x, p.position.z);
     // Camera follows behind.
-    const want = new THREE.Vector3(p.position.x, p.position.y + 7, p.position.z + 11);
+    const want = new THREE.Vector3(p.position.x, p.position.y + 5, p.position.z + 8.5);
     camera.position.lerp(want, 1 - Math.pow(0.001, Math.min(dt, 0.05)));
-    camera.lookAt(p.position.x, p.position.y + 1.5, p.position.z - 2);
+    camera.lookAt(p.position.x, p.position.y + 0.8, p.position.z - 3);
     // Nearest machine within reach.
     let best: Destination | null = null;
     let bestDist = NEAR;
@@ -169,16 +169,84 @@ function Player({ target, onArrive, onNear, playerRef }: PlayerProps) {
   });
 
   return (
-    <group ref={playerRef} position={[0, 0, 5]}>
-      <primitive object={obj} scale={2.2} />
+    <group ref={playerRef} position={[0, 0, 3]}>
+      <primitive object={obj} scale={1.3} />
     </group>
   );
 }
 
+/** A text plate drawn on a canvas and shown as a sprite (stays inside the 3D view). */
+function makePlate(text: string, pips: number, color: string, faded: boolean): { tex: THREE.CanvasTexture; aspect: number } {
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d');
+  const font = '700 40px system-ui, sans-serif';
+  if (!ctx) return { tex: new THREE.CanvasTexture(c), aspect: 1 };
+  ctx.font = font;
+  const w = Math.max(ctx.measureText(text).width + 40, pips * 26 + 40, 120);
+  const h = pips > 0 ? 104 : 64;
+  c.width = Math.ceil(w);
+  c.height = h;
+  ctx.font = font;
+  ctx.fillStyle = faded ? 'rgba(20,16,14,0.45)' : 'rgba(20,16,14,0.82)';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, c.width, h, 18);
+  ctx.fill();
+  ctx.fillStyle = faded ? 'rgba(243,236,230,0.5)' : '#f3ece6';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, c.width / 2, 34);
+  for (let i = 0; i < pips; i++) {
+    ctx.fillStyle = color;
+    ctx.fillRect(c.width / 2 - (pips * 26) / 2 + i * 26 + 4, 70, 18, 18);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return { tex, aspect: c.width / h };
+}
+
+function Plate({ text, pips, color, faded, position, height = 0.55 }: { text: string; pips: number; color: string; faded: boolean; position: [number, number, number]; height?: number }) {
+  const { tex, aspect } = useMemo(() => makePlate(text, pips, color, faded), [text, pips, color, faded]);
+  useEffect(() => () => tex.dispose(), [tex]);
+  const h = pips > 0 ? height * 1.6 : height;
+  return (
+    <sprite position={position} scale={[h * aspect, h, 1]} renderOrder={10}>
+      <spriteMaterial map={tex} transparent depthTest={false} />
+    </sprite>
+  );
+}
+
+/** "+1 air" rising from the machine and fading out. */
+function Floater({ text, color, position }: { text: string; color: string; position: [number, number, number] }) {
+  const ref = useRef<THREE.Sprite>(null);
+  const t0 = useRef(0);
+  const { tex, aspect } = useMemo(() => makePlate(text, 0, color, false), [text, color]);
+  useEffect(() => () => tex.dispose(), [tex]);
+  useFrame((_, dt) => {
+    const s = ref.current;
+    if (!s) return;
+    t0.current += dt;
+    s.position.y = position[1] + t0.current * 1.6;
+    (s.material as THREE.SpriteMaterial).opacity = Math.max(0, 1 - t0.current / 1.3);
+  });
+  return (
+    <sprite ref={ref} position={position} scale={[0.6 * aspect, 0.6, 1]} renderOrder={11}>
+      <spriteMaterial map={tex} transparent depthTest={false} color={color} />
+    </sprite>
+  );
+}
+
+const TONE_COLOR: Record<Destination, string> = {
+  lifeSupport: '#6ab0ff',
+  greenhouse: '#7cd17a',
+  shield: '#b9a2ff',
+  expedition: '#f5b642',
+  askEarth: '#f5b642',
+};
+
 function ShieldDome({ cells }: { cells: number }) {
   return (
-    <mesh position={[0, groundHeight(0, -7), -7]}>
-      <sphereGeometry args={[7, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2]} />
+    <mesh position={[0, groundHeight(0, -6), -6]}>
+      <sphereGeometry args={[5, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2]} />
       <meshBasicMaterial color="#b9a2ff" transparent opacity={cells > 0 ? 0.12 + cells * 0.06 : 0.04} depthWrite={false} side={THREE.DoubleSide} />
     </mesh>
   );
@@ -214,7 +282,7 @@ function World({ cells, open, labels, night, pulse, onUse, onNear }: SceneProps)
       onUse(m.d);
     } else {
       pending.current = m.d;
-      setTarget(new THREE.Vector3(m.pos[0], 0, m.pos[1] + 3));
+      setTarget(new THREE.Vector3(m.pos[0], 0, m.pos[1] + 2));
     }
   };
 
@@ -240,26 +308,18 @@ function World({ cells, open, labels, night, pulse, onUse, onNear }: SceneProps)
       <ShieldDome cells={cells.shield} />
       {MACHINES.map((m) => {
         const isOpen = open.includes(m.d);
+        const top = groundHeight(m.pos[0], m.pos[1]) + 2.6;
         return (
           <group key={m.d} onClick={(e) => tapMachine(m, e)}>
             <Model name={m.model} x={m.pos[0]} z={m.pos[1]} scale={m.scale} rot={m.rot} />
-            <Html position={[m.pos[0], groundHeight(m.pos[0], m.pos[1]) + 4.2, m.pos[1]]} center distanceFactor={14} zIndexRange={[10, 0]}>
-              <div className={`mlabel${isOpen ? '' : ' mlabel--locked'}${nearD === m.d ? ' mlabel--near' : ''}`} aria-hidden="true">
-                <span className="mlabel__name">{labels[m.d]}</span>
-                <span className="mlabel__pips">
-                  {Array.from({ length: cells[m.d] * (m.d === 'expedition' ? 2 : 1) }, (_, i) => (
-                    <i key={i} />
-                  ))}
-                </span>
-              </div>
-            </Html>
-            {pulse && pulse.d === m.d && (
-              <Html key={pulse.key} position={[m.pos[0], groundHeight(m.pos[0], m.pos[1]) + 5.5, m.pos[1]]} center distanceFactor={14}>
-                <div className={`mfloat mfloat--${m.d}`} aria-hidden="true">
-                  {pulse.text}
-                </div>
-              </Html>
-            )}
+            <Plate
+              text={nearD === m.d ? `▶ ${labels[m.d]}` : labels[m.d]}
+              pips={cells[m.d] * (m.d === 'expedition' ? 2 : 1)}
+              color={TONE_COLOR[m.d]}
+              faded={!isOpen}
+              position={[m.pos[0], top, m.pos[1]]}
+            />
+            {pulse && pulse.d === m.d && <Floater key={pulse.key} text={pulse.text} color={TONE_COLOR[m.d]} position={[m.pos[0], top + 0.9, m.pos[1]]} />}
           </group>
         );
       })}

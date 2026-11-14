@@ -1450,10 +1450,24 @@ main.main--one {
 }
 
 /* Hand and night button */
+.world__fps {
+  position: absolute;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #14100e;
+  color: #7cd17a;
+  font: 700 0.8rem var(--font-mono);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.hud-hand__heat {
+  display: none;
+}
 .hud-hand {
   right: 6px;
   left: 6px;
-  bottom: 118px;
+  bottom: 132px;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-areas: 'cells btn' 'count btn';
@@ -1521,6 +1535,9 @@ main.main--one {
 .hud-bottom__hint {
   margin: 4px 0 0;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .hotbar {
   list-style: none;
@@ -1707,7 +1724,8 @@ main.main--one {
     width: min(620px, 60vw);
     background: none;
   }
-  .hud-bottom__ill {
+  .hud-bottom__ill,
+  .hud-hand__heat {
     display: inline;
   }
   .slot__add {

@@ -64,7 +64,15 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
   const [pulse, setPulse] = useState<Pulse | null>(null);
   const [near, setNear] = useState<Destination | null>(null);
   const [webgl] = useState(hasWebGL);
-  const [missionOpen, setMissionOpen] = useState(true);
+  const [missionOpen, setMissionOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
+  // ?fps=1 shows the measured frame rate, to check the 3D on a real phone.
+  const [showFps] = useState(() => new URLSearchParams(window.location.search).get('fps') === '1');
+  const [fps, setFps] = useState<number | null>(null);
+  useEffect(() => {
+    if (!showFps) return;
+    const id = window.setInterval(() => setFps((globalThis as unknown as { __marsFps?: number }).__marsFps ?? null), 1000);
+    return () => window.clearInterval(id);
+  }, [showFps]);
 
   // Night: the sky darkens, then the next sol starts.
   const done = useRef(onNightDone);
@@ -221,7 +229,7 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
         </div>
         <p className="hud-hand__count">
           <Icon name="energy" size={16} className="tone-energy" /> {t('world.hand.count', { count: left })}
-          <span className="muted small">
+          <span className="muted small hud-hand__heat">
             {' '}
             · <Icon name="heat" size={12} /> {t('world.hand.heating', { n: V.HEATING_CELLS })}
           </span>
@@ -271,6 +279,8 @@ export function WorldScreen({ game, onLock, onNightDone }: Props) {
           <Icon name="walk" size={12} /> {near ? effect(near) || labels[near] : t('world.walkHint')}
         </p>
       </section>
+
+      {showFps && <div className="world__fps">{fps === null ? '… fps' : `${fps} fps`}</div>}
 
       {night && (
         <div className="world__night" role="status">
