@@ -5,3 +5,4 @@ export * from './outcomes';
 export * from './career';
 export * from './code';
 export * from './random';
+export * from './projection';

@@ -277,3 +277,16 @@ Mission 3 needs a second dust sol; the rule is the same (`CELLS_DUST_SOL`), only
 ## 15. Data cards that are still pending
 
 A data point whose card is pending is **hidden from screens**; the build and the deploy do not fail because of it (the build lists hidden items in a report). Rule 16 holds: no card, no screen.
+
+## 16. The projection: "if every sol were like today" (ADR-0031)
+
+`project(def, state, todayAllocation)` in `packages/sim/src/projection.ts` returns air and food after tonight and after each remaining night, and the sol on which each one runs out. It feeds the trail of 7 sols and the "today → tomorrow" meters, and updates at every cell placed or removed. Label: **simplification**.
+
+Rules:
+- Tonight uses today's plan exactly as placed (complete or not), through `resolveNight` — the same numbers as the real night.
+- Each later sol repeats today's **Life Support, Greenhouse and Shield**. **Expedition and Ask Earth are one-sol actions** and are not repeated: repeating an expedition every sol would describe a plan the child did not make.
+- **Cut rule** on a sol with fewer free cells (a dust sol has 3): remove cells from **Shield first, then Greenhouse, then Life Support** until the plan fits. Air runs out fastest, so it loses cells last. The sol is marked `cut` so the trail can say so.
+- Harvests already planted arrive on their sol; repeated plantings pay two sols later; plantings that would pay after sol 7 never count.
+- Each line (air, food) is projected on its own until it goes below zero (the sol it runs out) or reaches sol 7 (home). Radiation is not projected: it depends on future events that are uncertain.
+
+Tests (`projection.test.ts`): today's values equal `resolveNight`; Game A's sol 1 plan reaches home with the dust sol cut; all cells in Life Support → food runs out on sol 4; too little Life Support → air runs out on sol 6; an expedition costs air today only; harvests on the way are counted; partial plans work; each line runs on its own.

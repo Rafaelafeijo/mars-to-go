@@ -277,3 +277,16 @@ A missão 3 precisa de um segundo sol de poeira; a regra é a mesma (`CELLS_DUST
 ## 15. Fichas do dado ainda pendentes
 
 Um dado cuja ficha está pendente fica **escondido das telas**; o build e o deploy não falham por causa dele (o build lista os itens escondidos em um relatório). A regra 16 vale: sem ficha, sem tela.
+
+## 16. A projeção: "se todo sol fosse igual a hoje" (ADR-0031)
+
+`project(def, state, todayAllocation)` em `packages/sim/src/projection.ts` devolve ar e comida depois desta noite e depois de cada noite restante, e o sol em que cada um acaba. Alimenta a trilha dos 7 sóis e os medidores "hoje → amanhã", e se atualiza a cada célula colocada ou tirada. Rótulo: **simplificação**.
+
+Regras:
+- Esta noite usa o plano de hoje exatamente como está (completo ou não), por `resolveNight` — os mesmos números da noite de verdade.
+- Cada sol seguinte repete o **Suporte à Vida, a Estufa e o Escudo** de hoje. **Expedição e Perguntar à Terra são ações de um sol só** e não se repetem: repetir a expedição todo sol descreveria um plano que a criança não fez.
+- **Regra de corte** num sol com menos células livres (o sol de poeira tem 3): tirar células do **Escudo primeiro, depois da Estufa, depois do Suporte à Vida** até o plano caber. O ar acaba mais rápido, então é o último a perder célula. O sol fica marcado como `cut` para a trilha dizer isso.
+- Colheitas já plantadas chegam no seu sol; plantios repetidos rendem dois sóis depois; plantios que renderiam depois do sol 7 não contam.
+- Cada linha (ar, comida) é projetada sozinha até ficar abaixo de zero (o sol em que acaba) ou chegar ao sol 7 (casa). A radiação não é projetada: depende de eventos futuros incertos.
+
+Testes (`projection.test.ts`): os valores de hoje são iguais aos de `resolveNight`; o plano do sol 1 da partida A chega em casa, com o corte no sol de poeira; todas as células no Suporte à Vida → a comida acaba no sol 4; Suporte à Vida de menos → o ar acaba no sol 6; a expedição gasta ar só hoje; colheitas a caminho contam; plano incompleto funciona; cada linha anda sozinha.
