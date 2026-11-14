@@ -873,6 +873,386 @@ main.main--scene {
   }
 }
 
+/* ── Phase 3B: the whole sol on one screen (ADR-0031) ─────────── */
+.top {
+  min-height: 60px;
+}
+main.main--one {
+  height: calc(100dvh - 61px);
+  overflow: hidden;
+}
+.one {
+  height: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 6px 8px 8px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-areas: 'trail' 'meters' 'base' 'action';
+  gap: 6px;
+}
+.one--night {
+  background: radial-gradient(ellipse at 50% 0%, #1b2236 0%, var(--color-bg) 70%);
+}
+
+/* Trail of 7 sols */
+.trail {
+  grid-area: trail;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 4px 4px 2px;
+}
+.trail__row {
+  display: grid;
+  grid-template-columns: 22px repeat(7, minmax(0, 1fr)) 30px;
+  gap: 2px;
+  align-items: center;
+}
+.trail__rowlabel {
+  font-size: 0.85rem;
+  text-align: center;
+}
+.trail__sol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.05;
+  padding: 2px 0;
+  border-radius: 6px;
+  min-height: 46px;
+}
+.trail__sol--today {
+  outline: 2px solid var(--color-accent);
+  background: rgb(232 112 58 / 0.12);
+}
+.trail__sol--past {
+  opacity: 0.35;
+}
+.trail__sol--cut {
+  background: repeating-linear-gradient(135deg, transparent 0 5px, rgb(196 140 90 / 0.25) 5px 8px);
+}
+.trail__num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.trail__icon {
+  font-size: 0.95rem;
+}
+.trail__small {
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+.trail__food {
+  color: #9fd3a8;
+}
+.trail__cell {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.trail__cell--line {
+  border-top: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  background: rgb(255 255 255 / 0.04);
+}
+.trail__row--ok .trail__cell--line,
+.trail__row--ok .trail__cell--home {
+  color: #9fd3a8;
+}
+.trail__row--bad .trail__cell--line {
+  color: #ff9b8a;
+}
+.trail__cell--dead {
+  border-style: dashed;
+  font-size: 0.85rem;
+}
+.trail__cell--home {
+  font-size: 0.9rem;
+}
+.trail__summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 8px;
+  margin: 2px 2px 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.trail__summary .ok {
+  color: #9fd3a8;
+}
+.trail__summary .bad {
+  color: #ff9b8a;
+}
+.trail__assumption {
+  margin: 0 2px;
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+}
+
+/* Meters: today → tomorrow */
+.meters2 {
+  grid-area: meters;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr 1.2fr 0.9fr;
+  gap: 4px;
+}
+.m {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.m__name {
+  font-size: 0.66rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.m__big {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.m__sub {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+}
+.m .pill {
+  font-size: 0.58rem;
+  padding: 0 5px;
+  align-self: flex-start;
+}
+
+/* Battery and destination tiles */
+.base {
+  grid-area: base;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+.battery {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr) auto;
+  gap: 3px;
+  align-items: center;
+}
+.bcell {
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--color-line);
+}
+.bcell--heat {
+  background: #8a3a1e;
+}
+.bcell--free {
+  background: var(--color-accent);
+  box-shadow: 0 0 6px rgb(232 112 58 / 0.6);
+}
+.bcell--used {
+  background: #3a2f29;
+}
+.bcell--dust {
+  background: repeating-linear-gradient(135deg, #2a221e 0 3px, #5a4a40 3px 5px);
+}
+.battery__heat {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.tiles {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.tile {
+  position: relative;
+  min-height: 0;
+}
+.tile__main {
+  width: 100%;
+  height: 100%;
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-radius: var(--radius);
+  border: 2px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+.tile__main:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+.tile--locked .tile__main {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.tile__main:disabled {
+  cursor: default;
+}
+.tile--lit .tile__main {
+  border-color: #ffd27a;
+  box-shadow: 0 0 14px rgb(255 210 122 / 0.55);
+}
+.tile__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.tile__name {
+  font-weight: 800;
+  font-size: 0.8rem;
+  line-height: 1.1;
+}
+.tile__pips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+  min-height: 9px;
+}
+.pip {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+.tile__effect {
+  font-size: 0.72rem;
+  line-height: 1.15;
+  color: #ffd27a;
+}
+.tile__minus {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  border: 2px solid var(--color-accent);
+  background: var(--color-bg);
+  color: var(--color-accent);
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+}
+.crew {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  border-radius: var(--radius);
+  border: 1px dashed var(--color-line);
+  font-size: 1.6rem;
+}
+.crew--worried {
+  border-color: #ff9b8a;
+}
+
+/* Action bar: never covers anything (its own grid row) */
+.actionbar {
+  grid-area: action;
+}
+.actionbar .btn--primary {
+  min-height: 52px;
+}
+.actionbar__night {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.panel-pop {
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.panel-pop p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.panel-pop__row {
+  display: flex;
+  gap: 6px;
+}
+.panel-pop__row .btn {
+  flex: 1;
+  width: auto;
+}
+
+/* Computer: wide stage in the middle, meters and action in a side panel */
+@media (min-width: 900px) {
+  .one {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'trail trail' 'base meters' 'base action';
+    gap: 10px;
+    padding: 12px 16px;
+  }
+  .meters2 {
+    grid-template-columns: 1fr 1fr;
+    align-content: start;
+  }
+  .m__big {
+    font-size: 1.6rem;
+  }
+  .trail__sol {
+    min-height: 58px;
+  }
+  .trail__icon {
+    font-size: 1.3rem;
+  }
+  .trail__num {
+    font-size: 0.85rem;
+  }
+  .trail__cell {
+    height: 26px;
+    font-size: 0.9rem;
+  }
+  .trail__row {
+    grid-template-columns: 30px repeat(7, minmax(0, 1fr)) 44px;
+  }
+  .tile__icon {
+    font-size: 2.4rem;
+  }
+  .tile__name {
+    font-size: 1rem;
+  }
+  .tile__effect {
+    font-size: 0.9rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

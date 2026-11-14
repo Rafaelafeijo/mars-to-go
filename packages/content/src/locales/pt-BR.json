@@ -323,5 +323,71 @@
       "happy": "A tripulação está tranquila.",
       "worried": "A tripulação está preocupada."
     }
+  },
+  "one": {
+    "trail": {
+      "label": "Os 7 sóis da missão",
+      "home": "Casa",
+      "today": "hoje",
+      "calm": "Sol calmo",
+      "event": "evento solar, talvez chegue a Marte",
+      "dust": "poeira: {{count}} células",
+      "cut": "plano cortado pela poeira",
+      "harvest": "+{{count}} de comida chega",
+      "air": "Ar",
+      "food": "Comida",
+      "reachesHome": "chega em casa",
+      "runsOut": "acaba no sol {{n}}",
+      "lineAir": "Linha do ar: {{status}}.",
+      "lineFood": "Linha da comida: {{status}}.",
+      "assumption": "Se todo sol fosse igual a hoje."
+    },
+    "meters": {
+      "power": "Energia",
+      "cellsLeft_one": "falta {{count}} célula",
+      "cellsLeft_other": "faltam {{count}} células",
+      "air": "Ar",
+      "food": "Comida",
+      "exposure": "Exposição",
+      "todayTomorrow": "{{today}} → {{tomorrow}}",
+      "todayTomorrowLabel": "{{name}}: {{today}} hoje, {{tomorrow}} amanhã, {{word}}"
+    },
+    "battery": {
+      "label": "Bateria: {{free}} células livres, {{heating}} travadas no aquecimento",
+      "heating": "aquecimento"
+    },
+    "tiles": {
+      "lifeSupport": "Suporte à Vida",
+      "greenhouse": "Estufa",
+      "shield": "Escudo",
+      "expedition": "Expedição",
+      "askEarth": "Perguntar à Terra",
+      "aria": "{{name}}: {{count}} células. {{effect}}. Toque para pôr uma célula.",
+      "ariaLocked": "{{name}}: travado até o sol {{n}}.",
+      "remove": "Tirar uma célula de {{name}}",
+      "locked": "sol {{n}}",
+      "tapToAdd": "toque para pôr",
+      "effect": {
+        "lifeSupport": "+{{n}} de ar hoje à noite",
+        "greenhouse": "+{{n}} de comida no sol {{sol}}",
+        "greenhouseLate": "fica pronto depois da missão",
+        "shield": "bloqueia {{n}} hoje à noite",
+        "expedition": "−{{n}} de ar · uma descoberta",
+        "askEarth": "resposta hoje à noite"
+      }
+    },
+    "crew": {
+      "happy": "A tripulação olha a trilha e sorri.",
+      "worried": "A tripulação está preocupada: uma linha para antes de casa."
+    },
+    "lock": "Travar o plano",
+    "placeAll_one": "Falta pôr {{count}} célula",
+    "placeAll_other": "Faltam pôr {{count}} células",
+    "night": "Noite em Marte",
+    "after": "O sol {{n}} acabou.",
+    "afterLine": "Ar {{air0}} → {{air1}} · comida {{food0}} → {{food1}}",
+    "next": "Próximo sol",
+    "finish": "Ver como a missão terminou",
+    "replay": "Ver a noite de novo"
   }
 }

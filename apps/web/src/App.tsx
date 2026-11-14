@@ -10,7 +10,7 @@ import { Morning } from './screens/Morning';
 import { NightScreen } from './screens/NightScreen';
 import { SolLogScreen } from './screens/SolLogScreen';
 import { EndScreen } from './screens/EndScreen';
-import { SceneScreen } from './scene/SceneScreen';
+import { SolScreen } from './one/SolScreen';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
 const MODE_KEY = 'mars-to-go:mode';
@@ -73,18 +73,18 @@ export function App() {
           ))}
         </nav>
       </header>
-      <main id="main" ref={main} tabIndex={-1} className={inSol && mode === 'scene' ? 'main--scene' : undefined}>
+      <main id="main" ref={main} tabIndex={-1} className={inSol && mode === 'scene' ? 'main--one' : undefined}>
         {game.screen === 'home' && <Home onPlay={() => g.startMission()} assisted={game.assisted} onAssisted={g.setAssisted} />}
         {game.screen === 'briefing' && <Briefing onStart={() => g.go('morning')} />}
         {inSol && mode === 'scene' && (
-          <SceneScreen
+          <SolScreen
             key={`${game.def.id}-${game.checkpoints.length}`}
             game={game}
-            onAnswer={g.answerQuestion}
             onLock={g.lockPlan}
-            onPick={g.pickResult}
-            onEndNight={g.endNight}
-            onNext={g.nextSol}
+            onNightDone={() => {
+              g.endNight();
+              g.nextSol();
+            }}
           />
         )}
         {mode === 'list' && game.screen === 'morning' && (

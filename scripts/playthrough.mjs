@@ -62,20 +62,15 @@ try {
   for (let sol = 1; sol <= 7; sol++) {
     const row = PLAN[sol - 1];
     if (mode === 'scene') {
-      if (sol === 1) await shot('02-scene-forecast', false);
-      await page.getByRole('button', { name: T.forecastNext, exact: true }).click();
-      await page.locator('.sheet .choices button').nth(1).click();
+      if (sol === 1) await shot('02-one-sol1-empty', false);
       for (let i = 0; i < row.length; i++) {
-        const obj = page.getByRole('button', { name: new RegExp(`^${T.objects[i]}:`) });
-        for (let k = 0; k < row[i]; k++) await obj.click();
+        const tile = page.getByRole('button', { name: new RegExp(`^${T.names[i]}:`) });
+        for (let k = 0; k < row[i]; k++) {
+          await tile.click();
+          if (sol === 1 && i === 0 && k === 4) await shot('03-one-sol1-only-air', false);
+        }
       }
-      if (sol === 1 || sol === 5) await shot(`03-scene-inside-sol${sol}`, false);
-      if (sol === 1) {
-        await page.getByRole('tab', { name: T.outside }).click();
-        await page.waitForTimeout(400);
-        await shot('04-scene-outside', false);
-        await page.getByRole('tab', { name: T.inside }).click();
-      }
+      if (sol === 1 || sol === 5) await shot(`04-one-sol${sol}-planned`, false);
     } else {
       await page.locator('.choices button').nth(1).click();
       for (let i = 0; i < row.length; i++) {
@@ -84,8 +79,12 @@ try {
       if (sol === 1) await shot('03-list-morning');
     }
     await page.getByRole('button', { name: T.lock }).click();
+    if (mode === 'scene') {
+      if (sol === 5) await shot('05-one-night-sol5', false);
+      await page.getByRole('button', { name: T.next }).click();
+      continue;
+    }
     await page.getByRole('button', { name: T.skip }).click();
-    if (mode === 'scene' && sol === 5) await shot('05-scene-night-sol5', false);
     await page.getByRole('button', { name: T.toLog }).click();
     if (sol === 5) await shot(`06-${mode}-log-sol5`, mode === 'list');
     await page.getByRole('button', { name: T.next }).click();
@@ -101,13 +100,9 @@ try {
     await desk.goto(url);
     await desk.getByRole('button', { name: T.play, exact: true }).click();
     await desk.getByRole('button', { name: T.start }).click();
-    await desk.getByRole('button', { name: T.forecastNext, exact: true }).click();
-    await desk.locator('.sheet .choices button').nth(1).click();
-    for (let k = 0; k < 4; k++) await desk.getByRole('button', { name: new RegExp(`^${T.objects[0]}:`) }).click();
-    await desk.screenshot({ path: `${out}/08-desktop-inside.png` });
-    await desk.getByRole('tab', { name: T.outside }).click();
-    await desk.waitForTimeout(400);
-    await desk.screenshot({ path: `${out}/09-desktop-outside.png` });
+    for (let k = 0; k < 4; k++) await desk.getByRole('button', { name: new RegExp(`^${T.names[0]}:`) }).click();
+    await desk.getByRole('button', { name: new RegExp(`^${T.names[1]}:`) }).click();
+    await desk.screenshot({ path: `${out}/08-desktop-sol1.png` });
   }
   if (errors.length) {
     console.log('page errors:', errors);

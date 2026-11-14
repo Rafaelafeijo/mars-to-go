@@ -323,5 +323,71 @@
       "happy": "The crew is calm.",
       "worried": "The crew is worried."
     }
+  },
+  "one": {
+    "trail": {
+      "label": "The 7 sols of the mission",
+      "home": "Home",
+      "today": "today",
+      "calm": "calm Sun",
+      "event": "solar event, maybe reaches Mars",
+      "dust": "dust: {{count}} cells",
+      "cut": "plan cut by dust",
+      "harvest": "+{{count}} food arrives",
+      "air": "Air",
+      "food": "Food",
+      "reachesHome": "reaches home",
+      "runsOut": "runs out on sol {{n}}",
+      "lineAir": "Air line: {{status}}.",
+      "lineFood": "Food line: {{status}}.",
+      "assumption": "If every sol were like today."
+    },
+    "meters": {
+      "power": "Power",
+      "cellsLeft_one": "{{count}} cell left",
+      "cellsLeft_other": "{{count}} cells left",
+      "air": "Air",
+      "food": "Food",
+      "exposure": "Exposure",
+      "todayTomorrow": "{{today}} → {{tomorrow}}",
+      "todayTomorrowLabel": "{{name}}: {{today}} today, {{tomorrow}} tomorrow, {{word}}"
+    },
+    "battery": {
+      "label": "Battery: {{free}} cells free, {{heating}} locked to heating",
+      "heating": "heating"
+    },
+    "tiles": {
+      "lifeSupport": "Life Support",
+      "greenhouse": "Greenhouse",
+      "shield": "Shield",
+      "expedition": "Expedition",
+      "askEarth": "Ask Earth",
+      "aria": "{{name}}: {{count}} cells. {{effect}}. Tap to add a cell.",
+      "ariaLocked": "{{name}}: locked until sol {{n}}.",
+      "remove": "Take a cell back from {{name}}",
+      "locked": "sol {{n}}",
+      "tapToAdd": "tap to add",
+      "effect": {
+        "lifeSupport": "+{{n}} air tonight",
+        "greenhouse": "+{{n}} food on sol {{sol}}",
+        "greenhouseLate": "ready after the mission",
+        "shield": "blocks {{n}} tonight",
+        "expedition": "−{{n}} air · a discovery",
+        "askEarth": "answer tonight"
+      }
+    },
+    "crew": {
+      "happy": "The crew looks at the trail and smiles.",
+      "worried": "The crew looks worried: a line stops before home."
+    },
+    "lock": "Lock the plan",
+    "placeAll_one": "Place {{count}} more cell",
+    "placeAll_other": "Place {{count}} more cells",
+    "night": "Night on Mars",
+    "after": "Sol {{n}} is over.",
+    "afterLine": "Air {{air0}} → {{air1}} · food {{food0}} → {{food1}}",
+    "next": "Next sol",
+    "finish": "See how the mission ended",
+    "replay": "Watch the night again"
   }
 }
