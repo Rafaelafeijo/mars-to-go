@@ -1,0 +1,27 @@
+# Secrets — the repo is public
+.env
+.env.*
+!.env.example
+
+# Windows download markers
+*Zone.Identifier
+
+# Dependencies and builds
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# Image originals stay out of the site
+assets-src/
+
+# Python
+__pycache__/
+.venv/
+
+# Tooling
+.DS_Store
+*.log
+playwright-report/
+test-results/
