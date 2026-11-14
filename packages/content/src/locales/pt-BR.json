@@ -4,19 +4,185 @@
     "tagline": "10 segundos para decidir.",
     "skipToContent": "Pular para o conteúdo",
     "languageLabel": "Idioma",
-    "languages": {
-      "en": "EN",
-      "pt-BR": "PT"
-    },
-    "languageNames": {
-      "en": "Inglês",
-      "pt-BR": "Português"
-    }
+    "languages": { "en": "EN", "pt-BR": "PT" },
+    "languageNames": { "en": "Inglês", "pt-BR": "Português" }
   },
   "home": {
-    "intro": "Comande uma base tripulada em Marte por 7 sóis. Nenhuma escolha é grátis.",
+    "numbersLine": "7 sóis · 10 células · 5 decisões",
+    "intro": "Comande uma base tripulada em Marte. Nenhuma escolha é grátis: a energia que protege a tripulação hoje é o oxigênio que falta amanhã.",
     "solExplained": "Em Marte, o dia tem nome: sol. Ele dura 40 minutos a mais que o nosso.",
-    "comingSoon": "O jogo está sendo construído durante o NASA Space Apps 2026. Volte logo."
+    "rolePrefix": "Hoje você é",
+    "roles": ["piloto", "engenheira", "cientista", "agricultora de Marte"],
+    "play": "Jogar",
+    "continue": "Continuar no sol {{sol}}",
+    "howItWorks": "Como funciona",
+    "howItWorksText": "A cada sol você recebe 10 células de energia. 3 mantêm a base aquecida; você distribui as outras 7. O Suporte à Vida faz ar nesta noite. A Estufa faz comida dois sóis depois. O Escudo protege a tripulação nesta noite. Todo número mostra de onde vem: toque nele.",
+    "surprise": "Me surpreenda",
+    "surpriseLocked": "Abre depois da missão 1",
+    "assisted": "Modo assistido",
+    "assistedHint": "Mais tempo e conta mais devagar."
+  },
+  "missions": {
+    "m1": "Missão 1 · Primeiros sóis"
+  },
+  "briefing": {
+    "title": "Sua missão",
+    "crew": "Quatro astronautas vivem numa base na cratera Jezero, em Marte.",
+    "goal": "Sua missão dura 7 sóis. Depois, uma nave leva todo mundo para casa.",
+    "air": "Ar: a tripulação respira todo sol. O ar de Marte não serve para respirar, então você faz ar com energia.",
+    "food": "Comida: a tripulação come todo sol. As plantas crescem devagar: plante hoje, coma depois.",
+    "power": "Energia: 10 células por sol, da luz fraca do Sol em Marte. Nunca dá para tudo.",
+    "start": "Começar o sol 1"
+  },
+  "sol": {
+    "label": "SOL {{n}}",
+    "labelOf": "SOL {{n}} de {{total}}",
+    "caption": "dia {{n}} em Marte"
+  },
+  "meters": {
+    "title": "Reservas",
+    "power": "Energia",
+    "air": "Ar",
+    "food": "Comida",
+    "exposure": "Exposição da tripulação",
+    "cellsToday": "{{count}} células hoje",
+    "solsOfReserve_one": "{{count}} sol de reserva",
+    "solsOfReserve_other": "{{count}} sóis de reserva",
+    "solsCaption": "sol é o dia em Marte",
+    "words": { "critical": "crítico", "tight": "apertado", "safe": "seguro", "plenty": "folgado" },
+    "exposureWords": { "low": "baixa", "medium": "média", "high": "alta" }
+  },
+  "forecast": {
+    "title": "Previsão",
+    "calm": "Sol calmo hoje: nenhum evento visto.",
+    "event": "Evento solar: {{kind}} {{label}}, visto em {{date}}.",
+    "kinds": { "flare": "erupção", "cme": "nuvem de partículas (CME)", "sep": "tempestade de partículas" },
+    "risk": "Risco se chegar a Marte: {{word}}.",
+    "riskWords": ["nenhum", "baixo", "médio", "alto"],
+    "maybe": "Talvez chegue a Marte. Talvez não.",
+    "tomorrow": "Amanhã:",
+    "tomorrowCalm": "Sol calmo, pelo que sabemos.",
+    "tomorrowEvent": "{{kind}} {{label}} — talvez chegue a Marte.",
+    "dust": "Tempestade de poeira hoje: só {{cells}} células."
+  },
+  "question": {
+    "title": "O que você acha?",
+    "greenhouse": "Se você plantar hoje, quando a tripulação pode comer?",
+    "greenhouseOptions": ["Hoje à noite", "Daqui a 2 sóis", "Nunca"],
+    "shield": "Se o evento chegar a Marte hoje à noite, o que protege a tripulação?",
+    "shieldOptions": ["Suporte à Vida", "Estufa", "Escudo"],
+    "air": "Se você não puser nenhuma célula no Suporte à Vida, o que acontece com o ar hoje à noite?",
+    "airOptions": ["Sobe", "Desce", "Fica igual"],
+    "saved": "Guardado. Vamos conferir à noite.",
+    "skip": "Pular"
+  },
+  "alloc": {
+    "title": "Distribua suas células",
+    "heating": "{{count}} células mantêm a base aquecida (Marte é muito frio).",
+    "left_one": "Falta distribuir {{count}} célula",
+    "left_other": "Faltam distribuir {{count}} células",
+    "allPlaced": "Todas as células distribuídas.",
+    "add": "Pôr uma célula em {{name}}",
+    "remove": "Tirar uma célula de {{name}}",
+    "locked": "Abre no sol {{n}}",
+    "cost": "Custo: {{text}}",
+    "lockPlan": "Travar o plano",
+    "wrongTotal": "Distribua todas as {{free}} células ({{used}} distribuídas).",
+    "destinations": {
+      "lifeSupport": { "name": "Suporte à Vida", "does": "+1 de ar nesta noite por célula", "cost": "só células" },
+      "greenhouse": { "name": "Estufa", "does": "+2 de comida por célula, daqui a 2 sóis", "cost": "nada nesta noite" },
+      "shield": { "name": "Escudo", "does": "bloqueia 1 ponto de risco por célula nesta noite", "cost": "gasta mesmo se o evento não vier" },
+      "expedition": { "name": "Expedição", "does": "uma descoberta real num lugar de Jezero", "cost": "2 células, 2 de ar, tripulação lá fora" },
+      "askEarth": { "name": "Perguntar à Terra", "does": "uma resposta sobre amanhã, hoje à noite", "cost": "1 célula; a resposta demora" }
+    }
+  },
+  "math": {
+    "title": "A conta aberta: esta noite",
+    "after": "Depois desta noite"
+  },
+  "steps": {
+    "lifeSupport": "Suporte à Vida: {{cells}} células → ar {{before}} + {{delta}} = {{after}}",
+    "greenhouseRescue": "Resgate da estufa: ar {{before}} − {{abs}} = {{after}}",
+    "harvestLost": "Falha na estufa: {{lostFood}} de comida plantada para o sol {{harvestSol}} se perde",
+    "harvest": "Colheita: comida {{before}} + {{delta}} = {{after}}",
+    "harvestNone": "Colheita: nada pronto hoje",
+    "plant": "Plantio de {{cells}} células → {{food}} de comida no sol {{harvestSol}}",
+    "plantNone": "Nada plantado hoje",
+    "plantLate": "Plantio de {{cells}} células → pronto no sol {{harvestSol}}, depois do fim da missão",
+    "breathe": "A tripulação respira: ar {{before}} − {{abs}} = {{after}}",
+    "eat": "A tripulação come: comida {{before}} − {{abs}} = {{after}}",
+    "expedition": "Trajes da expedição: ar {{before}} − {{abs}} = {{after}}",
+    "expeditionRecalled": "Expedição recolhida, trajes já usados: ar {{before}} − {{abs}} = {{after}}",
+    "outside": "Fora da base: exposição {{before}} + {{delta}} = {{after}}",
+    "radiationNone": "Nenhum evento solar hoje: a exposição fica em {{after}}",
+    "radiationMiss": "O evento não chegou a Marte: a exposição fica em {{after}} (as células do escudo foram gastas mesmo assim)",
+    "radiationHit": "O evento chegou a Marte! Risco {{risk}} − escudo {{shield}} → exposição {{before}} + {{delta}} = {{after}}",
+    "earthAnswer": "Resposta da Terra sobre o sol {{aboutSol}}: {{answer}}",
+    "earthAnswerUseless": "A Terra respondeu, mas não existe amanhã nesta missão: perguntar no último sol não ajuda.",
+    "earthYes": "o evento vai chegar a Marte (previsão de um modelo da NASA).",
+    "earthNo": "o evento não vai chegar a Marte.",
+    "earthCalm": "nenhum evento esperado.",
+    "earthTravel": "O sinal levou entre {{min}} e {{max}} minutos em cada sentido."
+  },
+  "night": {
+    "title": "Noite",
+    "pickTitle": "Quer adivinhar o resultado desta noite?",
+    "pickHint": "Opcional. Acertar rende a faixa \"previsão certeira\". Errar não custa nada.",
+    "option": "Ar {{air}} · Comida {{food}} · Exposição: {{exposure}}",
+    "skip": "Só me mostre",
+    "right": "Acertou em cheio!",
+    "wrong": "Não desta vez. Veja a conta de verdade.",
+    "replay": "Rever a conta",
+    "toLog": "Ver o diário do sol"
+  },
+  "log": {
+    "title": "Diário do sol · sol {{n}}",
+    "yourGuess": "Seu palpite de manhã: \"{{answer}}\"",
+    "theAnswer": "O que as regras do jogo dizem: \"{{answer}}\"",
+    "guessRight": "Você acertou.",
+    "guessWrong": "Veja a conta abaixo.",
+    "whatIf": "E se… você tivesse movido 1 célula de {{from}} para {{to}}? Ar {{air}}, comida {{food}}, exposição: {{exposure}}.",
+    "next": "Próximo sol",
+    "finish": "Ver como a missão terminou"
+  },
+  "end": {
+    "home": "Voltamos todos!",
+    "early": "Retorno antecipado",
+    "earlyAir": "O ar acabou no sol {{n}}. O controle da missão traz a tripulação de volta mais cedo.",
+    "earlyFood": "A comida acabou no sol {{n}}. O controle da missão traz a tripulação de volta mais cedo.",
+    "verdicts": {
+      "on_edge": "No limite",
+      "with_margin": "Com margem",
+      "reference": "Missão de referência",
+      "early_return": "Retorno antecipado"
+    },
+    "margin_one": "Sobrou ar e comida para mais {{count}} sol.",
+    "margin_other": "Sobrou ar e comida para mais {{count}} sóis.",
+    "discoveries_one": "{{count}} descoberta",
+    "discoveries_other": "{{count}} descobertas",
+    "turningPoint": "O sol em que tudo mudou: sol {{n}}.",
+    "playAgain": "Quer jogar esta missão de novo com outro plano?",
+    "goBack": "Voltar ao sol em que tudo mudou (sol {{n}})",
+    "backHome": "Voltar ao início"
+  },
+  "card": {
+    "labels": { "measured": "MEDIDO", "scenario": "CENÁRIO", "simplification": "SIMPLIFICADO" },
+    "places": { "Mars": "Marte", "ISS": "Estação Espacial", "Sun": "o Sol", "Earth": "Terra", "Moon": "a Lua", "game": "jogo" },
+    "gameRule": "REGRA DO JOGO",
+    "open": "De onde vem este número?",
+    "source": "Fonte",
+    "record": "Registro",
+    "placeDate": "Onde e quando",
+    "processing": "Como foi tratado",
+    "gameUse": "Como o jogo usa",
+    "simplified": "O que foi simplificado",
+    "parallel": "Não foi medido em Marte: por que ainda ajuda",
+    "facts": "Fatos reais por trás",
+    "learnMore": "Quero entender melhor",
+    "close": "Fechar",
+    "realPhoto": "FOTO REAL",
+    "enhanced": "cor realçada",
+    "photoCredit": "{{credit}} · {{mission}} · {{date}} · {{place}}"
   },
   "footer": {
     "madeBy": "Feito pelo Time Rochette para o NASA Space Apps Challenge 2026.",

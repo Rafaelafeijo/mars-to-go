@@ -1,0 +1,30 @@
+name: E2E playthrough
+
+# Plays mission 1 end to end on a 360 px phone in both languages and keeps the screenshots.
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  playthrough:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node scripts/playthrough.mjs e2e-shots/en en
+      - run: node scripts/playthrough.mjs e2e-shots/pt-BR pt-BR
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playthrough-screens
+          path: e2e-shots
+          retention-days: 7

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mars-to-go/content": "workspace:*",
+    "@mars-to-go/sim": "workspace:*",
     "@mars-to-go/ui": "workspace:*",
     "i18next": "^27.1.1",
     "react": "^19.3.1",

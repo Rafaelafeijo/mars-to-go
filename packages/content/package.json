@@ -11,5 +11,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@mars-to-go/sim": "workspace:*"
   }
 }

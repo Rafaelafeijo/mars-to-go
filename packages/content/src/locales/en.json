@@ -4,19 +4,185 @@
     "tagline": "10 seconds to go.",
     "skipToContent": "Skip to content",
     "languageLabel": "Language",
-    "languages": {
-      "en": "EN",
-      "pt-BR": "PT"
-    },
-    "languageNames": {
-      "en": "English",
-      "pt-BR": "Portuguese"
-    }
+    "languages": { "en": "EN", "pt-BR": "PT" },
+    "languageNames": { "en": "English", "pt-BR": "Portuguese" }
   },
   "home": {
-    "intro": "Run a crewed base on Mars for 7 sols. No choice is free.",
+    "numbersLine": "7 sols · 10 cells · 5 decisions",
+    "intro": "Run a crewed base on Mars. No choice is free: the power that protects the crew today is the oxygen missing tomorrow.",
     "solExplained": "On Mars, a day has a name: sol. It lasts 40 minutes longer than ours.",
-    "comingSoon": "The game is being built during NASA Space Apps 2026. Come back soon."
+    "rolePrefix": "Today you are a",
+    "roles": ["pilot", "engineer", "scientist", "Mars farmer"],
+    "play": "Play",
+    "continue": "Continue sol {{sol}}",
+    "howItWorks": "How it works",
+    "howItWorksText": "Each sol you get 10 power cells. 3 keep the base warm; you place the other 7. Life Support makes air tonight. The Greenhouse makes food two sols later. The Shield protects the crew tonight. Every number shows where it comes from: tap it.",
+    "surprise": "Surprise me",
+    "surpriseLocked": "Opens after mission 1",
+    "assisted": "Assisted mode",
+    "assistedHint": "More time and slower math."
+  },
+  "missions": {
+    "m1": "Mission 1 · First sols"
+  },
+  "briefing": {
+    "title": "Your mission",
+    "crew": "Four astronauts live in a base in Jezero Crater, on Mars.",
+    "goal": "Your mission lasts 7 sols. Then a ship takes everyone home.",
+    "air": "Air: the crew breathes every sol. Mars air is not breathable, so you make it with power.",
+    "food": "Food: the crew eats every sol. Plants grow slowly: plant today, eat later.",
+    "power": "Power: 10 cells a sol, from weak Martian sunlight. Never enough for everything.",
+    "start": "Start sol 1"
+  },
+  "sol": {
+    "label": "SOL {{n}}",
+    "labelOf": "SOL {{n}} of {{total}}",
+    "caption": "day {{n}} on Mars"
+  },
+  "meters": {
+    "title": "Reserves",
+    "power": "Power",
+    "air": "Air",
+    "food": "Food",
+    "exposure": "Crew exposure",
+    "cellsToday": "{{count}} cells today",
+    "solsOfReserve_one": "{{count}} sol of reserve",
+    "solsOfReserve_other": "{{count}} sols of reserve",
+    "solsCaption": "a sol is a day on Mars",
+    "words": { "critical": "critical", "tight": "tight", "safe": "safe", "plenty": "plenty" },
+    "exposureWords": { "low": "low", "medium": "medium", "high": "high" }
+  },
+  "forecast": {
+    "title": "Forecast",
+    "calm": "Calm Sun today: no event seen.",
+    "event": "Solar event: {{kind}} {{label}}, seen on {{date}}.",
+    "kinds": { "flare": "flare", "cme": "cloud of particles (CME)", "sep": "particle storm" },
+    "risk": "Risk if it reaches Mars: {{word}}.",
+    "riskWords": ["none", "low", "medium", "high"],
+    "maybe": "Maybe it reaches Mars. Maybe not.",
+    "tomorrow": "Tomorrow:",
+    "tomorrowCalm": "calm Sun, as far as we know.",
+    "tomorrowEvent": "{{kind}} {{label}} — maybe reaches Mars.",
+    "dust": "Dust storm today: only {{cells}} cells."
+  },
+  "question": {
+    "title": "What do you think?",
+    "greenhouse": "If you plant today, when can the crew eat it?",
+    "greenhouseOptions": ["Tonight", "In 2 sols", "Never"],
+    "shield": "If the event reaches Mars tonight, what protects the crew?",
+    "shieldOptions": ["Life Support", "Greenhouse", "Shield"],
+    "air": "If you put no cell in Life Support, what happens to the air tonight?",
+    "airOptions": ["It goes up", "It goes down", "It stays the same"],
+    "saved": "Saved. We will check it tonight.",
+    "skip": "Skip"
+  },
+  "alloc": {
+    "title": "Place your cells",
+    "heating": "{{count}} cells keep the base warm (Mars is very cold).",
+    "left_one": "{{count}} cell left to place",
+    "left_other": "{{count}} cells left to place",
+    "allPlaced": "All cells placed.",
+    "add": "Add a cell to {{name}}",
+    "remove": "Remove a cell from {{name}}",
+    "locked": "Opens on sol {{n}}",
+    "cost": "Cost: {{text}}",
+    "lockPlan": "Lock the plan",
+    "wrongTotal": "Place all {{free}} cells ({{used}} placed).",
+    "destinations": {
+      "lifeSupport": { "name": "Life Support", "does": "+1 air tonight per cell", "cost": "cells only" },
+      "greenhouse": { "name": "Greenhouse", "does": "+2 food per cell, in 2 sols", "cost": "nothing tonight" },
+      "shield": { "name": "Shield", "does": "blocks 1 risk point per cell tonight", "cost": "spent even if the event does not come" },
+      "expedition": { "name": "Expedition", "does": "a real discovery at a Jezero site", "cost": "2 cells, 2 air, crew outside" },
+      "askEarth": { "name": "Ask Earth", "does": "an answer about tomorrow, tonight", "cost": "1 cell; the answer is slow" }
+    }
+  },
+  "math": {
+    "title": "The open math: tonight",
+    "after": "After tonight"
+  },
+  "steps": {
+    "lifeSupport": "Life Support: {{cells}} cells → air {{before}} + {{delta}} = {{after}}",
+    "greenhouseRescue": "Greenhouse rescue: air {{before}} − {{abs}} = {{after}}",
+    "harvestLost": "Greenhouse failure: {{lostFood}} food planted for sol {{harvestSol}} is lost",
+    "harvest": "Harvest: food {{before}} + {{delta}} = {{after}}",
+    "harvestNone": "Harvest: nothing ready tonight",
+    "plant": "Planting {{cells}} cells → {{food}} food on sol {{harvestSol}}",
+    "plantNone": "Nothing planted today",
+    "plantLate": "Planting {{cells}} cells → ready on sol {{harvestSol}}, after the mission ends",
+    "breathe": "The crew breathes: air {{before}} − {{abs}} = {{after}}",
+    "eat": "The crew eats: food {{before}} − {{abs}} = {{after}}",
+    "expedition": "Expedition suits: air {{before}} − {{abs}} = {{after}}",
+    "expeditionRecalled": "Expedition recalled, suits already used: air {{before}} − {{abs}} = {{after}}",
+    "outside": "Outside the base: exposure {{before}} + {{delta}} = {{after}}",
+    "radiationNone": "No solar event tonight: exposure stays {{after}}",
+    "radiationMiss": "The event did not reach Mars: exposure stays {{after}} (the shield cells were spent anyway)",
+    "radiationHit": "The event reached Mars! Risk {{risk}} − shield {{shield}} → exposure {{before}} + {{delta}} = {{after}}",
+    "earthAnswer": "Answer from Earth about sol {{aboutSol}}: {{answer}}",
+    "earthAnswerUseless": "Earth answered, but there is no tomorrow in this mission: asking on the last sol does not help.",
+    "earthYes": "the event will reach Mars (NASA model forecast).",
+    "earthNo": "the event will not reach Mars.",
+    "earthCalm": "no event expected.",
+    "earthTravel": "The signal took between {{min}} and {{max}} minutes each way."
+  },
+  "night": {
+    "title": "Night",
+    "pickTitle": "Guess tonight's result?",
+    "pickHint": "Optional. A right guess earns the stripe \"spot-on forecast\". A wrong guess costs nothing.",
+    "option": "Air {{air}} · Food {{food}} · Exposure: {{exposure}}",
+    "skip": "Just show me",
+    "right": "Spot on!",
+    "wrong": "Not this time. Here is the real math.",
+    "replay": "Replay the math",
+    "toLog": "See the sol log"
+  },
+  "log": {
+    "title": "Sol log · sol {{n}}",
+    "yourGuess": "Your guess this morning: \"{{answer}}\"",
+    "theAnswer": "What the game rules say: \"{{answer}}\"",
+    "guessRight": "You were right.",
+    "guessWrong": "Look at the math below.",
+    "whatIf": "What if… you had moved 1 cell from {{from}} to {{to}}? Air {{air}}, food {{food}}, exposure: {{exposure}}.",
+    "next": "Next sol",
+    "finish": "See how the mission ended"
+  },
+  "end": {
+    "home": "Everyone came home!",
+    "early": "Early return",
+    "earlyAir": "The air ran out on sol {{n}}. Mission control brings the crew back early.",
+    "earlyFood": "The food ran out on sol {{n}}. Mission control brings the crew back early.",
+    "verdicts": {
+      "on_edge": "On the edge",
+      "with_margin": "With margin",
+      "reference": "Reference mission",
+      "early_return": "Early return"
+    },
+    "margin_one": "There was air and food for {{count}} more sol.",
+    "margin_other": "There was air and food for {{count}} more sols.",
+    "discoveries_one": "{{count}} discovery",
+    "discoveries_other": "{{count}} discoveries",
+    "turningPoint": "The sol where everything changed: sol {{n}}.",
+    "playAgain": "Play this mission again with another plan?",
+    "goBack": "Go back to the sol where everything changed (sol {{n}})",
+    "backHome": "Back to home"
+  },
+  "card": {
+    "labels": { "measured": "MEASURED", "scenario": "SCENARIO", "simplification": "SIMPLIFIED" },
+    "places": { "Mars": "Mars", "ISS": "Space Station", "Sun": "the Sun", "Earth": "Earth", "Moon": "the Moon", "game": "game" },
+    "gameRule": "GAME RULE",
+    "open": "Where does this number come from?",
+    "source": "Source",
+    "record": "Record",
+    "placeDate": "Where and when",
+    "processing": "How it was treated",
+    "gameUse": "How the game uses it",
+    "simplified": "What was simplified",
+    "parallel": "Not measured on Mars: why it still helps",
+    "facts": "Real facts behind it",
+    "learnMore": "I want to understand more",
+    "close": "Close",
+    "realPhoto": "REAL PHOTO",
+    "enhanced": "enhanced color",
+    "photoCredit": "{{credit}} · {{mission}} · {{date}} · {{place}}"
   },
   "footer": {
     "madeBy": "Made by Team Rochette for the NASA Space Apps Challenge 2026.",

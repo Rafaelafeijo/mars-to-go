@@ -28,3 +28,6 @@ __pycache__/
 *.log
 playwright-report/
 test-results/
+
+# Playthrough screenshots (CI artifact)
+e2e-shots/
