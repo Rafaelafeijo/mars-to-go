@@ -102,7 +102,7 @@ try {
       }
       if (sol === 1 || sol === 5) await shot(`04-world-sol${sol}-planned`, false);
       if (sol === 2) {
-        const sky = page.locator('.world__sky-btn');
+        const sky = page.locator('.tool--sky');
         await sky.click();
         await page.waitForTimeout(1200);
         await shot('06-world-sky-view', false);
