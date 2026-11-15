@@ -53,15 +53,18 @@ describe('data cards (rule 16)', () => {
     expect(MISSION_2.mode).toBe('free');
     expect(MISSION_2.sols).toHaveLength(7);
     expect(MISSION_2.sols[6]?.event?.risk).toBe(3);
-    expect(crisisFor(MISSION_2, 7)).toBe('solarStorm');
+    // Crisis on every fast storm that reaches Mars (sols 3, 5, 6, 7), never on a false alarm.
+    expect([1, 2, 3, 4, 5, 6, 7].map((s) => crisisFor(MISSION_2, s))).toEqual([null, null, 'solarStorm', null, 'solarStorm', 'solarStorm', 'solarStorm']);
+    expect(MISSION_2.sols.filter((s) => s.event?.reachesMars === false)).toHaveLength(2);
     for (const s of MISSION_2.sols) if (s.event) expect(cardById(catalogEvent(s.event.id)?.cardId ?? ''), s.event.id).toBeDefined();
   });
 
-  it('mission 2 can be won with shields and one rover trip, and is lost without shields', () => {
-    const win: [number, number, number, 0 | 1][] = [[5, 2, 0, 0], [4, 1, 0, 1], [4, 1, 2, 0], [5, 2, 0, 0], [5, 0, 2, 0], [6, 1, 0, 0], [4, 0, 3, 0]];
+  it('mission 2 can be won by asking Earth about the false alarms, and is lost without shields', () => {
+    // [air, greenhouse, shield, rover, antenna]: ask on sols 1 and 3 (sols 2 and 4 are false alarms).
+    const win: [number, number, number, 0 | 1, 0 | 1][] = [[4, 2, 0, 0, 1], [5, 0, 0, 1, 0], [3, 1, 2, 0, 1], [6, 1, 0, 0, 0], [4, 1, 2, 0, 0], [5, 0, 2, 0, 0], [4, 0, 3, 0, 0]];
     let s = newMission(MISSION_2);
-    for (const [ls, gh, sh, ex] of win) {
-      const a = { lifeSupport: ls, greenhouse: gh, shield: sh, expedition: ex, askEarth: 0 as const };
+    for (const [ls, gh, sh, ex, ask] of win) {
+      const a = { lifeSupport: ls, greenhouse: gh, shield: sh, expedition: ex, askEarth: ask };
       expect(validateAllocation(s, a, false), `sol ${s.sol}`).toEqual([]);
       s = resolveNight(MISSION_2, s, { allocation: a }).state;
     }

@@ -113,6 +113,8 @@ function Terrain({ onGround }: { onGround: (p: THREE.Vector3) => void }) {
     <mesh
       geometry={geo}
       onPointerDown={(e: ThreeEvent<PointerEvent>) => {
+        // Only the main button (left click or a finger): a right click must not start a walk.
+        if (e.button !== 0) return;
         if (e.intersections[0]?.object !== e.object) return;
         e.stopPropagation();
         onGround(e.point.clone());
@@ -613,6 +615,8 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
       keys.current = {};
     };
     globalThis.addEventListener('blur', blur);
+    const noMenu = (e: Event) => e.preventDefault();
+    el.addEventListener('contextmenu', noMenu);
     el.addEventListener('wheel', wheel, { passive: false });
     el.addEventListener('pointerdown', pdown);
     el.addEventListener('pointermove', pmove);
@@ -623,6 +627,7 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
       globalThis.removeEventListener('keyup', up);
       globalThis.removeEventListener('mars-zoom', zoomEvent);
       globalThis.removeEventListener('blur', blur);
+      el.removeEventListener('contextmenu', noMenu);
       el.removeEventListener('wheel', wheel);
       el.removeEventListener('pointerdown', pdown);
       el.removeEventListener('pointermove', pmove);

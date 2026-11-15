@@ -11,13 +11,11 @@ import { SunThisWeek } from './SunThisWeek';
 
 export function Home({
   onPlay,
-  onPlayM2,
   assisted,
   onAssisted,
   onNasaData,
 }: {
   onPlay: () => void;
-  onPlayM2?: () => void;
   assisted: boolean;
   onAssisted: (on: boolean) => void;
   onNasaData: () => void;
@@ -58,11 +56,6 @@ export function Home({
             <Icon name="radiation" size={16} className="tone-rad" /> {t('hero.nasaData')}
           </button>
         </div>
-        {onPlayM2 && (
-          <button type="button" className="hero__m2" onClick={onPlayM2}>
-            <Icon name="storm" size={18} className="tone-rad" /> {t('home.mission2')}
-          </button>
-        )}
         <label className="hero__assist">
           <input type="checkbox" role="switch" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
           <span>

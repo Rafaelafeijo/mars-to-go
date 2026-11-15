@@ -14,10 +14,12 @@ export interface FactText {
 
 export interface SolFact {
   id: string;
-  /** Mission 1 sol this fact belongs to (1..7). */
+  /** Mission the fact belongs to (default m1). No fact or photo repeats across missions. */
+  mission?: 'm1' | 'm2';
+  /** Sol this fact belongs to (1..7). */
   sol: number;
-  /** One of the 10 approved photo slugs in apps/web/public/images (see ASSETS). */
-  photo: {
+  /** One of the approved photo slugs in apps/web/public/images (see ASSETS); none when no real photo fits. */
+  photo?: {
     slug: string;
     credit: string;
     mission: string;
@@ -266,6 +268,107 @@ export const SOL_FACTS: SolFact[] = [
   },
 ];
 
+const NTRS = (id: string) => `https://ntrs.nasa.gov/citations/${id}`;
+const fact2 = (f: Omit<SolFact, 'mission' | 'scienceIds'>): SolFact => ({ ...f, mission: 'm2', scienceIds: [] });
+
+/** Mission 2 facts: base design and real NASA studies, each read in full on 2026-11-14/15. */
+export const SOL_FACTS_M2: SolFact[] = [
+  fact2({
+    id: 'm2-suits',
+    sol: 1,
+    sourceName: 'NASA/JPL PIA24033, "Spacesuit Materials on Perseverance\'s SHERLOC Calibration Target"',
+    sourceUrl: 'https://www.jpl.nasa.gov/images/pia24033-spacesuit-materials-on-perseverances-sherloc-calibration-target/',
+    text: {
+      en: { title: 'Spacesuit pieces already on Mars', body: 'The rover Perseverance carries the first spacesuit materials ever sent to Mars, including a piece of helmet visor. Scientists watch how they hold up in the strong radiation on the surface.' },
+      'pt-BR': { title: 'Pedaços de traje espacial já estão em Marte', body: 'O rover Perseverance leva os primeiros materiais de traje espacial enviados a Marte, incluindo um pedaço de viseira de capacete. Os cientistas observam como eles aguentam a radiação forte da superfície.' },
+    },
+  }),
+  fact2({
+    id: 'm2-oxygen-tanks',
+    sol: 2,
+    sourceName: 'NASA Glenn, "Liquefaction and Storage of In-Situ Oxygen on the Surface of Mars" (NTRS 20160004210)',
+    sourceUrl: NTRS('20160004210'),
+    text: {
+      en: { title: 'Oxygen kept in tanks', body: 'NASA engineers studied how to cool oxygen made on Mars until it becomes a liquid and keep it for up to two years in tanks. Your air tank works the same way: it stores what the machine makes.' },
+      'pt-BR': { title: 'Oxigênio guardado em tanques', body: 'Engenheiros da NASA estudaram como resfriar o oxigênio feito em Marte até ele virar líquido e guardá-lo por até dois anos em tanques. O seu tanque de ar funciona igual: guarda o que a máquina faz.' },
+    },
+  }),
+  fact2({
+    id: 'm2-power',
+    sol: 3,
+    sourceName: 'NASA, Human Exploration of Mars Design Reference Architecture 5.0 (NASA-SP-2009-566)',
+    sourceUrl: 'https://www.nasa.gov/pdf/373665main_NASA-SP-2009-566.pdf',
+    text: {
+      en: { title: 'Power for a real Mars base', body: 'In NASA\'s plan for a crewed Mars mission, a small nuclear power plant of 30 kilowatts sits about 1 km from the base. Power is what makes air, warmth and food possible.' },
+      'pt-BR': { title: 'Energia para uma base de verdade', body: 'No plano da NASA para uma missão tripulada a Marte, uma pequena usina nuclear de 30 quilowatts fica a cerca de 1 km da base. É a energia que torna possíveis o ar, o calor e a comida.' },
+    },
+  }),
+  fact2({
+    id: 'm2-rochette',
+    sol: 4,
+    photo: {
+      slug: 'rochette',
+      credit: 'NASA/JPL-Caltech',
+      mission: 'Mars 2020 Perseverance · Hazcam',
+      date: '2021-09-07 (sol 196)',
+      placeEn: 'Jezero Crater, Mars',
+      placePt: 'Cratera Jezero, Marte',
+      enhancedColor: false,
+      sourceUrl: 'https://science.nasa.gov/photojournal/rochette-after-perseverance-sampling',
+      recordId: 'PIA24840',
+      caption: { en: 'The rock Rochette after Perseverance drilled its samples (contrast enhanced).', 'pt-BR': 'A rocha Rochette depois que o Perseverance perfurou as amostras (contraste realçado).' },
+    },
+    sourceName: 'NASA Photojournal PIA24840, "Rochette After Perseverance Sampling"',
+    sourceUrl: 'https://science.nasa.gov/photojournal/rochette-after-perseverance-sampling',
+    text: {
+      en: { title: 'Holes in a Mars rock', body: 'This is the rock Rochette in Jezero, after Perseverance drilled rock cores out of it in 2021. Your rover\'s sample is like these: a small piece of Mars to study on Earth.' },
+      'pt-BR': { title: 'Furos numa rocha de Marte', body: 'Esta é a rocha Rochette, em Jezero, depois que o Perseverance tirou núcleos de rocha dela em 2021. A amostra do seu rover é como essas: um pedacinho de Marte para estudar na Terra.' },
+    },
+  }),
+  fact2({
+    id: 'm2-walk',
+    sol: 5,
+    sourceName: 'NASA, "Exploration EVA Testing and Analogs" (NTRS 20210000827) — Moon planning',
+    sourceUrl: NTRS('20210000827'),
+    text: {
+      en: { title: 'How far can you walk? (a Moon parallel)', body: 'For the Moon, NASA plans walks of about 2 km, because the suit must still have air to walk back. On Mars the same rule would apply; that is why your astronaut gets a warning at the edge.' },
+      'pt-BR': { title: 'Até onde dá para andar? (um paralelo com a Lua)', body: 'Para a Lua, a NASA planeja caminhadas de cerca de 2 km, porque o traje ainda precisa ter ar para a volta. Em Marte valeria a mesma regra; é por isso que o seu astronauta recebe um aviso na borda.' },
+    },
+  }),
+  fact2({
+    id: 'm2-kodiak',
+    sol: 6,
+    photo: {
+      slug: 'kodiak',
+      credit: 'NASA/JPL-Caltech/ASU/MSSS',
+      mission: 'Mars 2020 Perseverance · Mastcam-Z',
+      date: '2021-04-18',
+      placeEn: 'Jezero Crater, Mars',
+      placePt: 'Cratera Jezero, Marte',
+      enhancedColor: true,
+      sourceUrl: 'https://science.nasa.gov/photojournal/perseverance-captures-image-of-kodiak',
+      recordId: 'PIA24802',
+      caption: { en: 'Kodiak, a hill in Jezero Crater, seen by Perseverance (enhanced color).', 'pt-BR': 'Kodiak, um morro na Cratera Jezero, visto pelo Perseverance (cor realçada).' },
+    },
+    sourceName: 'NASA Photojournal PIA24802, "Perseverance Captures Image of Kodiak"',
+    sourceUrl: 'https://science.nasa.gov/photojournal/perseverance-captures-image-of-kodiak',
+    text: {
+      en: { title: 'A hill near your base', body: 'Kodiak is a real hill in Jezero Crater, photographed by Perseverance from far away. Scientists study its layers, like pages of a book, to read Mars\'s past.' },
+      'pt-BR': { title: 'Um morro perto da sua base', body: 'Kodiak é um morro de verdade na Cratera Jezero, fotografado de longe pelo Perseverance. Os cientistas estudam as suas camadas, como páginas de um livro, para ler o passado de Marte.' },
+    },
+  }),
+  fact2({
+    id: 'm2-co2-suits',
+    sol: 7,
+    sourceName: 'NASA/TDA Research, ICES 2011 (NTRS 20110008446)',
+    sourceUrl: NTRS('20110008446'),
+    text: {
+      en: { title: 'Breathing out on Mars is hard', body: 'In space, a suit can throw the gas we breathe out into the vacuum. On Mars that does not work, because the air outside is already carbon dioxide. Engineers working with NASA wrote that it "will be challenging".' },
+      'pt-BR': { title: 'Expirar em Marte é difícil', body: 'No espaço, o traje pode jogar no vácuo o gás que expiramos. Em Marte isso não funciona, porque o ar de fora já é gás carbônico. Engenheiros que trabalham com a NASA escreveram que isso "será desafiador".' },
+    },
+  }),
+];
+
 export interface NasaSource {
   id: string;
   name: string;
@@ -418,6 +521,20 @@ export const NASA_SOURCES: NasaSource[] = [
     mode: 'archive',
   },
   {
+    id: 'nasa-studies',
+    name: 'NASA technical studies (NTRS 20160004210, 20110008446, 20210000827; NASA-SP-2009-566; PIA24033)',
+    what: {
+      en: 'How a real Mars base would work: oxygen stored as a liquid in tanks, a 30-kilowatt power plant, suits on Mars, how far astronauts may walk (Moon planning), and spacesuit materials already on Mars.',
+      'pt-BR': 'Como uma base de verdade em Marte funcionaria: oxigênio guardado como líquido em tanques, uma usina de 30 quilowatts, trajes em Marte, até onde astronautas podem andar (planejamento da Lua) e materiais de traje que já estão em Marte.',
+    },
+    whereInGame: {
+      en: 'The facts of mission 2, the air tank and the walking-limit warning.',
+      'pt-BR': 'Os fatos da missão 2, o tanque de ar e o aviso de limite ao andar.',
+    },
+    url: 'https://ntrs.nasa.gov/',
+    mode: 'archive',
+  },
+  {
     id: 'mars-sky',
     name: 'NASA Science, "What Do Sunrises and Sunsets Look Like on Mars?"',
     what: {
@@ -425,8 +542,8 @@ export const NASA_SOURCES: NasaSource[] = [
       'pt-BR': 'De dia o céu de Marte é amarelo a laranja por causa da poeira; no pôr do sol ele fica azul perto do Sol. De Marte, o Sol parece ter cerca de dois terços do tamanho que vemos da Terra.',
     },
     whereInGame: {
-      en: 'The "Look at the sky" view in the 3D base: the sky colors and the sky fact, with the real sunset photo PIA19400.',
-      'pt-BR': 'A vista "Olhar o céu" na base 3D: as cores do céu e o fato do céu, com a foto real do pôr do sol PIA19400.',
+      en: 'The "Look at the sky" view in the 3D base: the sky colors and the sky fact.',
+      'pt-BR': 'A vista "Olhar o céu" na base 3D: as cores do céu e o fato do céu.',
     },
     url: 'https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/',
     mode: 'archive',

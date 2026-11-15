@@ -38,12 +38,12 @@ const T = {
   en: {
     play: 'Play', start: 'Start sol 1', add: 'Add a cell to', lock: 'Lock the plan', skip: 'Just show me', toLog: 'See the sol log',
     next: /Next sol|See how the mission ended/, home: /Mission accomplished!|Mission with failures/, success: 'Mission accomplished!', names: ['Life Support', 'Greenhouse', 'Shield'],
-    machines: ['Air machine', 'Greenhouse', 'Shield', 'Rover'], worldAdd: 'Add a cell to the', pass: 'Pass the night', planSol: 'Plan the sol',
+    machines: ['Air machine', 'Greenhouse', 'Shield', 'Rover', 'Antenna'], worldAdd: 'Add a cell to the', pass: 'Pass the night', planSol: 'Plan the sol',
   },
   'pt-BR': {
     play: 'Jogar', start: 'Começar o sol 1', add: 'Pôr uma célula em', lock: 'Travar o plano', skip: 'Só me mostre', toLog: 'Ver o diário do sol',
     next: /Próximo sol|Ver como a missão terminou/, home: /Missão bem-sucedida!|Missão com falhas/, success: 'Missão bem-sucedida!', names: ['Suporte à Vida', 'Estufa', 'Escudo'],
-    machines: ['Máquina de ar', 'Estufa', 'Escudo', 'Rover'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite', planSol: 'Planejar o sol',
+    machines: ['Máquina de ar', 'Estufa', 'Escudo', 'Rover', 'Antena'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite', planSol: 'Planejar o sol',
   },
 }[lang];
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -161,7 +161,9 @@ try {
   }
   // Mission 2 (world, en): opens from the end screen; the 10-second crisis appears on sol 7.
   if (mode === 'world' && lang === 'en' && ok) {
-    const PLAN_M2 = [[5, 2, 0], [4, 1, 0, 1], [4, 1, 2], [5, 2, 0], [5, 0, 2], [6, 1, 0], [4, 0, 3]];
+    // [air, greenhouse, shield, rover, antenna]: ask Earth on sols 1 and 3 (sols 2 and 4 are false alarms).
+    const PLAN_M2 = [[4, 2, 0, 0, 1], [5, 0, 0, 1, 0], [3, 1, 2, 0, 1], [6, 1, 0, 0, 0], [4, 1, 2, 0, 0], [5, 0, 2, 0, 0], [4, 0, 3, 0, 0]];
+    const CRISIS_SOLS = [3, 5, 6, 7];
     await page.getByRole('button', { name: /Play Mission 2/ }).click();
     await shot('10-m2-briefing');
     await page.getByRole('button', { name: T.start }).click();
@@ -173,9 +175,9 @@ try {
         for (let k = 0; k < row[i]; k++) await slot.click();
       }
       await page.getByRole('button', { name: T.pass }).click();
-      if (sol === 7) {
+      if (CRISIS_SOLS.includes(sol)) {
         await page.getByRole('alertdialog').waitFor();
-        await shot('11-m2-crisis', false);
+        if (sol === 3 || sol === 7) await shot(`11-m2-crisis-sol${sol}`, false);
         await page.getByRole('button', { name: /^Keep the plan/ }).click();
       }
       await page.getByRole('button', { name: T.next }).waitFor();

@@ -31,8 +31,7 @@
     "surprise": "Surprise me",
     "surpriseLocked": "Opens after mission 1",
     "assisted": "Assisted mode",
-    "assistedHint": "More time and slower math.",
-    "mission2": "Mission 2 · The May storm"
+    "assistedHint": "More time and slower math."
   },
   "missions": {
     "m1": "Mission 1 · First sols"
@@ -497,7 +496,8 @@
     },
     "thermo": {
       "aria": "Mars temperature: {{day}} °C by day, {{night}} °C at night.",
-      "source": "Mars is very cold: −31 °C by day, −89 °C at night (measured by NASA's Viking 1 lander). Heating always takes 3 cells."
+      "source": "Mars is very cold: −31 °C by day, −89 °C at night (measured by NASA's Viking 1 lander). Heating always takes 3 cells.",
+      "short": "−31 °C by day, −89 °C at night (NASA Viking 1)."
     },
     "does": {
       "lifeSupport": "turns Mars air (CO₂) into oxygen, like MOXIE.",
@@ -513,8 +513,9 @@
       "shieldHint": "If it reaches Mars tonight, only the Shield protects the crew.",
       "tomorrow": "Tomorrow: {{what}}",
       "go": "Plan the sol",
-      "damage": "Last night the radiation damaged the electronics: {{n}} fewer cells today.",
-      "earth": "Earth answered: {{answer}}"
+      "earth": "Earth answered: {{answer}}",
+      "damage_one": "Last night the radiation damaged the electronics: {{count}} cell fewer today.",
+      "damage_other": "Last night the radiation damaged the electronics: {{count}} cells fewer today."
     },
     "nightStrike": "The solar particles are reaching Mars!",
     "nightMiss": "The solar event did not come to Mars.",
@@ -539,7 +540,6 @@
       "airEmpty": "The tank is empty: there is no air for the crew.",
       "foodEmpty": "There is no food left for the crew.",
       "unknown": "There is no measurement that this flare reached Mars. In the game it does not hit the base.",
-      "damage": "What the shield did not block damaged the electronics: {{n}} fewer cells tomorrow.",
       "dose": "Dose {{n}} of {{max}}. Above {{max}}, the mission doctor sends the crew home.",
       "sample": "Rock sample collected at {{site}}. Samples on the rocket: {{count}}/{{goal}}.",
       "airHint_zero": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: not enough for another night.",
@@ -547,7 +547,11 @@
       "airHint_other": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{count}} more nights.",
       "foodHint_zero": "Every night the crew eats {{eaten}} food. There is now {{after}}: not enough for another night.",
       "foodHint_one": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more night.",
-      "foodHint_other": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more nights."
+      "foodHint_other": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more nights.",
+      "damage_one": "What the shield did not block damaged the electronics: {{count}} cell fewer tomorrow.",
+      "damage_other": "What the shield did not block damaged the electronics: {{count}} cells fewer tomorrow.",
+      "spareShield_one": "{{count}} Shield cell was more than needed: the risk was only {{risk}}.",
+      "spareShield_other": "{{count}} Shield cells were more than needed: the risk was only {{risk}}."
     },
     "sites": {
       "rochette": "the rock Rochette",
@@ -595,14 +599,24 @@
       "moveToShield": "Move {{n}} cells from the Air machine to the Shield (−{{n}} air tonight)",
       "recallExpedition": "Call the rover back (no sample, suits' air already spent)",
       "keepPlan": "Keep the plan",
-      "timeout": "Time is up: the plan stays as it was."
+      "timeout": "Time is up: the plan stays as it was.",
+      "titleCme": "A fast cloud reaches Mars tonight!",
+      "textCme": "NASA's model forecast this fast cloud at Mars. It is your last chance to change the plan:"
     },
     "reportCrisis": {
       "label": "Crisis",
       "moveToShield": "You moved {{n}} cells to the Shield.",
       "recallExpedition": "You called the rover back.",
       "keepPlan": "You kept the plan."
-    }
+    },
+    "earthToday": {
+      "yes": "today's solar event will reach Mars (NASA model forecast). Put cells in the Shield.",
+      "no": "today's solar event will not reach Mars. You can save the Shield cells.",
+      "unknown": "there is no measurement of whether today's event reaches Mars. Earth does not know.",
+      "calm": "no solar event is expected today."
+    },
+    "antennaSent": "Message sent to Earth. The answer about tomorrow arrives tonight.",
+    "nightAntenna": "Signal to Earth… the answer takes {{min}} to {{max}} minutes each way."
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
@@ -639,15 +653,16 @@
     }
   },
   "sunWeek": {
-    "badge": "REAL NASA DATA · ARCHIVE COPY",
+    "badge": "REAL NASA DATA · UPDATED TWICE A DAY",
     "title": "The Sun this week",
     "flares": "Flares",
     "cmes": "Particle clouds (CMEs)",
     "seps": "Particle storms",
     "strongest": "Strongest flare: {{cls}}, on {{date}}.",
     "explain": "A flare is a sudden flash of light on the Sun. A CME is a cloud of particles the Sun throws into space. The game's missions use real events like these.",
-    "copy": "Copy of {{date}}, not live",
-    "compact": "The Sun this week: {{flares}} flares, {{cmes}} particle clouds (NASA DONKI)"
+    "copy": "Updated {{date}} · copied from NASA twice a day",
+    "compact": "The Sun this week: {{flares}} flares, {{cmes}} particle clouds (NASA DONKI)",
+    "when": "{{date}}, {{time}} UTC"
   },
   "missionShort": {
     "m1": "Mission 1",

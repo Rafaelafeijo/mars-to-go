@@ -25,7 +25,7 @@ import {
   type EarthAnswer,
   type NightStep,
 } from '@mars-to-go/sim';
-import { SOL_FACTS, catalogEvent, type Locale } from '@mars-to-go/content';
+import { SOL_FACTS, SOL_FACTS_M2, catalogEvent, type Locale } from '@mars-to-go/content';
 import { photoSrcSet } from '../cards/Photo';
 import { longDate, prefersReducedMotion } from '../lib/format';
 import type { Game } from '../game/useGame';
@@ -52,7 +52,6 @@ function hasWebGL(): boolean {
 }
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const M1_ONLY_FACTS = ['sol3-flare', 'sol5-cme'];
 const sumSteps =(steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 
 interface Props {
@@ -120,8 +119,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const growing = base.pendingHarvests.map((h) => ({ ...h, daysLeft: h.sol - base.sol }));
   if (!night && a.greenhouse > 0) growing.push({ sol: base.sol + V.GREENHOUSE_DELAY_SOLS, food: a.greenhouse * V.FOOD_PER_GREENHOUSE_CELL, daysLeft: V.GREENHOUSE_DELAY_SOLS });
   const missionName = t(`missionShort.${def.id}`, { defaultValue: t('missionShort.m1') });
-  // Facts of sols 3 and 5 talk about mission 1's own events: not shown in other missions.
-  const fact = SOL_FACTS.find((f) => f.sol === base.sol && (def.id === 'm1' || !M1_ONLY_FACTS.includes(f.id)));
+  // Each mission has its own facts: no fact or photo repeats from one mission to the next.
+  const fact = (def.id === 'm2' ? SOL_FACTS_M2 : SOL_FACTS).find((f) => f.sol === base.sol);
 
   // The 10-second crisis (SIM_MODEL §6): a fast storm on this sol asks for a choice when the plan is locked.
   const stormSol = !night && crisisFor(def, base.sol) === 'solarStorm';
@@ -205,16 +204,18 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const eventText = ev ? cap(t('world.forecast.event', { kind: t(`forecast.kinds.${ev.kind}`), label: evLabel(ev) }).replace(/\s+\./, '.')) : '';
 
   // Earth's answer: tonight (report) and the next morning (banner).
-  const earthText = (ans: EarthAnswer | undefined): string | null => {
+  // At night the answer is about "tomorrow"; the next morning the same answer is about "today".
+  const earthText = (ans: EarthAnswer | undefined, when: 'tomorrow' | 'today' = 'tomorrow'): string | null => {
     if (!ans) return null;
     if (ans.aboutSol === null) return t('world.earth.last');
-    if (!ans.eventId) return t('world.earth.calm');
-    if (ans.reachesMars === true) return t('world.earth.yes');
-    if (ans.reachesMars === 'unknown') return t('world.earth.unknown');
-    return t('world.earth.no');
+    const ns = when === 'today' ? 'world.earthToday' : 'world.earth';
+    if (!ans.eventId) return t(`${ns}.calm`);
+    if (ans.reachesMars === true) return t(`${ns}.yes`);
+    if (ans.reachesMars === 'unknown') return t(`${ns}.unknown`);
+    return t(`${ns}.no`);
   };
   const lastLog = base.log[base.log.length - 1];
-  const morningEarth = lastLog && lastLog.sol === base.sol - 1 ? earthText(lastLog.earthAnswer) : null;
+  const morningEarth = lastLog && lastLog.sol === base.sol - 1 ? earthText(lastLog.earthAnswer, 'today') : null;
   const doseNow = night ? (night.result.state.exposure) : base.exposure;
 
   // Sol report numbers, straight from the simulation steps of tonight.
@@ -358,10 +359,9 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         <section className="hud-skycard wpanel" aria-labelledby="skycard-title">
           <span className="report__badge">{t('world.report.realNasa')}</span>
           <h2 id="skycard-title">{t('world.sky.title')}</h2>
-          <img src={`${import.meta.env.BASE_URL}images/gale-sunset-480.webp`} alt={t('world.sky.photo')} />
+          {/* No photo here: the Gale sunset photo already belongs to a sol fact (no repeats). */}
           <p>{t('world.sky.day')}</p>
           <p className="muted small">
-            {t('world.sky.photo')}{' '}
             <a href="https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/" target="_blank" rel="noreferrer">
               {t('world.sky.source')}
             </a>
@@ -426,7 +426,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
           </span>
           <strong>{isNight ? V.MARS_DAY_TEMP_MIN_C : V.MARS_DAY_TEMP_MAX_C} °C</strong>
         </p>
-        <p className="muted small">{t('world.thermo.source')}</p>
+        <p className="muted small thermo__long">{t('world.thermo.source')}</p>
+        <p className="muted small thermo__short">{t('world.thermo.short')}</p>
       </section>
 
       {/* Right bottom: cells in hand and pass the night */}
@@ -453,6 +454,11 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
           </span>
           {lost > 0 && <span className="hud-hand__lost"> · {t('world.hand.lost', { n: lost })}</span>}
         </p>
+        {a.askEarth === 1 && !night && (
+          <p className="hud-hand__sent" role="status">
+            <Icon name="antenna" size={14} /> {t('world.antennaSent')}
+          </p>
+        )}
         <button type="button" className="btn btn--primary" disabled={!ready || night !== null} onClick={passNight}>
           <Icon name="moon" size={18} /> {ready ? t('world.hand.pass') : t('world.hand.placeFirst', { count: left })}
         </button>
@@ -532,7 +538,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             {!ev && tm && <p>{t('world.banner.tomorrow', { what: cap(t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: evLabel(tm) }).replace(/\s+,/, ',')) })}</p>}
             {lost > 0 && (
               <p className="banner__alert">
-                <Icon name="energy" size={18} /> {t('world.banner.damage', { n: lost })}
+                <Icon name="energy" size={18} /> {t('world.banner.damage', { count: lost })}
               </p>
             )}
             {morningEarth && (
@@ -560,9 +566,9 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
               </span>
             )}
             <h2 id="crisis-title">
-              <Icon name="storm" size={28} className="tone-rad" /> {t('world.crisis.title')}
+              <Icon name="storm" size={28} className="tone-rad" /> {ev?.kind === 'cme' ? t('world.crisis.titleCme') : t('world.crisis.title')}
             </h2>
-            <p id="crisis-text">{t('world.crisis.text')}</p>
+            <p id="crisis-text">{ev?.kind === 'cme' ? t('world.crisis.textCme') : t('world.crisis.text')}</p>
             <div className="crisis__choices">
               <button type="button" className="btn btn--primary" disabled={a.lifeSupport === 0} onClick={() => resolveCrisis('moveToShield')}>
                 <Icon name="shield" size={18} /> {t('world.crisis.moveToShield', { n: Math.min(V.CRISIS_SHIELD_SWAP_CELLS, a.lifeSupport) })}
@@ -587,6 +593,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
           {shieldHeld && <span className="world__night-ok">{t('world.nightShield')}</span>}
           {exposed && <span className="world__night-bad">{t('world.nightExposed')}</span>}
           {plan.expedition > 0 && <span className="world__night-ev">{t('world.nightRover')}</span>}
+          {plan.askEarth > 0 && <span className="world__night-ev">{t('world.nightAntenna', { min: V.RADIO_DELAY_MIN_MINUTES, max: V.RADIO_DELAY_MAX_MINUTES })}</span>}
         </div>
       )}
 
@@ -635,7 +642,12 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                         : radiation.detail.reachesMars === 'unknown'
                           ? t('world.report.unknown')
                           : t('world.report.miss')}
-                    {typeof damage === 'number' && <span className="stat__hint is-bad">{t('world.report.damage', { n: damage })}</span>}
+                    {typeof damage === 'number' && <span className="stat__hint is-bad">{t('world.report.damage', { count: damage })}</span>}
+                    {radiation?.detail?.reachesMars === true && Number(radiation.detail.shield) > Number(radiation.detail.risk) && (
+                      <span className="stat__hint">
+                        {t('world.report.spareShield', { count: Number(radiation.detail.shield) - Number(radiation.detail.risk), risk: radiation.detail.risk })}
+                      </span>
+                    )}
                     <span className="stat__hint">{t('world.report.dose', { n: after.exposure, max: V.DOSE_LIMIT })}</span>
                     <span className="stat__hint">{t('world.report.radHint')}</span>
                   </span>
@@ -666,8 +678,10 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                 )}
               </ul>
               {fact && (
-                <figure className="report__fact">
-                  <img src={`${import.meta.env.BASE_URL}images/${fact.photo.slug}-960.webp`} srcSet={photoSrcSet(fact.photo.slug)} sizes="(max-width: 640px) 100vw, 560px" alt={fact.photo.caption?.[locale] ?? fact.text[locale].title} />
+                <figure className={`report__fact${fact.photo ? '' : ' report__fact--text'}`}>
+                  {fact.photo && (
+                    <img src={`${import.meta.env.BASE_URL}images/${fact.photo.slug}-960.webp`} srcSet={photoSrcSet(fact.photo.slug)} sizes="(max-width: 640px) 100vw, 560px" alt={fact.photo.caption?.[locale] ?? fact.text[locale].title} />
+                  )}
                   <figcaption>
                     <span className="report__badge">{t('world.report.realNasa')}</span>
                     <strong className="report__fact-title">{fact.text[locale].title}</strong>
@@ -675,11 +689,14 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                     <a href={fact.sourceUrl} target="_blank" rel="noreferrer">
                       {fact.sourceName}
                     </a>
-                    <span className="report__credit">
-                      {t('card.realPhoto')}
-                      {fact.photo.enhancedColor ? ` · ${t('card.enhanced')}` : ''} · {fact.photo.credit} · {fact.photo.mission} · {locale === 'pt-BR' ? fact.photo.placePt : fact.photo.placeEn}
-                      {fact.photo.caption ? ` · ${fact.photo.caption[locale]}` : ''}
-                    </span>
+                    {fact.photo && (
+                      <span className="report__credit">
+                        {t('card.realPhoto')}
+                        {fact.photo.enhancedColor ? ` · ${t('card.enhanced')}` : ''} · {fact.photo.credit} · {fact.photo.mission} · {fact.photo.date} ·{' '}
+                        {locale === 'pt-BR' ? fact.photo.placePt : fact.photo.placeEn}
+                        {fact.photo.caption ? ` · ${fact.photo.caption[locale]}` : ''}
+                      </span>
+                    )}
                   </figcaption>
                 </figure>
               )}

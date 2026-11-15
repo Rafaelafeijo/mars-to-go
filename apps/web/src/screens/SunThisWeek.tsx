@@ -44,7 +44,8 @@ export function SunThisWeek({ compact = false }: { compact?: boolean }) {
 
   if (!data) return null;
   const top = [...data.flares].sort((a, b) => strength(b.classType) - strength(a.classType))[0];
-  const updated = longDate(data.updatedAt.slice(0, 10), i18n.language);
+  // The copy is saved twice a day by the Pages workflow: show exactly when (UTC), never "live".
+  const updated = t('sunWeek.when', { date: longDate(data.updatedAt.slice(0, 10), i18n.language), time: data.updatedAt.slice(11, 16) });
 
   if (compact) {
     return (

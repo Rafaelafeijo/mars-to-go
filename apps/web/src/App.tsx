@@ -15,22 +15,6 @@ import { WorldScreen } from './world/WorldScreen';
 import { NasaDataPanel } from './world/NasaDataPanel';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
-/** Progress stays on this device only (rule 9): mission 2 opens after mission 1 ends with everyone home. */
-const M2_KEY = 'marsToGo.m2Unlocked';
-function readM2(): boolean {
-  try {
-    return localStorage.getItem(M2_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-function saveM2() {
-  try {
-    localStorage.setItem(M2_KEY, '1');
-  } catch {
-    /* private mode: the button still shows on the end screen */
-  }
-}
 type Ui = 'world' | 'one' | 'list';
 
 /**
@@ -49,11 +33,8 @@ export function App() {
   const main = useRef<HTMLElement>(null);
   const [ui] = useState<Ui>(initialUi);
   const [nasaOpen, setNasaOpen] = useState(false);
+  // Mission 2 opens only from the end of mission 1 with everyone home (no mission buttons on the home screen).
   const m1Home = game.screen === 'end' && game.def.id === 'm1' && game.state.status === 'returned_all';
-  useEffect(() => {
-    if (m1Home) saveM2();
-  }, [m1Home]);
-  const m2Open = m1Home || readM2();
 
   // Each new screen starts at the top, with focus on the main region for screen readers.
   useEffect(() => {
@@ -95,7 +76,6 @@ export function App() {
         {game.screen === 'home' && (
           <Home
             onPlay={() => g.startMission(MISSION_1)}
-            onPlayM2={m2Open ? () => g.startMission(MISSION_2) : undefined}
             assisted={game.assisted}
             onAssisted={g.setAssisted}
             onNasaData={() => setNasaOpen(true)}

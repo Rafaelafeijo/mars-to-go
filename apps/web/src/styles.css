@@ -2616,6 +2616,36 @@ button.top__brand {
   color: var(--color-text-muted);
 }
 
+/* Design review C. Antenna feedback; phone: shorter sky panel, more room between panels. */
+.hud-hand__sent {
+  grid-column: 1 / -1;
+  margin: 4px 0 0 !important;
+  font-size: 0.78rem !important;
+  color: #ffe2a8;
+}
+.thermo__short {
+  display: none;
+}
+@media (max-width: 899px) {
+  .thermo__long {
+    display: none;
+  }
+  .thermo__short {
+    display: block;
+  }
+  .hud-mission,
+  .hud-sky {
+    top: 100px;
+  }
+  .hud-mission__list {
+    gap: 4px;
+  }
+}
+/* Dialogs scroll when the phone is short, so every button can be reached. */
+.banner {
+  overflow-y: auto;
+}
+
 /* Mission 2 entry on the home screen. */
 .hero__m2 {
   display: inline-flex;

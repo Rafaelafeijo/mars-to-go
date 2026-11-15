@@ -44,6 +44,7 @@ export const CATALOG: CatalogEvent[] = [
     reachesMars: 'unknown',
     fast: false,
   },
+  // "fast" for a CME (ADR-0034): DONKI's most accurate speed ≥ 1,000 km/s and a Mars arrival → the crisis.
   {
     id: '2024-05-13T09:12:00-CME-001',
     cardId: 'evt-cme-2024-05-13',
@@ -52,7 +53,7 @@ export const CATALOG: CatalogEvent[] = [
     date: '2024-05-13',
     risk: 2,
     reachesMars: true,
-    fast: false,
+    fast: true,
   },
   {
     id: '2024-05-14T17:30:00-CME-001',
@@ -62,6 +63,37 @@ export const CATALOG: CatalogEvent[] = [
     date: '2024-05-14',
     risk: 2,
     reachesMars: true,
+    fast: true,
+  },
+  {
+    id: '2024-05-16T13:38:00-CME-001',
+    cardId: 'evt-cme-2024-05-16',
+    classLabel: 'CME',
+    kind: 'cme',
+    date: '2024-05-16',
+    risk: 2,
+    reachesMars: true,
+    fast: true,
+  },
+  // False alarms: WSA-ENLIL simulated these CMEs and forecast impacts elsewhere (Psyche), not at Mars.
+  {
+    id: '2024-05-14T17:48:00-CME-001',
+    cardId: 'evt-cme-2024-05-14-psyche',
+    classLabel: 'CME',
+    kind: 'cme',
+    date: '2024-05-14',
+    risk: 2,
+    reachesMars: false,
+    fast: false,
+  },
+  {
+    id: '2024-05-15T14:53:00-CME-001',
+    cardId: 'evt-cme-2024-05-15-psyche',
+    classLabel: 'CME',
+    kind: 'cme',
+    date: '2024-05-15',
+    risk: 2,
+    reachesMars: false,
     fast: false,
   },
   {
@@ -104,9 +136,10 @@ export const MISSION_1: MissionDef = {
 };
 
 /**
- * Mission 2 "The May storm": free mode (every machine open), the real week of May 14–20, 2024.
- * Sol 1 X8.7 flare (no Mars evidence) · sol 3 and sol 5 CMEs that WSA-ENLIL forecast at Mars ·
- * sol 7 the May 20 storm measured at Mars by Curiosity's RAD (fast: the 10-second crisis).
+ * Mission 2 "The May storm" (ADR-0034): free mode, a real event every sol of May 2024.
+ * Sol 1 X8.7 flare (no Mars evidence) · sols 2 and 4 false alarms (CMEs the model sent to Psyche) ·
+ * sols 3, 5, 6 fast CMEs WSA-ENLIL forecast at Mars (crisis) · sol 7 the May 20 storm measured
+ * at Mars by Curiosity's RAD (risk 3, crisis). Shielding every sol is too expensive: ask Earth.
  */
 export const MISSION_2: MissionDef = {
   id: 'm2',
@@ -114,11 +147,11 @@ export const MISSION_2: MissionDef = {
   seed: 2,
   sols: [
     { dust: false, event: ev('2024-05-14T16:46:00-FLR-001') },
-    { dust: false, event: null },
+    { dust: false, event: ev('2024-05-14T17:48:00-CME-001') },
     { dust: false, event: ev('2024-05-13T09:12:00-CME-001') },
-    { dust: false, event: null },
+    { dust: false, event: ev('2024-05-15T14:53:00-CME-001') },
     { dust: false, event: ev('2024-05-14T17:30:00-CME-001') },
-    { dust: false, event: null },
+    { dust: false, event: ev('2024-05-16T13:38:00-CME-001') },
     { dust: false, event: ev('NASA-2024-080-MARS-2024-05-20') },
   ],
 };

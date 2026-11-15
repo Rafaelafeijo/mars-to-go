@@ -31,8 +31,7 @@
     "surprise": "Me surpreenda",
     "surpriseLocked": "Abre depois da missão 1",
     "assisted": "Modo assistido",
-    "assistedHint": "Mais tempo e conta mais devagar.",
-    "mission2": "Missão 2 · A tempestade de maio"
+    "assistedHint": "Mais tempo e conta mais devagar."
   },
   "missions": {
     "m1": "Missão 1 · Primeiros sóis"
@@ -497,7 +496,8 @@
     },
     "thermo": {
       "aria": "Temperatura em Marte: {{day}} °C de dia, {{night}} °C à noite.",
-      "source": "Marte é muito frio: −31 °C de dia, −89 °C à noite (medido pela sonda Viking 1 da NASA). O aquecimento sempre gasta 3 células."
+      "source": "Marte é muito frio: −31 °C de dia, −89 °C à noite (medido pela sonda Viking 1 da NASA). O aquecimento sempre gasta 3 células.",
+      "short": "−31 °C de dia, −89 °C à noite (Viking 1, NASA)."
     },
     "does": {
       "lifeSupport": "transforma o ar de Marte (CO₂) em oxigênio, como o MOXIE.",
@@ -513,8 +513,9 @@
       "shieldHint": "Se chegar a Marte esta noite, só o Escudo protege a tripulação.",
       "tomorrow": "Amanhã: {{what}}",
       "go": "Planejar o sol",
-      "damage": "Na noite passada a radiação danificou os eletrônicos: {{n}} células a menos hoje.",
-      "earth": "A Terra respondeu: {{answer}}"
+      "earth": "A Terra respondeu: {{answer}}",
+      "damage_one": "Na noite passada a radiação danificou os eletrônicos: {{count}} célula a menos hoje.",
+      "damage_other": "Na noite passada a radiação danificou os eletrônicos: {{count}} células a menos hoje."
     },
     "nightStrike": "As partículas do Sol estão chegando a Marte!",
     "nightMiss": "O evento solar não veio para Marte.",
@@ -539,7 +540,6 @@
       "airEmpty": "O tanque está vazio: não há ar para a tripulação.",
       "foodEmpty": "Não há mais comida para a tripulação.",
       "unknown": "Não há medição de que esta erupção chegou a Marte. No jogo ela não atinge a base.",
-      "damage": "O que o escudo não bloqueou danificou os eletrônicos: {{n}} células a menos amanhã.",
       "dose": "Dose {{n}} de {{max}}. Acima de {{max}}, o médico da missão manda a tripulação para casa.",
       "sample": "Amostra de rocha coletada em {{site}}. Amostras no foguete: {{count}}/{{goal}}.",
       "airHint_zero": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: não dá para mais nenhuma noite.",
@@ -547,7 +547,11 @@
       "airHint_other": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{count}} noites.",
       "foodHint_zero": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: não dá para mais nenhuma noite.",
       "foodHint_one": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noite.",
-      "foodHint_other": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noites."
+      "foodHint_other": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noites.",
+      "damage_one": "O que o escudo não bloqueou danificou os eletrônicos: {{count}} célula a menos amanhã.",
+      "damage_other": "O que o escudo não bloqueou danificou os eletrônicos: {{count}} células a menos amanhã.",
+      "spareShield_one": "{{count}} célula de Escudo foi além do necessário: o risco era só {{risk}}.",
+      "spareShield_other": "{{count}} células de Escudo foram além do necessário: o risco era só {{risk}}."
     },
     "sites": {
       "rochette": "a rocha Rochette",
@@ -595,14 +599,24 @@
       "moveToShield": "Passar {{n}} células da Máquina de ar para o Escudo (−{{n}} de ar nesta noite)",
       "recallExpedition": "Chamar o rover de volta (sem amostra; o ar dos trajes já foi gasto)",
       "keepPlan": "Manter o plano",
-      "timeout": "O tempo acabou: o plano ficou como estava."
+      "timeout": "O tempo acabou: o plano ficou como estava.",
+      "titleCme": "Uma nuvem rápida chega a Marte esta noite!",
+      "textCme": "O modelo da NASA previu esta nuvem rápida em Marte. É a sua última chance de mudar o plano:"
     },
     "reportCrisis": {
       "label": "Crise",
       "moveToShield": "Você passou {{n}} células para o Escudo.",
       "recallExpedition": "Você chamou o rover de volta.",
       "keepPlan": "Você manteve o plano."
-    }
+    },
+    "earthToday": {
+      "yes": "o evento solar de hoje vai chegar a Marte (previsão de um modelo da NASA). Ponha células no Escudo.",
+      "no": "o evento solar de hoje não vai chegar a Marte. Dá para economizar as células do Escudo.",
+      "unknown": "não há medição dizendo se o evento de hoje chega a Marte. A Terra não sabe.",
+      "calm": "nenhum evento solar é esperado hoje."
+    },
+    "antennaSent": "Mensagem enviada à Terra. A resposta sobre amanhã chega hoje à noite.",
+    "nightAntenna": "Sinal para a Terra… a resposta leva de {{min}} a {{max}} minutos para cada lado."
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",
@@ -639,15 +653,16 @@
     }
   },
   "sunWeek": {
-    "badge": "DADO REAL DA NASA · CÓPIA DE ARQUIVO",
+    "badge": "DADO REAL DA NASA · ATUALIZADO 2 VEZES POR DIA",
     "title": "O Sol nesta semana",
     "flares": "Erupções",
     "cmes": "Nuvens de partículas (CMEs)",
     "seps": "Tempestades de partículas",
     "strongest": "Maior erupção: {{cls}}, em {{date}}.",
     "explain": "Uma erupção é um clarão repentino no Sol. Uma CME é uma nuvem de partículas que o Sol lança no espaço. As missões do jogo usam eventos reais como esses.",
-    "copy": "Cópia de {{date}}, não é ao vivo",
-    "compact": "O Sol nesta semana: {{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)"
+    "copy": "Atualizado em {{date}} · copiado da NASA 2 vezes por dia",
+    "compact": "O Sol nesta semana: {{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)",
+    "when": "{{date}}, às {{time}} UTC"
   },
   "missionShort": {
     "m1": "Missão 1",

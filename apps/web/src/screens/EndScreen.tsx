@@ -5,8 +5,6 @@
  */
 import { useTranslation } from 'react-i18next';
 import { V, missionObjectives, missionResult, turningPointSol, type NightStep } from '@mars-to-go/sim';
-import { cardById } from '@mars-to-go/content';
-import { Photo } from '../cards/Photo';
 import { Icon } from '../world/Icon';
 import type { Game } from '../game/useGame';
 
@@ -91,14 +89,12 @@ export function EndScreen({
   /** Mission 1 ended with everyone home: mission 2 is open. */
   onNext?: () => void;
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const s = game.state;
   const result = missionResult(s) ?? 'early_return';
   const goals = missionObjectives(s);
   const home = s.status === 'returned_all';
   const turn = turningPointSol(s);
-  const earth = cardById('photo-earth-from-mars');
-  const locale = i18n.language === 'pt-BR' ? 'pt-BR' : 'en';
   const failLog = s.failure ? s.log.find((l) => l.sol === s.failure?.sol) : undefined;
   const cause = s.failure?.cause;
   const firstAir = failLog?.steps.find((st) => st.resource === 'air')?.before;
@@ -160,7 +156,6 @@ export function EndScreen({
 
       <Chart game={game} />
       {turn && <p>{t('end.turningPoint', { n: turn })}</p>}
-      {home && earth?.photo && <Photo photo={earth.photo} alt={earth.text[locale].title} />}
       {game.def.id === 'm1' && <p className="muted">{home ? t('end.next') : t('end.locked')}</p>}
       <div className="actions">
         {onNext && (
