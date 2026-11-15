@@ -55,6 +55,16 @@ try {
   const page = await browser.newPage({ viewport: { width: 360, height: 780 }, deviceScaleFactor: 2, reducedMotion: 'reduce' });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
+  // Security review: the game must not request anything outside its own site (privacy rule 9),
+  // and the Content Security Policy must not block anything the game needs.
+  page.on('request', (r) => {
+    const u = new URL(r.url());
+    if (!['http:', 'https:'].includes(u.protocol)) return; // data:, blob:
+    if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1') errors.push(`third-party request: ${u.origin}`);
+  });
+  page.on('console', (m) => {
+    if (m.type() === 'error' && /Content Security Policy/i.test(m.text())) errors.push(`CSP: ${m.text()}`);
+  });
   const shot = (name, full = true) => page.screenshot({ path: `${out}/${name}.png`, fullPage: full });
 
   await page.goto(url);
