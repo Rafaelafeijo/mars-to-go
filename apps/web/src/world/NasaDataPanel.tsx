@@ -26,6 +26,8 @@ export function NasaDataPanel({ open, onClose }: { open: boolean; onClose: () =>
           <Icon name="radiation" size={22} className="tone-rad" /> {t('nasa.title')}
         </h2>
         <p className="muted">{t('nasa.intro')}</p>
+        {/* Moved from the home screen card (design review G). */}
+        <p className="muted">{t('sunWeek.explain')}</p>
         <ul className="nasa-panel__list">
           {NASA_SOURCES.map((s) => (
             <li key={s.id}>

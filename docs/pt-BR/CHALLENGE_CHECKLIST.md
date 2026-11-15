@@ -1,112 +1,116 @@
 # Checklist do desafio e da submissão
 
-Conferir este arquivo **antes de planejar cada fatia e antes de cada commit que muda o jogo**. Fonte: `docs/CHALLENGE_STATEMENT.md` (texto oficial) e o Project Submission Guide de 13 de novembro de 2026. Se um item não puder ser cumprido, registrar o motivo em `docs/adr/`.
+> Versão em inglês (padrão): [`docs/en/CHALLENGE_CHECKLIST.md`](../en/CHALLENGE_CHECKLIST.md).
+
+Conferir este arquivo **antes de planejar cada fatia e antes de cada commit que muda o jogo**. Fonte: `docs/CHALLENGE_STATEMENT.md` (texto oficial) e o Project Submission Guide de 13 de novembro de 2026. Se um item não puder ser cumprido, registrar o motivo em `docs/pt-BR/adr/`.
+
+**Situação revista em 15/11/2026** com base no código do commit `d77d8d2`. `[x]` = cumprido, com onde; `[ ]` = não cumprido ou ainda não conferido, com o que falta. "Parcial" quer dizer que parte do item está cumprida.
 
 ## A. A pergunta que decide tudo
 
 > Uma criança de 7 a 12 anos sai do jogo entendendo uma restrição real de sobreviver no espaço profundo, e não só tendo se divertido?
 
-Se a resposta para a fatia em andamento for "não", ela não está pronta.
+Se a resposta para a fatia em andamento for "não", ela não está pronta. Evidência até agora: os testes com criança no `PLAYTEST.md` (um testador, de 8 anos); a ADR-0033 foi escrita porque a primeira versão não tinha dilema de verdade.
 
 ## B. Exigências do objetivo
 
-- [ ] **B1. É um jogo ou app interativo que funciona** (protótipo jogável, não vídeo nem slides).
-- [ ] **B2. Público de 7 a 12 anos.** Texto e matemática cabem nessa faixa.
-- [ ] **B3. O jogador administra um posto avançado** lunar ou marciano (o nosso: base em Jezero, Marte).
-- [ ] **B4. Decisões reais sobre os cinco temas:**
-  - [ ] suporte à vida
-  - [ ] blindagem contra radiação
-  - [ ] orçamento de energia
-  - [ ] produção de alimentos
-  - [ ] atraso de comunicação
-- [ ] **B5. As consequências aparecem ao longo de uma missão simulada** (as escolhas de um sol afetam os seguintes).
-- [ ] **B6. Nenhuma escolha é grátis.** Cada opção custa algo visível.
-- [ ] **B7. A mecânica de troca fica clara** o bastante para a criança explicar com as próprias palavras ("economizei energia hoje e faltou oxigênio amanhã").
-- [ ] **B8. Dados abertos reais da NASA sustentam a simulação**, no lugar de números inventados.
+- [x] **B1. É um jogo ou app interativo que funciona.** Publicado em https://rafaelafeijo.github.io/mars-to-go/; as missões 1 e 2 são jogadas de ponta a ponta pelo teste automático do CI (`scripts/playthrough.mjs`).
+- [x] **B2. Público de 7 a 12 anos.** Textos das fichas em linguagem de criança (`packages/content/src/cards.ts`), números inteiros pequenos (10 células, 5 de ar); testado com uma criança de 8 anos (`PLAYTEST.md`). Só um testador até agora.
+- [x] **B3. O jogador administra um posto avançado** — uma base em Jezero, Marte, num mundo 3D (ADR-0032).
+- [x] **B4. Decisões reais sobre os cinco temas:**
+  - [x] suporte à vida — Máquina de ar: 1 célula → 1 de ar; a tripulação respira 5 por sol
+  - [x] blindagem contra radiação — células no Escudo contra eventos reais do DONKI; limite de dose (ADR-0033)
+  - [x] orçamento de energia — 10 células por sol, 3 sempre para o aquecimento, células perdidas depois de dano por radiação
+  - [x] produção de alimentos — Estufa: plantar hoje, colher 2 sóis depois
+  - [x] atraso de comunicação — Perguntar à Terra só responde à noite; desligado na crise de 10 segundos
+- [x] **B5. As consequências aparecem ao longo de uma missão simulada.** 7 sóis; ar, comida, dose, células perdidas e colheitas passam de um sol para o outro (`packages/sim`); gráfico final e "voltar ao sol em que tudo mudou".
+- [x] **B6. Nenhuma escolha é grátis.** Toda célula sai das mesmas 10; o rover custa células, ar e dose; Perguntar à Terra custa uma célula; na crise, cada célula passada custa o que ela fazia.
+- [ ] **B7. A mecânica de troca fica clara o bastante para a criança explicar.** Parcial: a conta ao vivo, as linhas de projeção e o relatório da noite mostram a troca; ainda não confirmado num teste com criança das missões 1 e 2 na forma atual.
+- [x] **B8. Dados abertos reais da NASA sustentam a simulação.** Eventos do DONKI, RAD do Curiosity, MOXIE, Mars Fact Sheet, BVAD, Veggie (`science.ts`, `catalog.ts`, `DATA_MAP.md`).
 
 ## C. Armadilhas que o texto manda evitar
 
-- [ ] **C1. Não existe escolha "segura" sem custo.**
-- [ ] **C2. Acabamento visual não substitui mecânica correta.** Um jogo simples que ensina uma restrição real vale mais que um bonito que não ensina.
-- [ ] **C3. Dois ou três recursos centrais**, não cinco ou seis ao mesmo tempo.
-- [ ] **C4. Não é abstrato demais** (fatos soltos) **nem técnico demais** para a idade.
-- [ ] **C5. Não é só educativo** (perde a atenção) **nem só entretenimento** (perde a precisão).
-- [ ] **C6. Dado estático nunca é apresentado como ao vivo.**
+- [x] **C1. Não existe escolha "segura" sem custo.** Blindar todo sol deixa pouca energia (ADR-0034); só ar e comida falha o objetivo da amostra (ADR-0033, ADR-0035).
+- [x] **C2. Acabamento visual não substitui mecânica correta.** Toda regra está em `packages/sim` com testes, escritos antes das telas.
+- [x] **C3. Dois ou três recursos centrais.** Energia, ar, comida (regra 3 do CLAUDE.md); a dose é um limite, não um quarto medidor para gastar.
+- [x] **C4. Não é abstrato demais nem técnico demais.** Fatos ligados à decisão que explicam (fato do sol, fichas).
+- [ ] **C5. Não é só educativo nem só entretenimento.** Parcial: precisa do próximo teste com criança para confirmar.
+- [x] **C6. Dado estático nunca é apresentado como ao vivo.** As missões usam um arquivo datado; "O Sol nesta semana" mostra "Atualizado em … UTC · copiado da NASA 2 vezes por dia"; o jogo não faz chamada ao vivo.
 
 ## D. Público e acesso
 
-- [ ] **D1. Linguagem simples.** Termo científico inevitável (dose de radiação, sol, microgravidade) é explicado ali mesmo, em uma frase.
-- [ ] **D2. Roda no navegador, sem download e sem conta.**
-- [ ] **D3. Pode servir também a irmãos mais velhos, pais ou sala de aula** (opcional).
+- [x] **D1. Linguagem simples; termos explicados em uma frase** (sol, erupção, CME, micrograys, milisievert, tau, coronógrafo nas fichas).
+- [x] **D2. Roda no navegador, sem download e sem conta.**
+- [ ] **D3. Irmãos mais velhos, pais ou sala de aula** (opcional). As fichas e o painel de dados da NASA ajudam os adultos; não há modo para sala de aula.
 
 ## E. Dados reais
 
-- [ ] **E1. Pelo menos um dado ou recurso da NASA é usado** (condição para prêmio global).
-- [ ] **E2. As fontes são creditadas dentro do jogo**, para a criança saber que é ciência real.
-- [ ] **E3. Cada dado mostra se é ao vivo ou de arquivo, com a data.**
-- [ ] **E4. Conjunto curado embutido como alternativa** quando a chamada ao vivo falhar.
-- [ ] **E5. Fontes sugeridas pelo desafio, em ordem de prioridade para nós:**
-  - [ ] DONKI (clima espacial: erupções, ejeções, partículas) — radiação e comunicação
-  - [ ] RadLab / OSDR (dosimetria real na Estação Espacial) — blindagem
-  - [ ] OSDR (achados reais de saúde de astronautas) — cartões de ciência
-  - [ ] Mars Trek (imagem e terreno reais) — local da base
-  - [ ] NASA Open APIs (chave gratuita)
-  - [ ] CSA: material sobre produção de alimentos na Lua (parceiro) — só princípios gerais da estufa, sempre como paralelo declarado (ver seção K)
+- [x] **E1. Pelo menos um dado ou recurso da NASA é usado.** DONKI (e outros, `NASA_SOURCES` em `facts.ts`).
+- [x] **E2. As fontes são creditadas dentro do jogo.** Selos, fichas, selos FOTO REAL, painel de dados da NASA.
+- [x] **E3. Cada dado mostra se é ao vivo ou de arquivo, com a data.** As fichas mostram a data; "O Sol nesta semana" mostra a hora da cópia.
+- [x] **E4. Conjunto curado embutido como alternativa.** As missões rodam só com o catálogo embutido; se a cópia do DONKI faltar, o painel da tela inicial some.
+- **E5. Fontes sugeridas pelo desafio:**
+  - [x] DONKI — eventos das missões, resposta da Antena, "O Sol nesta semana"
+  - [ ] Dosimetria do RadLab / OSDR — **não usada** (ADR-0026); a radiação vem do RAD do Curiosity, em Marte
+  - [ ] Achados de saúde do OSDR — **não usados** (cortados, ADR-0031)
+  - [ ] Mars Trek — **não usado**; a vista da órbita é a foto PIA23239
+  - [ ] NASA Open APIs (api.nasa.gov) — **não usadas** (o DONKI é lido direto no CCMC, ADR-0027)
+  - [ ] Material da CSA sobre alimentos na Lua — **não usado**
 
 ## F. O que faz a solução se destacar
 
-- [ ] **F1. A escolha no jogo se liga a uma consequência do mundo real**: a decisão de blindagem usa o clima espacial real do DONKI, com a data na tela. Cadeia de queda: API ao vivo → retrato diário gravado no site → catálogo de arquivo.
-- [ ] **F2. Rejogabilidade:** eventos variam a cada partida; falhar ensina e não pune.
-  - [ ] Ao fim de cada missão, concluída ou não, o jogo pergunta: "Quer jogar esta missão de novo com outro plano?"
-  - [ ] Depois de um retorno antecipado, oferece também "Voltar ao sol em que tudo mudou".
-  - [ ] O progresso fica salvo no aparelho, sem conta. Um "código da missão" permite continuar em outro aparelho.
-- [ ] **F3. Origem e viabilidade científica verificáveis em toda tela**, não só no README (ver seção J).
+- [ ] **F1. A escolha no jogo se liga a uma consequência do mundo real.** Parcial: a decisão de blindagem usa eventos reais do DONKI de maio de 2024, com as datas; o clima espacial atual aparece na tela inicial, mas não entra nas missões. O jogo só lê o retrato e o arquivo (sem chamada ao vivo).
+- [ ] **F2. Rejogabilidade.** Parcial: duas missões com eventos diferentes; falhar termina com uma causa clara e uma nova tentativa.
+  - [x] "Jogar esta missão de novo com outro plano?" no fim (`EndScreen.tsx`)
+  - [x] "Voltar ao sol em que tudo mudou" depois de um retorno antecipado
+  - [ ] Progresso salvo no aparelho, com código da missão — **não feito**: as regras do código existem em `packages/sim/src/code.ts`, mas o app só salva o idioma
+- [x] **F3. Origem científica verificável em toda tela.** Fichas de dados (ADR-0014) e o painel de dados da NASA.
 
 ## G. Submissão (Project Submission Guide)
 
-- [ ] **G1. Prazo:** "Submit for Judging" antes de domingo, 15 de novembro, 23h59, no horário local de quem criou o time (Universal Event). Salvar com frequência; só a última versão salva é julgada.
-- [ ] **G2. Todos os campos obrigatórios preenchidos**, em inglês:
+- [ ] **G1. Prazo:** submeter antes de domingo, 15 de novembro, 23h59 (horário local de quem criou o time).
+- [ ] **G2. Todos os campos obrigatórios preenchidos**, em inglês — rascunhos guardados fora do repositório público:
   - [ ] Project Name
   - [ ] High-Level Project Summary
-  - [ ] Link to Project Demo
+  - [ ] Link to Project Demo (link do vídeo ainda é um espaço reservado)
   - [ ] Link to Final Project
   - [ ] Detailed Project Description
-  - [ ] Use of Super Intelligence (SI)
+  - [ ] Use of Super Intelligence (SI) (rascunho fora do repositório público)
   - [ ] NASA Data
   - [ ] Space Agency Partner Data and Other References
-- [ ] **G3. Demo:** vídeo de até 30 segundos **ou** até 7 slides (contando título e introdução). Passar do limite tira o projeto do julgamento global.
-  - [ ] Formato principal: vídeo com narração e imagens do jogo rodando.
-  - [ ] Slides de apoio em paralelo, ligados na descrição detalhada.
-  - [ ] "Show me the code": o vídeo e os slides mostram um trecho real do código (a ficha de constantes com rótulo e um teste passando) e o endereço do repositório.
-- [ ] **G4. Idioma:** página do projeto e materiais ligados em inglês (exigência do guia). Vídeo pode ser falado em outra língua, com legendas em inglês. Slides em inglês. No repositório, o inglês é o padrão e o português aparece como tradução identificada.
-- [ ] **G5. Links públicos**, sem senha, permissão ou cadastro. Testar em janela anônima.
-  - [ ] O link do projeto final aponta para o endereço principal do jogo (GitHub Pages); o endereço no Railway fica como espelho.
-  - [ ] O jogo funciona inteiro mesmo se a API estiver inacessível.
-- [ ] **G6. Slides (se for o formato):** nome do time, nomes dos membros, desafio escolhido.
-- [ ] **G7. Nenhuma imagem, vídeo, áudio ou semelhança de menores de 18 anos** na demo, no projeto, no avatar ou na página do time.
-- [ ] **G8. Uso de IA declarado**, dizendo onde e como. Imagem e vídeo gerados: marca-d'água visível. Áudio, código e dados gerados: declarados em texto e metadados. Nada de marca, logotipo, bandeira ou identificador de missão da NASA em conteúdo gerado.
-- [ ] **G9. Tudo o que foi usado é listado** (código, texto, imagens, mesmo abertos). Material com copyright só com permissão.
-- [ ] **G10. Caixas "Terms and Conditions" e "Confirm All Work is Original"** marcadas com verdade.
-- [ ] **G11. Todos os membros confirmados no mesmo evento** (Universal Event).
-- [ ] **G12. Site novo:** pedir classificação no FortiGuard Web Filter para reduzir risco de bloqueio na rede dos jurados (opcional, recomendado).
-- [ ] **G13. Imagens na página do projeto:** JPG, PNG ou GIF de até 10 MB.
+- [ ] **G3. Demo:** vídeo de até 30 segundos ou até 7 slides — **ainda não feita**.
+  - [ ] Vídeo com narração e imagens do jogo (as capturas do teste do CI servem de base)
+  - [ ] Slides de apoio
+  - [ ] Trecho "Show me the code" (ficha de constantes + um teste passando) e endereço do repositório
+- [ ] **G4. Idioma:** o repositório tem o inglês como padrão e traduções em português ✓; página do projeto, vídeo e slides ainda por fazer.
+- [ ] **G5. Links públicos**, testados em janela anônima — fazer antes de submeter.
+  - [x] Link do projeto final = GitHub Pages; o Railway é o espelho
+  - [x] O jogo funciona inteiro sem a API (ele nunca a chama)
+- [ ] **G6. Slides:** nome do time, nomes dos membros, desafio — por fazer.
+- [x] **G7. Nenhuma imagem, vídeo, áudio ou semelhança de menores de 18 anos** no jogo e no repositório (conferências do ASSETS.md; o `PLAYTEST.md` registra só fatos). Continuar conferindo na demo e na página.
+- [x] **G8. Uso de IA declarado** — `AI_USAGE.md`; nenhuma mídia gerada por IA no jogo.
+- [x] **G9. Tudo o que foi usado está listado** — `ASSETS.md` (imagens, modelos 3D, fonte), `package.json` / `pnpm-lock.yaml` (bibliotecas).
+- [ ] **G10. Caixas "Terms and Conditions" e "Confirm All Work is Original"** — na submissão.
+- [ ] **G11. Todos os membros confirmados no mesmo evento** — a confirmar no site do evento.
+- [ ] **G12. Classificação no FortiGuard** (opcional) — não feita.
+- [ ] **G13. Imagens na página do projeto** (JPG, PNG ou GIF de até 10 MB) — por preparar.
 
 ## H. Regras de participação que nos afetam
 
-- [ ] **H1. Menor de 18 anos:** registrado por pai, mãe ou responsável e acompanhado o tempo todo.
-- [ ] **H2. Menor não usa foto própria** como avatar nem na página do time. Retrato recriado por IA a partir da foto dele continua sendo a semelhança dele: usar um avatar que não o represente (foguete, rocha, planeta).
-- [ ] **H3. Um time, um desafio.** No máximo seis pessoas.
-- [ ] **H4. O trabalho no desafio acontece dentro do período do evento.**
+- [ ] **H1. Menor de 18 anos: registrado por responsável e acompanhado** — a confirmar pelo time (não dá para conferir no repositório).
+- [x] **H2. Menor não usa foto própria.** O avatar é o astronauta do próprio jogo, desenhado no código.
+- [ ] **H3. Um time, um desafio, no máximo seis pessoas** — a confirmar pelo time.
+- [x] **H4. O trabalho acontece dentro do período do evento.** Commits de 14/11/2026 a 15/11/2026; histórico não reescrito (regra 13 do CLAUDE.md).
 
 ## I. Critérios de julgamento
 
-| Critério | O que defendemos | Pergunta de conferência |
-| --- | --- | --- |
-| Impact | Manter vivo em crianças e adolescentes o sonho de conhecer o universo profundo, treinando raciocínio lógico, matemática, física, ciências, criatividade, autonomia e coragem | A fatia desenvolve alguma dessas habilidades de forma visível? |
-| Creativity | Não há resposta única: a criança vê o impacto de cada escolha; pode explorar a base e o ambiente; avatar personalizável | Existem pelo menos dois planos diferentes que funcionam? |
-| Validity | Lógica científica e matemática definida e validada antes das telas; dados reais de clima espacial, terreno e ambiente | Cada número tem ficha completa (seção J) e cada conta tem teste? |
-| Relevance | Os cinco temas do desafio jogáveis; adesão item a item a este checklist | Os itens B1 a B8 estão todos marcados? |
-| Presentation | Linguagem inspiradora e impacto real na formação de crianças, junto com a prova de adesão aos requisitos, do uso de dados e do método | A página do projeto e a demo mostram o jogo, os dados e o código? |
+| Critério | O que defendemos | Pergunta de conferência | Situação |
+| --- | --- | --- | --- |
+| Impact | Manter vivo em crianças e adolescentes o sonho de conhecer o universo profundo, treinando raciocínio lógico, matemática, física, ciências, criatividade, autonomia e coragem | A fatia desenvolve alguma dessas habilidades de forma visível? | Conta ao vivo e planejamento a cada sol |
+| Creativity | Não há resposta única: a criança vê o impacto de cada escolha; pode explorar a base e o ambiente; avatar personalizável | Existem pelo menos dois planos diferentes que funcionam? | Base 3D para explorar; avatar não personalizável (cortado) |
+| Validity | Lógica científica e matemática definida e validada antes das telas; dados reais de clima espacial, terreno e ambiente | Cada número tem ficha completa (seção J) e cada conta tem teste? | Fichas e testes prontos |
+| Relevance | Os cinco temas do desafio jogáveis; adesão item a item a este checklist | Os itens B1 a B8 estão todos marcados? | B7 espera um teste com criança |
+| Presentation | Linguagem inspiradora e impacto real na formação de crianças, junto com a prova de adesão aos requisitos, do uso de dados e do método | A página do projeto e a demo mostram o jogo, os dados e o código? | Página e demo por fazer |
 
 A maior parte da avaliação vem da página do projeto; a demo pesa no critério Presentation.
 
@@ -114,33 +118,33 @@ A maior parte da avaliação vem da página do projeto; a demo pesa no critério
 
 Todo dado que aparece no jogo responde a três perguntas, na própria tela: **de onde veio, como foi tratado e como o jogo usa.**
 
-- [ ] **J1. Selo de origem em todo número**: rótulo (medido, cenário, simplificação), fonte, lugar e data.
-- [ ] **J2. Um toque abre a ficha do dado** com:
-  - [ ] Fonte, com link e identificador do registro original
-  - [ ] Onde e quando foi medido
-  - [ ] Como foi tratado (filtrado, arredondado, convertido, agrupado)
-  - [ ] Como o jogo usa (qual regra, qual conta)
-  - [ ] O que foi simplificado e por quê
-- [ ] **J3. "Quero entender melhor"**: explicação mais longa, em linguagem de criança, com um exemplo prático do dia a dia (bateria do celular, mesada, garrafa de água, protetor solar) e onde isso se aplica fora do jogo.
-- [ ] **J4. Mesma informação para os jurados**: página "A ciência por trás" e um arquivo público com todas as fichas, gerados do mesmo lugar que alimenta as telas.
-- [ ] **J5. Nenhuma tela mostra dado sem ficha.** Dado novo só entra depois de a ficha estar completa.
-- [ ] **J6. Validação antes das telas**: o mapa de dados e o modelo da simulação são revisados e aprovados antes de qualquer interface que dependa deles.
+- [x] **J1. Selo de origem nos números com dado real** (`apps/web/src/cards/Badge.tsx`); rótulo, fonte, lugar e data na ficha.
+- [x] **J2. Um toque abre a ficha do dado** (`CardDialog.tsx`) com:
+  - [x] Fonte, com link e identificador do registro
+  - [x] Onde e quando foi medido
+  - [x] Como foi tratado
+  - [x] Como o jogo usa
+  - [x] O que foi simplificado e por quê
+- [x] **J3. "Quero entender mais"** com um exemplo do dia a dia em toda ficha.
+- [ ] **J4. Página "A ciência por trás" e arquivo público com todas as fichas** — **não feito**. Os dados estão prontos em `cards.ts` e `science.ts`; por enquanto `SCIENCE.md` e `DATA_MAP.md` atendem os jurados.
+- [x] **J5. Nenhuma tela mostra dado sem ficha.** O `cards.test.ts` confere as fichas contra o `science.ts`; fichas pendentes ficam escondidas (ADR-0024).
+- [x] **J6. Validação antes das telas.** SIM_MODEL, DATA_MAP e ARCHITECTURE aprovados na Fase 0; ADR-0033 a ADR-0035 aprovadas antes das suas telas.
 
 ## K. Marte de verdade e paralelos declarados
 
 O jogo se passa em Marte. Dado que não foi medido em Marte só entra como paralelo, e o paralelo aparece sempre.
 
-- [ ] **K1. Todo dado traz o lugar da medição** (Marte, Estação Espacial, Sol, Terra, Lua).
-- [ ] **K2. Paralelo declarado na ficha**: por que serve para a base marciana e o que é diferente em Marte.
-- [ ] **K3. Paralelo só entra com justificativa científica** registrada em `docs/SCIENCE.md`, com fonte. Sem justificativa, o dado fica de fora.
-- [ ] **K4. Material lunar da CSA**: usar apenas princípios gerais de cultivo em ambiente fechado. Não usar números lunares como se fossem marcianos.
-- [ ] **K5. Os desafios próprios de Marte aparecem no jogo**, cada um com fonte conferida: atmosfera rarefeita de CO₂, menos luz solar que na Terra, tempestades de poeira, frio, solo que não serve direto para plantio, gravidade menor, atraso de rádio.
-- [ ] **K6. Evento solar não é dose em Marte**: o DONKI registra o que saiu do Sol; se o evento atinge Marte depende da direção. O jogo diz isso.
+- [x] **K1. Todo dado traz o lugar da medição** (`place` no `science.ts` e nas fichas; selos das fotos).
+- [x] **K2. Paralelo declarado na ficha** (campo `parallel`; legendas como "Na Terra … Não é em Marte", "um paralelo com a Lua").
+- [x] **K3. Paralelo só entra com justificativa no `SCIENCE.md`.** A seção 4 lista P1–P16. Dois detalhes visuais/de texto estão marcados "a confirmar" lá (cores dos LEDs do Veggie, pressão do traje) e não aparecem como número.
+- [x] **K4. Material lunar da CSA** — não é usado, então nenhum número lunar aparece como marciano.
+- [x] **K5. Os desafios próprios de Marte aparecem, cada um com fonte:** ar fino de CO₂ (M1), menos luz do Sol (M2), tempestades de poeira (M3, ficha da poeira; nenhuma missão tem sol de poeira ainda), frio (M4), solo (M5), gravidade (M6), atraso de rádio (M9).
+- [x] **K6. Evento solar não é dose em Marte.** Erupções nunca aumentam a dose (chegada a Marte desconhecida); CMEs precisam de previsão do WSA-ENLIL em Marte; dois alarmes falsos mostram previsões do modelo na Psyche; o risco 3 exige uma medição em Marte.
 
 ## L. Idiomas
 
-- [ ] **L1. O jogo é bilíngue desde o MVP**: português (idioma de criação) e inglês (universal).
-- [ ] **L2. Código em inglês**: nomes, comentários, mensagens de commit.
-- [ ] **L3. Documentação bilíngue**: `docs/en/` e `docs/pt-BR/`, com o inglês como padrão.
-- [ ] **L4. README em inglês**, com `README.pt-BR.md` ao lado.
-- [ ] **L5. Página do projeto, demo e slides em inglês.**
+- [x] **L1. O jogo é bilíngue** (`packages/content/src/locales/en.json`, `pt-BR.json`; `locales.test.ts`).
+- [x] **L2. Código em inglês.**
+- [x] **L3. Documentação bilíngue** (`docs/en/`, `docs/pt-BR/`).
+- [x] **L4. README em inglês**, com `README.pt-BR.md`.
+- [ ] **L5. Página do projeto, demo e slides em inglês** — por fazer.

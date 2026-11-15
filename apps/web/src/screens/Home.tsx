@@ -1,11 +1,10 @@
 /**
- * Home (Phase 3B, after the first playtest): one strong image, one sentence, one button.
- * The background is a real NASA photo of Jezero (badged as such); no long text to read.
+ * Home (after design review G): one strong image, three short lines, one button,
+ * the level choice (Cadet: 30 s to decide in a crisis · Commander: 10 s), and
+ * "The Sun this week" from the dated DONKI copy. No long text to read.
  */
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { photoSrcSet } from '../cards/Photo';
-import { prefersReducedMotion } from '../lib/format';
 import { Icon } from '../world/Icon';
 import { SunThisWeek } from './SunThisWeek';
 
@@ -16,19 +15,12 @@ export function Home({
   onNasaData,
 }: {
   onPlay: () => void;
+  /** Cadet level = the assisted mode underneath (more time in every timer). */
   assisted: boolean;
   onAssisted: (on: boolean) => void;
   onNasaData: () => void;
 }) {
   const { t } = useTranslation();
-  const roles = t('home.roles', { returnObjects: true }) as string[];
-  const [role, setRole] = useState(0);
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-    const id = window.setInterval(() => setRole((r) => (r + 1) % roles.length), 2200);
-    return () => window.clearInterval(id);
-  }, [roles.length]);
 
   return (
     <div className="hero">
@@ -42,10 +34,7 @@ export function Home({
           TO GO
         </h1>
         <p className="hero__line">
-          <span>{t('hero.line1')}</span> <span>{t('hero.line2')}</span>
-        </p>
-        <p className="hero__role" aria-live="off">
-          {t('home.rolePrefix')} <strong>{roles[role]}</strong>
+          <span>{t('hero.line1')}</span> <span>{t('hero.line2')}</span> <span>{t('hero.line3')}</span>
         </p>
         <div className="hero__actions">
           <button type="button" className="hero__play" onClick={onPlay}>
@@ -56,13 +45,14 @@ export function Home({
             <Icon name="radiation" size={16} className="tone-rad" /> {t('hero.nasaData')}
           </button>
         </div>
-        <label className="hero__assist">
-          <input type="checkbox" role="switch" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
-          <span>
-            {t('home.assisted')}
-            <small>{t('home.assistedHint')}</small>
-          </span>
-        </label>
+        <div className="hero__level" role="radiogroup" aria-label={t('home.levelLabel')}>
+          <button type="button" role="radio" aria-checked={assisted} className="hero__level-btn" onClick={() => onAssisted(true)}>
+            <strong>{t('home.cadet')}</strong> <span>{t('home.cadetHint')}</span>
+          </button>
+          <button type="button" role="radio" aria-checked={!assisted} className="hero__level-btn" onClick={() => onAssisted(false)}>
+            <strong>{t('home.commander')}</strong> <span>{t('home.commanderHint')}</span>
+          </button>
+        </div>
         <div className="hero__sun-compact">
           <SunThisWeek compact />
         </div>

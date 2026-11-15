@@ -60,6 +60,15 @@ try {
   await page.goto(url);
   if (lang === 'pt-BR') await page.getByRole('button', { name: 'Portuguese' }).click();
   await shot('01-home');
+  await shot('01-home-phone-first-screen', false); // what a 360 px phone shows before scrolling
+  if (mode === 'world') {
+    const deskHome = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+    await deskHome.goto(url);
+    if (lang === 'pt-BR') await deskHome.getByRole('button', { name: 'Portuguese' }).click();
+    await deskHome.waitForTimeout(800);
+    await deskHome.screenshot({ path: `${out}/01-home-desktop.png` });
+    await deskHome.close();
+  }
   await page.getByRole('button', { name: T.play, exact: true }).click();
   await page.getByRole('button', { name: T.start }).click();
 

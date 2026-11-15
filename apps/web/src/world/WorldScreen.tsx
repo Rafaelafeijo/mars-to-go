@@ -155,18 +155,20 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   useEffect(() => {
     finishRef.current = finishCrisis;
   });
+  // Cadet level (assisted) gets 30 s, Commander 10 s (design review G).
+  const crisisSeconds = game.assisted ? V.CRISIS_SECONDS_CADET : V.CRISIS_SECONDS;
   useEffect(() => {
-    if (!crisis || game.assisted) return;
+    if (!crisis) return;
     if (secondsLeft <= 0) {
       finishRef.current(); // time is up: what was moved so far stays
       return;
     }
     const id = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
     return () => window.clearTimeout(id);
-  }, [crisis, secondsLeft, game.assisted]);
+  }, [crisis, secondsLeft]);
   const passNight = () => {
     if (stormSol) {
-      setSecondsLeft(V.CRISIS_SECONDS);
+      setSecondsLeft(crisisSeconds);
       setMoves(NO_MOVES);
       setRecall(false);
       setCrisis(true);
@@ -603,13 +605,11 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         <div className="overlay overlay--crisis" role="alertdialog" aria-modal="true" aria-labelledby="crisis-title" aria-describedby="crisis-text">
           <div className="banner banner--event banner--crisis">
             <p className="crisis__timer" aria-live="assertive">
-              {game.assisted ? t('world.crisis.assisted') : t('world.crisis.seconds', { count: secondsLeft })}
+              {t('world.crisis.seconds', { count: secondsLeft })}
             </p>
-            {!game.assisted && (
-              <span className="crisis__bar" aria-hidden="true">
-                <span style={{ width: `${(secondsLeft / V.CRISIS_SECONDS) * 100}%` }} />
-              </span>
-            )}
+            <span className="crisis__bar" aria-hidden="true">
+              <span style={{ width: `${(secondsLeft / crisisSeconds) * 100}%` }} />
+            </span>
             <h2 id="crisis-title">{ev?.kind === 'cme' ? t('world.crisis.titleCme') : t('world.crisis.title')}</h2>
 
             {/* Picture: the storm hits the dome; one segment per risk point, lit when the shield covers it. */}

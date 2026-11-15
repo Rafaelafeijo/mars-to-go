@@ -31,3 +31,6 @@ test-results/
 
 # Playthrough screenshots (CI artifact)
 e2e-shots/
+
+# Submission drafts, video script and decisions stay local (not in the public repo)
+private/

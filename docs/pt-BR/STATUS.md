@@ -1,53 +1,51 @@
 # Situação — o jogo completo
 
-> Versão em inglês (padrão): [`docs/en/STATUS.md`](../en/STATUS.md). Atualizado no começo e no fim de cada fase. Meta: o jogo **completo**, não uma demonstração parcial. Primeiro o caminho inteiro, depois o acabamento. Funções congeladas domingo às 15h; submissão até as 21h (Brasília).
+> Versão em inglês (padrão): [`docs/en/STATUS.md`](../en/STATUS.md). Atualizado no começo e no fim de cada fase. Funções congeladas domingo às 15h; submissão até as 21h (Brasília).
 
 Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer · ✂️ cortado (com motivo e aval do time)
 
-Última atualização: 14/11/2026, fim da Fase 3 (missão 1 jogável de ponta a ponta num celular de 360 px em EN e PT, conferida por um teste automático no CI).
+Última atualização: 15/11/2026, depois da revisão de design F (commit `d77d8d2`). As missões 1 e 2 são jogáveis de ponta a ponta no mundo 3D, em inglês e em português.
 
-| Parte do jogo completo | Fase | Situação | Nota |
-| --- | --- | --- | --- |
-| Abertura (20 a 30 s, pulável) | 7 | ⬜ | A primeira a simplificar se faltar tempo (imagem + uma frase) |
-| Tela inicial com a carreira | 3 / 6 | 🔄 | Feito: linha de números, selo da foto real, papel que alterna, rodapé honesto. Lista da carreira na Fase 6 |
-| Missão 1 "Primeiros sóis" (guiada) | 3 | ✅ | Eventos reais: erupção M1.3 (sol 3), CME com previsão de chegada a Marte (sol 5) |
-| Missão 2 "A tempestade de maio" | 6 | ⬜ | Evento-âncora de 20/05/2024 |
-| Missão 3 "Céu de poeira" | 6 | ⬜ | |
-| "Me surpreenda" | 6 | ⬜ | |
-| "Hoje no espaço" | 4 | ⬜ | O retrato já é publicado pelo workflow do Pages |
-| Cinco destinos | 2 (regras) · 3 · 5 | 🔄 | Regras na Fase 2 |
-| Crises (tempestade solar, poeira, estufa, silêncio de rádio) | 2 (regras) · 4 · 5 | 🔄 | |
-| Fase 3B A: projeção "se todo sol fosse igual a hoje" | 3B | ✅ | `packages/sim/src/projection.ts`, 11 testes, SIM_MODEL §16 |
-| Fase 3B B: tela única — trilha dos 7 sóis com linhas de ar e comida, medidores hoje→amanhã, plano por toque, noite animada | 3B | 🔄 | Ramo `phase-3b`, esperando o time jogar os sóis 1 e 2. O ramo principal e o jogo publicado não mudaram |
-| Fase 3B C a F: dica no lugar dos selos, ensino, sol 1 guiado, Laboratório, arte | 3B | ⬜ | Ordem da ADR-0031 |
-| Cortes (ADR-0031): avatar, código da carreira, missão 3, cartões do OSDR, mochila (só se sobrar tempo) | — | ✂️ | Aprovado pelo time |
-| Conta ao vivo (passos da noite) | 2 (regras) · 3 | ✅ | Atualiza a cada célula movida; noite animada passo a passo; palpite opcional; rever |
-| Fichas de dado em toda tela | 3 → 7 | 🔄 | 18 fichas em EN e PT, selo em todo número, "Quero entender melhor". Fichas das crises na Fase 4. Ficha de Perguntar à Terra a ajustar para a missão 2 (lá a resposta é uma medição em Marte) |
-| Teste de ponta a ponta (CI, 360 px, EN + PT) | 3 | ✅ | `.github/workflows/e2e.yml`, base da gravação da demo |
-| Clima espacial em três camadas | 1 (API, retrato) · 4 (jogo) | 🔄 | API e retrato no ar; lado do jogo na Fase 4 |
-| Fim: a Terra no céu, jogar de novo, voltar ao sol | 6 | ⬜ | |
-| Salvar no aparelho + código da carreira | 2 (regras do código) · 6 | 🔄 | |
-| Insígnias e "zerar" | 2 (regras) · 6 | 🔄 | |
-| A ciência por trás + JSON público | 7 | ⬜ | |
-| Português e inglês | 1 → todas | 🔄 | Abre em inglês (ADR-0028) |
-| Acessibilidade + modo assistido | 3 → 7 | ⬜ | |
-| Modo de teste (`?playtest=1`, exportar JSON) | 4 | ⬜ | Antes da pausa para teste |
-| Imagens (10 escolhidas) | 1 | ✅ | Preparadas; entram a partir da Fase 3 |
-| Publicação: GitHub Pages | 1 | ✅ | https://rafaelafeijo.github.io/mars-to-go/ |
-| Publicação: Railway (API + espelho) | 1 | ✅ | https://mars-to-go-api-production.up.railway.app/health — publicado com `railway up`; publicar a cada push exige ligar o repositório do GitHub no painel do Railway |
-| Documentação bilíngue | 0 → todas | 🔄 | |
-| Material de submissão (página, vídeo de 30 s, slides) | 8 | ⬜ | |
-| Avatar, base tocável | 6 | ⬜ | Primeiros a sair (brief §10) |
+## O que funciona agora
 
-## Plano de tempo (horário de Brasília)
-
-| Fase | Janela | Risco principal |
+| Parte | Situação | Onde / nota |
 | --- | --- | --- |
-| 2 Simulação | sáb 13h45–15h30 | — |
-| 3 Sol jogável | sáb 15h30–19h | Conta ao vivo em 360 px |
-| 4 Clima espacial + crise + modo de teste | sáb 19h–21h30 | A pausa para teste pode ir para domingo 8h |
-| Teste com a criança | sáb à noite ou dom 8h | Disponibilidade da criança |
-| 5 Cinco temas completos | dom 8h30–10h30 | |
-| 6 Fim, carreira, salvar, insígnias | dom 10h30–13h | Muitas partes pequenas |
-| 7 Ciência por trás, acessibilidade, offline, abertura | dom 13h–15h (congelamento) | Abertura é a primeira a simplificar |
-| 8 Submissão | dom 15h–21h | Vídeo de até 30 s |
+| Mundo 3D da base (Jezero, low-poly) | ✅ | ADR-0032. Astronauta em terceira pessoa, máquinas com rótulos, botão de ação perto de cada máquina, zoom/inclinação/pinça, vista do céu. Modelos CC0 da Kenney; astronauta e ícones desenhados no código (ASSETS.md) |
+| Missão 1 "Primeiros sóis" (guiada) | ✅ | Eventos reais: erupção M1.3 (sol 3), CME prevista em Marte pelo WSA-ENLIL (sol 5). Fatos do sol com fotos reais da NASA |
+| Missão 2 "A tempestade de maio" (modo livre) | ✅ | ADR-0034. Um evento real de maio de 2024 a cada sol: erupção X8.7, dois alarmes falsos (CMEs previstas na Psyche), três CMEs rápidas previstas em Marte e a tempestade de 20 de maio medida pelo RAD do Curiosity (risco 3). Sete fatos próprios, cada um com uma foto real da NASA |
+| Escolhas com consequência | ✅ | ADR-0033. O limite de dose (2 pontos) encerra a missão; radiação não bloqueada custa células no sol seguinte; uma amostra de rocha é objetivo; três resultados (sucesso, com falhas, retorno antecipado) |
+| Escolha do lugar do rover; a missão 2 precisa da amostra da frente do delta | ✅ | ADR-0035. Lugares perto (Rochette, Kodiak) 2 de ar + 1 ponto; frente do delta (2,3 km, PIA24485) 3 de ar + 2 pontos |
+| Crise de 10 segundos com escolhas | ✅ | Risco contra o Escudo; passar células da máquina que a criança escolher, ou chamar o rover de volta. Modo assistido: sem relógio |
+| Perguntar à Terra (Antena) | ✅ | Resposta à noite sobre amanhã; desligada na crise (atraso de rádio) |
+| Conta ao vivo, relatório da noite, tela final com gráfico | ✅ | Jogar de novo; voltar ao sol em que tudo mudou |
+| Fichas de dados em todo número | ✅ | `packages/content/src/cards.ts` (EN + PT), selos, "Quero entender mais" |
+| Painel de dados da NASA (lista de cada fonte da NASA e onde é usada) | ✅ | `apps/web/src/world/NasaDataPanel.tsx`, a partir de `NASA_SOURCES` em `facts.ts` |
+| "O Sol nesta semana" na tela inicial | ✅ | Cópia do DONKI salva pelo workflow do Pages duas vezes por dia, mostrada com a hora UTC, nunca como ao vivo |
+| Português e inglês | ✅ | Abre em inglês (ADR-0028); o idioma fica lembrado no aparelho |
+| Movimento reduzido; chave do modo assistido na tela inicial | ✅ | `prefersReducedMotion()`; o modo assistido tira o relógio da crise |
+| Testes da simulação (`packages/sim`) | ✅ | Toda regra testada antes |
+| Teste de ponta a ponta no CI | ✅ | `.github/workflows/e2e.yml` + `scripts/playthrough.mjs`: missão 1 no mundo 3D (EN e PT) e nas telas antigas de uma tela e de lista (EN); missão 2 no mundo 3D (EN), termina em "Mission accomplished!" com a amostra do delta |
+| Publicação: GitHub Pages (principal) | ✅ | https://rafaelafeijo.github.io/mars-to-go/ — a cada push na `main` e duas vezes por dia (cópia do DONKI) |
+| Publicação: Railway (API + espelho do jogo) | ✅ | https://mars-to-go-api-production.up.railway.app/health — build pelo `railway.json`; o jogo não depende dele |
+
+## Não feito (lista honesta)
+
+| Parte | Situação | Nota |
+| --- | --- | --- |
+| Laboratório (tópicos interativos, ADR-0031) | ⬜ | Por enquanto as fichas de dados são a explicação |
+| Modo de teste com criança (`?playtest=1`, exportar JSON com QR code, ADR-0029) | ⬜ | Os testes são registrados à mão no PLAYTEST.md |
+| Missão 3 "Céu de poeira" | ✂️ | Cortada na ADR-0031. As regras e a ficha da poeira existem na simulação, mas nenhuma missão usa um sol de poeira |
+| "Me surpreenda" (eventos sorteados) | ⬜ | As missões usam eventos reais fixos |
+| Progresso salvo no aparelho; código da carreira na tela | ⬜ | As regras de codificar/decodificar existem e têm testes (`packages/sim/src/code.ts`, `career.ts`), mas o app só salva o idioma. A missão 2 abre pela tela final da missão 1 (ou `?mission=2`) |
+| Página "A ciência por trás" e JSON público com todas as fichas | ⬜ | Os dados estão prontos em `cards.ts` / `science.ts`; ainda sem página nem arquivo exportado |
+| Cena de abertura | ⬜ | Não feita |
+| Avatar personalizável | ✂️ | Cortado na ADR-0031 |
+| Auditoria completa WCAG 2.2 AA | ⬜ | Ainda não auditado; movimento reduzido e modo assistido estão prontos |
+| Material de submissão (página, vídeo de 30 s, slides) | 🔄 | rascunhos guardados fora do repositório público |
+
+## Limites conhecidos
+
+- O **desempenho** só é medido no CI, no Chromium sem tela com SwiftShader (renderização por software), pela sonda de fps do teste de ponta a ponta. Não foi medido em celulares de verdade. No celular, abra o jogo com `?fps=1` para ver o contador de quadros.
+- O teste de ponta a ponta da missão 2 roda só em inglês.
+- Este arquivo descreve o commit `d77d8d2`. Um trabalho em andamento (revisão de design G, ainda sem commit) transforma o modo assistido num nível "Cadete" com 30 segundos na crise (`CRISIS_SECONDS_CADET`) em vez de nenhum relógio; atualizar as linhas da crise quando ele entrar.
+- A CME da missão 1 (1.263 km/s) está com `fast: false` de propósito: a missão 1 é guiada e não tem crise.

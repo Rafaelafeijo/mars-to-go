@@ -67,6 +67,8 @@ const constants = {
   /** Rock samples the rocket must carry home for a successful mission (like Perseverance's samples). */
   SAMPLES_GOAL: rule(1, 'sample', 'scenario'),
   CRISIS_SECONDS: rule(10, 's'),
+  /** Cadet level (the assisted mode): more time in the crisis (design review G). */
+  CRISIS_SECONDS_CADET: rule(30, 's'),
   CRISIS_SHIELD_SWAP_CELLS: rule(2, 'cell'),
   GREENHOUSE_RESCUE_AIR: rule(2, 'air unit'),
   RADIO_ROUND_TRIP_MIN_MINUTES: {
