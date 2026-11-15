@@ -9,7 +9,7 @@ import {
   tomorrowForecast,
   validateAllocation,
 } from './engine';
-import { exposureWord, marginSols, meterWord, predictionOptions, turningPointSol, verdict, whatIf } from './outcomes';
+import { exposureWord, marginSols, meterWord, missionObjectives, missionResult, predictionOptions, turningPointSol, verdict, whatIf } from './outcomes';
 import { GAME_A, GAME_B, GAME_BONUS, GAME_C, TEST_DEF, alloc, type Row } from './fixtures';
 import type { MissionDef, MissionState } from './types';
 
@@ -37,14 +37,13 @@ describe('worked games (SIM_MODEL §8)', () => {
     expect(verdict(state)).toBe('with_margin');
   });
 
-  it('Game B "Scientist": everyone home, on the edge, 2 discoveries', () => {
-    const { state, nights } = play(GAME_B);
-    expect(triples(nights)).toEqual([[10, 4, 0], [7, 2, 3], [8, 4, 3], [6, 4, 3], [5, 4, 3], [3, 2, 4], [5, 0, 4]]);
-    expect(state.status).toBe('returned_all');
-    expect(marginSols(state)).toBe(0);
-    expect(exposureWord(state.exposure)).toBe('medium');
-    expect(state.discoveries).toHaveLength(2);
-    expect(verdict(state)).toBe('on_edge');
+  it('Game B "Scientist" (ADR-0033): no shield on a risk-2 night after a rover trip → dose over the limit, early return on sol 2', () => {
+    const { state, nights } = play(GAME_B.slice(0, 2));
+    expect(triples(nights)).toEqual([[10, 4, 0], [7, 2, 3]]);
+    expect(state.status).toBe('early_return');
+    expect(state.failure).toEqual({ sol: 2, cause: 'radiation' });
+    expect(exposureWord(state.exposure)).toBe('high');
+    expect(verdict(state)).toBe('early_return');
   });
 
   it('Game C: early return on night 5 for food; the sol where everything changed is 3', () => {
@@ -141,7 +140,7 @@ describe('night rules', () => {
   it('returns the steps in the fixed order, each with after = before + delta', () => {
     const s: MissionState = { ...newMission(TEST_DEF), sol: 2, pendingHarvests: [{ sol: 2, food: 4 }] };
     const { steps } = resolveNight(TEST_DEF, s, { allocation: alloc([2, 1, 1, 1, 1]) });
-    expect(steps.map((x) => x.id)).toEqual(['lifeSupport', 'harvest', 'plant', 'breathe', 'eat', 'expedition', 'outside', 'radiation', 'earthAnswer']);
+    expect(steps.map((x) => x.id)).toEqual(['lifeSupport', 'harvest', 'plant', 'breathe', 'eat', 'expedition', 'outside', 'radiation', 'damage', 'earthAnswer']);
     for (const step of steps) expect(step.after).toBe(step.before + step.delta);
   });
 });
@@ -207,8 +206,44 @@ describe('words and hindsight', () => {
     expect([0, 1, 2, 3, 9].map(meterWord)).toEqual(['critical', 'tight', 'safe', 'plenty', 'plenty']);
   });
 
-  it('exposure words: low 0–2, medium 3–5, high ≥ 6', () => {
-    expect([0, 2, 3, 5, 6].map(exposureWord)).toEqual(['low', 'low', 'medium', 'medium', 'high']);
+  it('exposure words (ADR-0033): low 0–1, medium 2 (the limit), high above the limit', () => {
+    expect([0, 1, 2, 3, 6].map(exposureWord)).toEqual(['low', 'low', 'medium', 'high', 'high']);
+  });
+
+  it('ADR-0033: unblocked radiation damages the electronics: fewer cells next sol (max 2)', () => {
+    const s0 = newMission(TEST_DEF);
+    const s1 = resolveNight(TEST_DEF, s0, { allocation: alloc([5, 2, 0, 0, 0]) }).state;
+    expect(s1.sol).toBe(2);
+    // Sol 2: risk 2 reaches Mars, 1 shield cell blocks 1 → 1 point gets through.
+    const n2 = resolveNight(TEST_DEF, s1, { allocation: alloc([5, 1, 1, 0, 0]) });
+    expect(n2.state.exposure).toBe(1);
+    expect(n2.steps.find((x) => x.id === 'damage')?.detail?.cells).toBe(1);
+    expect(n2.state.lostCells).toBe(1);
+    expect(freeCells(false, n2.state.lostCells)).toBe(6);
+    // The next plan must fit the damaged budget.
+    expect(validateAllocation(n2.state, alloc([5, 2, 0, 0, 0]), false)).toEqual([{ code: 'wrongTotal', used: 7, free: 6 }]);
+    expect(validateAllocation(n2.state, alloc([5, 1, 0, 0, 0]), false)).toEqual([]);
+    // Damage lasts one sol only.
+    const n3 = resolveNight(TEST_DEF, n2.state, { allocation: alloc([5, 1, 0, 0, 0]) });
+    expect(n3.state.lostCells ?? 0).toBe(0);
+  });
+
+  it('ADR-0033: a fully shielded event does no damage', () => {
+    const s1 = resolveNight(TEST_DEF, newMission(TEST_DEF), { allocation: alloc([5, 2, 0, 0, 0]) }).state;
+    const n2 = resolveNight(TEST_DEF, s1, { allocation: alloc([3, 2, 2, 0, 0]) });
+    expect(n2.steps.some((x) => x.id === 'damage')).toBe(false);
+    expect(n2.state.lostCells ?? 0).toBe(0);
+  });
+
+  it('ADR-0033: mission objectives — home, a rock sample, dose within the limit', () => {
+    const a = play(GAME_A).state;
+    expect(missionObjectives(a)).toEqual({ home: true, sample: false, dose: true });
+    expect(missionResult(a)).toBe('with_failures');
+    const bonus = play(GAME_BONUS).state;
+    expect(missionObjectives(bonus)).toEqual({ home: true, sample: true, dose: true });
+    expect(missionResult(bonus)).toBe('success');
+    const c = play(GAME_C).state;
+    expect(missionResult(c)).toBe('early_return');
   });
 
   it('turning point for air is the sol before the failure', () => {

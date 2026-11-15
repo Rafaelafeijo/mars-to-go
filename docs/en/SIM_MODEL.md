@@ -290,3 +290,11 @@ Rules:
 - Each line (air, food) is projected on its own until it goes below zero (the sol it runs out) or reaches sol 7 (home). Radiation is not projected: it depends on future events that are uncertain.
 
 Tests (`projection.test.ts`): today's values equal `resolveNight`; Game A's sol 1 plan reaches home with the dust sol cut; all cells in Life Support → food runs out on sol 4; too little Life Support → air runs out on sol 6; an expedition costs air today only; harvests on the way are counted; partial plans work; each line runs on its own.
+
+## 17. Consequences (ADR-0033, design review B)
+
+- Dose limit \DOSE_LIMIT\ = 2 points: above it at the end of a night → early return, cause \adiation\. Words: low 0–1, medium 2, high > 2.
+- Radiation damage: unblocked points × \RADIATION_DAMAGE_CELLS_PER_POINT\ (1), at most \RADIATION_DAMAGE_MAX_CELLS\ (2), are lost from the next sol's free cells (\lostCells\, step \damage\). The projection includes it.
+- Rock samples: each rover trip adds 1; a successful mission needs \SAMPLES_GOAL\ (1).
+- Results: \success\ (home + sample + dose within limit), \with_failures\ (home, an objective missed), \early_return\.
+- Worked game B (§8) now ends on night 2 for radiation (exposure 3 > 2); games A, C and bonus are unchanged.

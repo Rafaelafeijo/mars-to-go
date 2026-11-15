@@ -67,6 +67,7 @@ export type StepId =
   | 'expeditionRecalled'
   | 'outside'
   | 'radiation'
+  | 'damage'
   | 'earthAnswer';
 
 /** One line of the live math (ADR-0020). Text lives in packages/content under `steps.<id>`. */
@@ -104,7 +105,7 @@ export interface SolLog {
 }
 
 export type Status = 'playing' | 'returned_all' | 'early_return';
-export type FailureCause = 'air' | 'food';
+export type FailureCause = 'air' | 'food' | 'radiation';
 
 export interface MissionState {
   version: 1;
@@ -116,6 +117,8 @@ export interface MissionState {
   air: number;
   food: number;
   exposure: number;
+  /** Cells lost on this sol because last night's radiation damaged the electronics (ADR-0033). */
+  lostCells?: number;
   pendingHarvests: PendingHarvest[];
   discoveries: string[];
   log: SolLog[];

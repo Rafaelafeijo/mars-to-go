@@ -290,3 +290,11 @@ Regras:
 - Cada linha (ar, comida) é projetada sozinha até ficar abaixo de zero (o sol em que acaba) ou chegar ao sol 7 (casa). A radiação não é projetada: depende de eventos futuros incertos.
 
 Testes (`projection.test.ts`): os valores de hoje são iguais aos de `resolveNight`; o plano do sol 1 da partida A chega em casa, com o corte no sol de poeira; todas as células no Suporte à Vida → a comida acaba no sol 4; Suporte à Vida de menos → o ar acaba no sol 6; a expedição gasta ar só hoje; colheitas a caminho contam; plano incompleto funciona; cada linha anda sozinha.
+
+## 17. Consequências (ADR-0033, revisão de design B)
+
+- Limite de dose \DOSE_LIMIT\ = 2 pontos: acima dele no fim de uma noite → retorno antecipado, causa \adiation\. Palavras: baixa 0–1, média 2, alta > 2.
+- Dano por radiação: pontos não bloqueados × \RADIATION_DAMAGE_CELLS_PER_POINT\ (1), no máximo \RADIATION_DAMAGE_MAX_CELLS\ (2), saem das células livres do sol seguinte (\lostCells\, passo \damage\). A projeção inclui o dano.
+- Amostras de rocha: cada saída do rover soma 1; uma missão bem-sucedida exige \SAMPLES_GOAL\ (1).
+- Resultados: \success\ (em casa + amostra + dose dentro do limite), \with_failures\ (em casa, faltou um objetivo), \early_return\.
+- O jogo de exemplo B (§8) agora termina na noite 2 por radiação (exposição 3 > 2); os jogos A, C e bônus não mudam.

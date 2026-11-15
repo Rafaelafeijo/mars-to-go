@@ -49,15 +49,17 @@ interface MachineSpec {
 const MACHINES: MachineSpec[] = [
   { d: 'lifeSupport', model: 'machine_generatorLarge', pos: [-5.5, -2.5], scale: 2.1, rot: 0.6 },
   { d: 'greenhouse', model: 'hangar_roundGlass', pos: [5.5, -3], scale: 1.8, rot: -0.5 },
-  { d: 'shield', model: 'machine_wireless', pos: [-2.6, -9], scale: 2.2 },
-  { d: 'expedition', model: 'rover', pos: [9, 1], scale: 1.6, rot: -0.9 },
+  { d: 'shield', model: 'machine_wireless', pos: [-4.6, -9], scale: 2.2 },
+  // Parked in view of the start position, so it is seen (locked) from sol 1.
+  { d: 'expedition', model: 'rover', pos: [4.2, 4], scale: 1.6, rot: -0.6 },
   { d: 'askEarth', model: 'satelliteDish_large', pos: [-8.5, 3], scale: 2, rot: 0.8 },
 ];
 const AT = Object.fromEntries(MACHINES.map((m) => [m.d, m])) as Record<Destination, MachineSpec>;
 
+/** The crew's home (habitat), in the middle of the base and under the shield dome. Not a machine. */
+const HABITAT = { model: 'hangar_largeA', pos: [-0.5, -11.5] as [number, number], scale: 2.2 };
+
 const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: number }[] = [
-  // Kept clear of the greenhouse (it sat "inside" the tunnel from the camera).
-  { model: 'hangar_largeA', pos: [-11, -13], scale: 1.9, rot: 0.4 },
   { model: 'container-tall', pos: [12, -10], scale: 2.2, rot: -0.3 },
   { model: 'rock_largeA', pos: [-16, -10], scale: 3 },
   { model: 'rock_largeB', pos: [14, -14], scale: 2.6, rot: 1 },
@@ -462,7 +464,7 @@ export interface SkyEvent {
 }
 
 /** The Sun, bigger and burning when there is a solar event; a flash and falling particles at night if it strikes. */
-function SunAndStorm({ event, night }: { event: SkyEvent | null; night: boolean }) {
+function SunAndStorm({ event, night, exposed }: { event: SkyEvent | null; night: boolean; exposed: boolean }) {
   const sun = useRef<THREE.Mesh>(null);
   const halo = useRef<THREE.Mesh>(null);
   const storm = useRef<THREE.Points>(null);
@@ -503,7 +505,12 @@ function SunAndStorm({ event, night }: { event: SkyEvent | null; night: boolean 
       }
       pos.needsUpdate = true;
     }
-    if (flash.current) (flash.current.material as THREE.MeshBasicMaterial).opacity = striking ? 0.12 + 0.12 * Math.abs(Math.sin(t * 2.5)) : 0;
+    if (flash.current) {
+      const m = flash.current.material as THREE.MeshBasicMaterial;
+      // Red and stronger when radiation got through the shield; violet when the shield held.
+      m.color.set(exposed ? '#ff3a2a' : '#b28cff');
+      m.opacity = striking ? (exposed ? 0.22 : 0.12) + (exposed ? 0.2 : 0.12) * Math.abs(Math.sin(t * (exposed ? 5 : 2.5))) : 0;
+    }
   });
   return (
     <group>
@@ -526,16 +533,21 @@ function SunAndStorm({ event, night }: { event: SkyEvent | null; night: boolean 
   );
 }
 
+const ZOOM_MIN = 0.45;
+const ZOOM_MAX = 1.8;
+
 interface PlayerProps {
   target: THREE.Vector3 | null;
   onArrive: () => void;
+  /** Drop the tap target without using a machine (keys pressed, or target past the limit). */
+  onCancel: () => void;
   onNear: (d: Destination | null) => void;
   onEdge: (near: boolean) => void;
   skyView: boolean;
   playerRef: MutableRefObject<THREE.Group | null>;
 }
 
-function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: PlayerProps) {
+function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef }: PlayerProps) {
   const keys = useRef<Record<string, boolean>>({});
   const near = useRef<Destination | null>(null);
   const edge = useRef(false);
@@ -553,19 +565,59 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
     const up = (e: KeyboardEvent) => {
       keys.current[e.key.toLowerCase()] = false;
     };
-    // Mouse wheel / trackpad: zoom the camera in and out.
+    // Zoom changes distance AND angle: zoomed in, the camera drops toward the horizon (perspective).
+    const setZoom = (factor: number) => {
+      zoom.current = THREE.MathUtils.clamp(zoom.current * factor, ZOOM_MIN, ZOOM_MAX);
+    };
     const wheel = (e: WheelEvent) => {
       e.preventDefault();
-      zoom.current = THREE.MathUtils.clamp(zoom.current * (e.deltaY > 0 ? 1.1 : 0.9), 0.55, 1.8);
+      setZoom(e.deltaY > 0 ? 1.1 : 0.9);
     };
+    // Phone: pinch with two fingers.
+    const touches = new Map<number, { x: number; y: number }>();
+    let pinch = 0;
+    const pdown = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    };
+    const pmove = (e: PointerEvent) => {
+      if (!touches.has(e.pointerId)) return;
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (touches.size !== 2) return;
+      const [p1, p2] = [...touches.values()] as [{ x: number; y: number }, { x: number; y: number }];
+      const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+      if (pinch > 0) setZoom(pinch / d);
+      pinch = d;
+    };
+    const pup = (e: PointerEvent) => {
+      touches.delete(e.pointerId);
+      pinch = 0;
+    };
+    // On-screen zoom buttons (HUD) send a "mars-zoom" event with a factor.
+    const zoomEvent = (e: Event) => setZoom((e as CustomEvent<number>).detail);
     const el = gl.domElement;
     globalThis.addEventListener('keydown', down);
     globalThis.addEventListener('keyup', up);
+    globalThis.addEventListener('mars-zoom', zoomEvent);
+    // Keys must not stay "pressed" when the window loses focus (walking that never stops).
+    const blur = () => {
+      keys.current = {};
+    };
+    globalThis.addEventListener('blur', blur);
     el.addEventListener('wheel', wheel, { passive: false });
+    el.addEventListener('pointerdown', pdown);
+    el.addEventListener('pointermove', pmove);
+    el.addEventListener('pointerup', pup);
+    el.addEventListener('pointercancel', pup);
     return () => {
       globalThis.removeEventListener('keydown', down);
       globalThis.removeEventListener('keyup', up);
+      globalThis.removeEventListener('mars-zoom', zoomEvent);
+      globalThis.removeEventListener('blur', blur);
       el.removeEventListener('wheel', wheel);
+      el.removeEventListener('pointerdown', pdown);
+      el.removeEventListener('pointermove', pmove);
+      el.removeEventListener('pointerup', pup);
+      el.removeEventListener('pointercancel', pup);
     };
   }, [gl]);
 
@@ -574,6 +626,8 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
     if (!p) return;
     const k = keys.current;
     const dir = new THREE.Vector3((k.d || k.arrowright ? 1 : 0) - (k.a || k.arrowleft ? 1 : 0), 0, (k.s || k.arrowdown ? 1 : 0) - (k.w || k.arrowup ? 1 : 0));
+    // Keys win over an old tap target, and cancel it (otherwise he walked back to it later).
+    if (dir.lengthSq() > 0 && target) onCancel();
     if (dir.lengthSq() === 0 && target) {
       dir.set(target.x - p.position.x, 0, target.z - p.position.z);
       if (dir.length() < 0.4) {
@@ -599,7 +653,7 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
     if (r > EDGE_MAX) {
       p.position.x = BASE_CENTER[0] + (ox / r) * EDGE_MAX;
       p.position.z = BASE_CENTER[1] + (oz / r) * EDGE_MAX;
-      if (target) onArrive(); // a tap beyond the limit stops at the limit
+      if (target) onCancel(); // a tap beyond the limit stops at the limit
     }
     const atEdge = r > EDGE_WARN;
     if (atEdge !== edge.current) {
@@ -609,11 +663,13 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
     p.position.y = groundHeight(p.position.x, p.position.z);
     const ease = 1 - Math.pow(0.001, Math.min(dt, 0.05));
     const z = zoom.current;
+    // Height grows faster than distance: zoom in → lower, more horizontal view; zoom out → map view.
     const want = skyView
       ? new THREE.Vector3(p.position.x, p.position.y + 1.8, p.position.z) // the astronaut's eyes
-      : new THREE.Vector3(p.position.x, p.position.y + (portrait ? 9.5 : 5) * z, p.position.z + (portrait ? 15 : 10) * z);
+      : new THREE.Vector3(p.position.x, p.position.y + 0.8 + (portrait ? 8.7 : 4.2) * z * z, p.position.z + (portrait ? 15 : 10) * z);
     camera.position.lerp(want, ease);
-    const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + 1.6, p.position.z - 5);
+    const lookUp = 1.6 + Math.max(0, 1 - z) * 4; // zoomed in: look up toward the horizon and sky
+    const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + lookUp, p.position.z - 5);
     look.current.lerp(wantLook, ease);
     camera.lookAt(look.current);
     let best: Destination | null = null;
@@ -663,6 +719,9 @@ export interface SceneProps {
   skyView: boolean;
   /** True while the astronaut is near the edge of the walking area. */
   onEdge: (near: boolean) => void;
+  habitatLabel: string;
+  /** Tonight radiation got through the shield (red flash), or the shield held (violet). */
+  exposed: boolean;
 }
 
 function World(props: SceneProps) {
@@ -691,13 +750,20 @@ function World(props: SceneProps) {
       <Stars on={night} />
       <hemisphereLight args={[night ? '#5a6aa0' : '#fff1e2', '#6a3e24', night ? 0.45 : 1.15]} />
       <directionalLight position={[30, 40, 20]} intensity={night ? 0.2 : 1.35} color={night ? '#9fb0ff' : '#fff1dc'} />
-      <SunAndStorm event={props.event} night={night} />
+      <SunAndStorm event={props.event} night={night} exposed={props.exposed} />
       <Terrain
         onGround={(p) => {
           pending.current = null;
+          // A tap past the walking limit becomes a walk to the limit.
+          const dx = p.x - BASE_CENTER[0];
+          const dz = p.z - BASE_CENTER[1];
+          const r = Math.hypot(dx, dz);
+          if (r > EDGE_MAX - 0.5) p.set(BASE_CENTER[0] + (dx / r) * (EDGE_MAX - 0.5), p.y, BASE_CENTER[1] + (dz / r) * (EDGE_MAX - 0.5));
           setTarget(p);
         }}
       />
+      <Model name={HABITAT.model} x={HABITAT.pos[0]} z={HABITAT.pos[1]} scale={HABITAT.scale} />
+      <Plate text={props.habitatLabel} color="#f3ece6" position={[HABITAT.pos[0], groundHeight(HABITAT.pos[0], HABITAT.pos[1]) + 3.2, HABITAT.pos[1]]} />
       {SCENERY.map((s, i) => (
         <Model key={i} name={s.model} x={s.pos[0]} z={s.pos[1]} scale={s.scale} rot={s.rot} />
       ))}
@@ -732,6 +798,10 @@ function World(props: SceneProps) {
         playerRef={playerRef}
         skyView={props.skyView}
         onEdge={props.onEdge}
+        onCancel={() => {
+          pending.current = null;
+          setTarget(null);
+        }}
         onArrive={() => {
           setTarget(null);
           if (pending.current) {
@@ -784,4 +854,4 @@ export default function Scene3D(props: SceneProps & { label: string }) {
 }
 
 // The greenhouse is drawn in code (inflatable cylinder), so its Kenney model is not loaded.
-for (const n of [...MACHINES.filter((m) => m.d !== 'greenhouse').map((m) => m.model), ...SCENERY.map((s) => s.model)]) useGLTF.preload(M(n));
+for (const n of [...MACHINES.filter((m) => m.d !== 'greenhouse').map((m) => m.model), ...SCENERY.map((s) => s.model), HABITAT.model]) useGLTF.preload(M(n));

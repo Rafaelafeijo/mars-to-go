@@ -4,7 +4,8 @@
  * each remaining night and the sol on which each one runs out. Simplification:
  * future sols repeat today's Life Support, Greenhouse and Shield; one-sol actions
  * (Expedition, Ask Earth) are not repeated; on sols with fewer cells the plan is
- * cut (Shield first, then Greenhouse, then Life Support). Radiation is not projected.
+ * cut (Shield first, then Greenhouse, then Life Support). Radiation damage (fewer cells the
+ * next sol, ADR-0033) is projected; the dose limit is not (the game shows the dose separately).
  * It reuses resolveNight, so every number follows the same rules as the real night.
  */
 import { V } from './science';
@@ -60,7 +61,7 @@ export function project(def: MissionDef, state: MissionState, today: Allocation)
   let tomorrow = { air: state.air, food: state.food };
 
   for (let sol = state.sol; sol <= V.MISSION_SOLS; sol++) {
-    const free = freeCells(conditionsFor(def, sol).dust);
+    const free = freeCells(conditionsFor(def, sol).dust, s.lostCells ?? 0);
     const plan = sol === state.sol ? today : fitToCells(today, free);
     const repeated = fitToCells(today, Number.POSITIVE_INFINITY);
     const cut = sol !== state.sol && plan.lifeSupport + plan.greenhouse + plan.shield < repeated.lifeSupport + repeated.greenhouse + repeated.shield;

@@ -53,8 +53,16 @@ const constants = {
   EXPEDITION_AIR: rule(2, 'air unit'),
   EXPEDITION_EXPOSURE: rule(1, 'exposure point', 'simplification'),
   ASK_EARTH_CELLS: rule(1, 'cell'),
-  EXPOSURE_LOW_MAX: rule(2, 'exposure point', 'simplification'),
-  EXPOSURE_MEDIUM_MAX: rule(5, 'exposure point', 'simplification'),
+  // ADR-0033 (second design review): radiation has consequences.
+  EXPOSURE_LOW_MAX: rule(1, 'exposure point', 'simplification'),
+  EXPOSURE_MEDIUM_MAX: rule(2, 'exposure point', 'simplification'),
+  /** Above this dose the flight surgeon ends the mission (game version of NASA dose limits). */
+  DOSE_LIMIT: rule(2, 'exposure point', 'simplification'),
+  /** Unblocked radiation damages electronics: cells lost on the next sol, per unblocked point. */
+  RADIATION_DAMAGE_CELLS_PER_POINT: rule(1, 'cell per exposure point', 'simplification'),
+  RADIATION_DAMAGE_MAX_CELLS: rule(2, 'cell', 'simplification'),
+  /** Rock samples the rocket must carry home for a successful mission (like Perseverance's samples). */
+  SAMPLES_GOAL: rule(1, 'sample', 'scenario'),
   CRISIS_SECONDS: rule(10, 's'),
   CRISIS_SHIELD_SWAP_CELLS: rule(2, 'cell'),
   GREENHOUSE_RESCUE_AIR: rule(2, 'air unit'),

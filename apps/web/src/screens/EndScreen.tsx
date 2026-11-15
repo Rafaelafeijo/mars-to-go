@@ -1,9 +1,10 @@
 /**
- * End of mission (brief §4.6), after the first playtest: say clearly WHY an early return
- * happened, with the numbers of that night, and show air and food after each night.
+ * End of mission (brief §4.6). After the second design review (ADR-0033): three results
+ * (success, with failures, early return), the three objectives with what failed, WHY with that
+ * night's numbers, and a readable chart of air and food after each night.
  */
 import { useTranslation } from 'react-i18next';
-import { V, exposureWord, marginSols, turningPointSol, verdict, type NightStep } from '@mars-to-go/sim';
+import { V, missionObjectives, missionResult, turningPointSol, type NightStep } from '@mars-to-go/sim';
 import { cardById } from '@mars-to-go/content';
 import { Photo } from '../cards/Photo';
 import { Icon } from '../world/Icon';
@@ -12,35 +13,66 @@ import type { Game } from '../game/useGame';
 const sum = (steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 const last = (steps: NightStep[], r: NightStep['resource']) => [...steps].reverse().find((s) => s.resource === r)?.after;
 
+/** Air and food after each night: gridlines, sol axis, values on the points, the "ran out" line labeled. */
 function Chart({ game }: { game: Game }) {
   const { t } = useTranslation();
+  const start = { air: game.state.log[0]?.steps.find((s) => s.resource === 'air')?.before ?? 0 };
   const points = game.state.log.map((l) => ({ sol: l.sol, air: last(l.steps, 'air') ?? 0, food: last(l.steps, 'food') ?? 0 }));
-  const W = 320;
-  const H = 120;
-  const max = Math.max(12, ...points.map((p) => Math.max(p.air, p.food)));
+  const W = 560;
+  const H = 240;
+  const L = 44;
+  const R = 16;
+  const T = 16;
+  const B = 34;
+  const max = Math.max(12, start.air, ...points.map((p) => Math.max(p.air, p.food)));
   const min = Math.min(0, ...points.map((p) => Math.min(p.air, p.food)));
-  const x = (sol: number) => 20 + ((sol - 1) / (V.MISSION_SOLS - 1)) * (W - 40);
-  const y = (v: number) => 10 + ((max - v) / (max - min)) * (H - 30);
-  const line = (k: 'air' | 'food') => points.map((p) => `${x(p.sol)},${y(p[k])}`).join(' ');
+  const x = (sol: number) => L + ((sol - 1) / (V.MISSION_SOLS - 1)) * (W - L - R);
+  const y = (v: number) => T + ((max - v) / (max - min)) * (H - T - B);
+  const path = (k: 'air' | 'food') => points.map((p, i) => `${i ? 'L' : 'M'}${x(p.sol)},${y(p[k])}`).join(' ');
+  const area = (k: 'air' | 'food') => (points.length ? `${path(k)} L${x(points[points.length - 1]!.sol)},${y(0)} L${x(points[0]!.sol)},${y(0)} Z` : '');
+  const ticks = [0, Math.round(max / 2), max];
   return (
     <figure className="end-chart">
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={points.map((p) => `sol ${p.sol}: air ${p.air}, food ${p.food}`).join('; ')}>
-        <line x1="16" x2={W - 10} y1={y(0)} y2={y(0)} stroke="#ff9b8a" strokeDasharray="4 4" />
-        <polyline points={line('air')} fill="none" stroke="#6ab0ff" strokeWidth="3" />
-        <polyline points={line('food')} fill="none" stroke="#7cd17a" strokeWidth="3" strokeDasharray="6 3" />
+      <figcaption className="end-chart__title">{t('end.chart')}</figcaption>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={points.map((p) => `${t('end.chartSol')} ${p.sol}: ${t('meters.air')} ${p.air}, ${t('meters.food')} ${p.food}`).join('; ')}>
+        {ticks.map((v) => (
+          <g key={v}>
+            <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} stroke="rgb(255 255 255 / 0.08)" />
+            <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="#a89a8e">
+              {v}
+            </text>
+          </g>
+        ))}
+        <line x1={L} x2={W - R} y1={y(0)} y2={y(0)} stroke="#ff9b8a" strokeWidth="1.5" strokeDasharray="5 4" />
+        <text x={W - R} y={y(0) - 6} textAnchor="end" fontSize="12" fill="#ff9b8a">
+          {t('end.chartRanOut')}
+        </text>
+        <path d={area('air')} fill="#6ab0ff" opacity="0.12" />
+        <path d={area('food')} fill="#7cd17a" opacity="0.1" />
+        <path d={path('air')} fill="none" stroke="#6ab0ff" strokeWidth="3" strokeLinejoin="round" />
+        <path d={path('food')} fill="none" stroke="#7cd17a" strokeWidth="3" strokeDasharray="7 4" strokeLinejoin="round" />
+        {Array.from({ length: V.MISSION_SOLS }, (_, i) => i + 1).map((sol) => (
+          <text key={sol} x={x(sol)} y={H - 10} textAnchor="middle" fontSize="12" fill="#a89a8e">
+            {t('end.chartSol')} {sol}
+          </text>
+        ))}
         {points.map((p) => (
           <g key={p.sol}>
-            <circle cx={x(p.sol)} cy={y(p.air)} r="4" fill={p.air < 0 ? '#ff5a4a' : '#6ab0ff'} />
-            <rect x={x(p.sol) - 3.5} y={y(p.food) - 3.5} width="7" height="7" fill={p.food < 0 ? '#ff5a4a' : '#7cd17a'} />
-            <text x={x(p.sol)} y={H - 4} textAnchor="middle" fontSize="10" fill="#c4b5a8">
-              {p.sol}
+            <circle cx={x(p.sol)} cy={y(p.air)} r="5" fill={p.air < 0 ? '#ff5a4a' : '#6ab0ff'} stroke="#14100e" strokeWidth="2" />
+            <text x={x(p.sol)} y={y(p.air) - 10} textAnchor="middle" fontSize="12" fontWeight="700" fill="#cfe3ff">
+              {p.air}
+            </text>
+            <rect x={x(p.sol) - 5} y={y(p.food) - 5} width="10" height="10" fill={p.food < 0 ? '#ff5a4a' : '#7cd17a'} stroke="#14100e" strokeWidth="2" />
+            <text x={x(p.sol)} y={y(p.food) + 20} textAnchor="middle" fontSize="12" fontWeight="700" fill="#cdeccb">
+              {p.food}
             </text>
           </g>
         ))}
       </svg>
-      <figcaption className="small muted">
-        <span className="tone-air">● {t('meters.air')}</span> · <span className="tone-food">■ {t('meters.food')}</span> · {t('end.chart')}
-      </figcaption>
+      <p className="end-chart__legend">
+        <span className="tone-air">● {t('meters.air')}</span>
+        <span className="tone-food">■ {t('meters.food')}</span>
+      </p>
     </figure>
   );
 }
@@ -48,48 +80,75 @@ function Chart({ game }: { game: Game }) {
 export function EndScreen({ game, onReplay, onGoBack, onHome }: { game: Game; onReplay: () => void; onGoBack: (sol: number) => void; onHome: () => void }) {
   const { t, i18n } = useTranslation();
   const s = game.state;
-  const v = verdict(s);
+  const result = missionResult(s) ?? 'early_return';
+  const goals = missionObjectives(s);
   const home = s.status === 'returned_all';
   const turn = turningPointSol(s);
   const earth = cardById('photo-earth-from-mars');
   const locale = i18n.language === 'pt-BR' ? 'pt-BR' : 'en';
   const failLog = s.failure ? s.log.find((l) => l.sol === s.failure?.sol) : undefined;
+  const cause = s.failure?.cause;
   const firstAir = failLog?.steps.find((st) => st.resource === 'air')?.before;
   const firstFood = failLog?.steps.find((st) => st.resource === 'food')?.before;
+  const rad = failLog?.steps.find((st) => st.id === 'radiation');
+  const causeIcon = cause === 'air' ? 'air' : cause === 'food' ? 'food' : 'radiation';
+  const causeTone = cause === 'air' ? 'tone-air' : cause === 'food' ? 'tone-food' : 'tone-rad';
+
+  const rows = [
+    { ok: goals.home, text: t('end.objectives.home') },
+    { ok: goals.sample, text: t('end.objectives.sample', { n: s.discoveries.length, goal: V.SAMPLES_GOAL }) },
+    { ok: goals.dose, text: t('end.objectives.dose', { n: s.exposure, max: V.DOSE_LIMIT }) },
+  ];
 
   return (
     <div className="screen end">
-      <h1 className="verdict-title">{home ? t('end.home') : t('end.early')}</h1>
-      {v && v !== 'early_return' && <p className="verdict">{t(`end.verdicts.${v}`)}</p>}
-      {home ? (
-        <p>
-          {t('end.margin', { count: marginSols(s) })} <span className="muted small">({t('meters.solsCaption')})</span>
-        </p>
-      ) : (
+      <p className={`end__badge end__badge--${result}`}>
+        <Icon name={result === 'success' ? 'check' : result === 'with_failures' ? 'flag' : 'cross'} size={16} /> {t(`end.result.${result}`)}
+      </p>
+      <h1 className="verdict-title">{t(`end.result.${result}`)}</h1>
+
+      {!home && (
         <>
           <p className="end__cause">
-            <Icon name={s.failure?.cause === 'air' ? 'air' : 'food'} size={22} className={s.failure?.cause === 'air' ? 'tone-air' : 'tone-food'} />{' '}
-            {s.failure?.cause === 'air' ? t('end.earlyAir', { n: s.failure.sol }) : t('end.earlyFood', { n: s.failure?.sol })}
+            <Icon name={causeIcon} size={22} className={causeTone} />{' '}
+            {cause === 'air' ? t('end.earlyAir', { n: s.failure?.sol }) : cause === 'food' ? t('end.earlyFood', { n: s.failure?.sol }) : t('end.earlyRadiation', { n: s.failure?.sol })}
           </p>
-          {failLog && s.failure?.cause === 'air' && (
+          {failLog && cause === 'air' && (
             <p className="end__why">
               {t('end.why.air', { n: failLog.sol, made: sum(failLog.steps, ['lifeSupport']), breathed: -sum(failLog.steps, ['breathe']), before: firstAir, after: last(failLog.steps, 'air') })}
             </p>
           )}
-          {failLog && s.failure?.cause === 'food' && (
+          {failLog && cause === 'food' && (
             <p className="end__why">
               {t('end.why.food', { n: failLog.sol, harvested: sum(failLog.steps, ['harvest']), eaten: -sum(failLog.steps, ['eat']), before: firstFood, after: last(failLog.steps, 'food') })}
             </p>
           )}
+          {failLog && cause === 'radiation' && rad && (
+            <p className="end__why">
+              {t('end.why.radiation', { n: failLog.sol, risk: rad.detail?.risk, shield: rad.detail?.shield, before: failLog.steps.find((x) => x.resource === 'exposure')?.before ?? rad.before, after: s.exposure, max: V.DOSE_LIMIT })}
+            </p>
+          )}
         </>
       )}
+
+      <section className="end__goals" aria-labelledby="goals-title">
+        <h2 id="goals-title">{t('end.objectives.title')}</h2>
+        <ul>
+          {rows.map((r) => (
+            <li key={r.text} className={r.ok ? 'is-ok' : 'is-fail'}>
+              <Icon name={r.ok ? 'check' : 'cross'} size={18} />
+              <span>{r.text}</span>
+              <span className="sr-only">{r.ok ? t('world.mission.done') : t('world.mission.todo')}</span>
+            </li>
+          ))}
+        </ul>
+        {home && !goals.sample && <p className="end__why">{t('end.missingSample')}</p>}
+      </section>
+
       <Chart game={game} />
-      <p>
-        {t('meters.exposure')}: <strong>{t(`meters.exposureWords.${exposureWord(s.exposure)}`)}</strong> · {t('end.discoveries', { count: s.discoveries.length })}
-      </p>
       {turn && <p>{t('end.turningPoint', { n: turn })}</p>}
       {home && earth?.photo && <Photo photo={earth.photo} alt={earth.text[locale].title} />}
-      {home && <p className="muted">{t('end.next')}</p>}
+      <p className="muted">{home ? t('end.next') : t('end.locked')}</p>
       <div className="actions">
         <button type="button" className="btn btn--primary" onClick={onReplay}>
           {t('end.playAgain')}

@@ -48,7 +48,7 @@
   "sol": {
     "label": "SOL {{n}}",
     "labelOf": "SOL {{n}} de {{total}}",
-    "caption": "dia {{n}} em Marte"
+    "caption": "Dia {{n}} em Marte"
   },
   "meters": {
     "title": "Reservas",
@@ -61,15 +61,15 @@
     "solsOfReserve_other": "{{count}} sóis de reserva",
     "solsCaption": "sol é o dia em Marte",
     "words": {
-      "critical": "crítico",
-      "tight": "apertado",
-      "safe": "seguro",
-      "plenty": "folgado"
+      "critical": "Crítico",
+      "tight": "Apertado",
+      "safe": "Seguro",
+      "plenty": "Folgado"
     },
     "exposureWords": {
-      "low": "baixa",
-      "medium": "média",
-      "high": "alta"
+      "low": "Baixa",
+      "medium": "Média",
+      "high": "Alta"
     },
     "solsOfReserve_zero": "0 sóis de reserva"
   },
@@ -84,10 +84,10 @@
     },
     "risk": "Risco se chegar a Marte: {{word}}.",
     "riskWords": [
-      "nenhum",
-      "baixo",
-      "médio",
-      "alto"
+      "Nenhum",
+      "Baixo",
+      "Médio",
+      "Alto"
     ],
     "maybe": "Talvez chegue a Marte. Talvez não.",
     "tomorrow": "Amanhã:",
@@ -134,26 +134,26 @@
       "lifeSupport": {
         "name": "Suporte à Vida",
         "does": "+1 de ar nesta noite por célula",
-        "cost": "só células"
+        "cost": "Só células"
       },
       "greenhouse": {
         "name": "Estufa",
         "does": "+2 de comida por célula, daqui a 2 sóis",
-        "cost": "nada nesta noite"
+        "cost": "Nada nesta noite"
       },
       "shield": {
         "name": "Escudo",
-        "does": "bloqueia 1 ponto de risco por célula nesta noite",
-        "cost": "gasta mesmo se o evento não vier"
+        "does": "Bloqueia 1 ponto de risco por célula nesta noite",
+        "cost": "Gasta mesmo se o evento não vier"
       },
       "expedition": {
         "name": "Expedição",
-        "does": "uma descoberta real num lugar de Jezero",
+        "does": "Uma descoberta real num lugar de Jezero",
         "cost": "2 células, 2 de ar, tripulação lá fora"
       },
       "askEarth": {
         "name": "Perguntar à Terra",
-        "does": "uma resposta sobre amanhã, hoje à noite",
+        "does": "Uma resposta sobre amanhã, hoje à noite",
         "cost": "1 célula; a resposta demora"
       }
     }
@@ -187,7 +187,8 @@
     "lifeSupport_one": "Suporte à Vida: {{count}} célula → ar {{before}} + {{delta}} = {{after}}",
     "lifeSupport_other": "Suporte à Vida: {{count}} células → ar {{before}} + {{delta}} = {{after}}",
     "plantLate_one": "Plantio de {{count}} célula → pronto no sol {{harvestSol}}, depois do fim da missão",
-    "plantLate_other": "Plantio de {{count}} células → pronto no sol {{harvestSol}}, depois do fim da missão"
+    "plantLate_other": "Plantio de {{count}} células → pronto no sol {{harvestSol}}, depois do fim da missão",
+    "damage": "A radiação danificou os eletrônicos: {{cells}} células a menos no sol {{sol}}"
   },
   "night": {
     "title": "Noite",
@@ -229,14 +230,31 @@
     "playAgain": "Quer jogar esta missão de novo com outro plano?",
     "goBack": "Voltar ao sol em que tudo mudou (sol {{n}})",
     "backHome": "Voltar ao início",
-    "discoveries_zero": "nenhuma descoberta",
+    "discoveries_zero": "Nenhuma descoberta",
     "margin_zero": "Não sobrou ar nem comida: a tripulação chegou sem nenhuma reserva.",
     "why": {
       "air": "Por quê? No sol {{n}} a máquina de ar fez {{made}}, mas quatro pessoas respiram {{breathed}} toda noite. O tanque foi de {{before}} para {{after}}.",
-      "food": "Por quê? No sol {{n}} a colheita deu {{harvested}}, mas a tripulação come {{eaten}} toda noite. A comida foi de {{before}} para {{after}}. A planta leva 2 sóis: plante antes."
+      "food": "Por quê? No sol {{n}} a colheita deu {{harvested}}, mas a tripulação come {{eaten}} toda noite. A comida foi de {{before}} para {{after}}. A planta leva 2 sóis: plante antes.",
+      "radiation": "Por quê? No sol {{n}} o evento solar tinha risco {{risk}} e o escudo bloqueou {{shield}}. A dose foi de {{before}} para {{after}}, acima do limite de {{max}}."
     },
     "chart": "Ar e comida depois de cada noite",
-    "next": "Próxima: Missão 2 · A tempestade de maio (uma tempestade solar real medida em Marte)."
+    "next": "Próxima: Missão 2 · A tempestade de maio (uma tempestade solar real medida em Marte).",
+    "result": {
+      "success": "Missão bem-sucedida!",
+      "with_failures": "Missão com falhas",
+      "early_return": "Retorno antecipado"
+    },
+    "objectives": {
+      "title": "Objetivos da missão",
+      "home": "Todos voltaram para casa",
+      "sample": "Amostras de rocha no foguete: {{n}} de {{goal}}",
+      "dose": "Dose de radiação: {{n}} de {{max}} (limite)"
+    },
+    "earlyRadiation": "A dose de radiação passou do limite no sol {{n}}. O médico da missão traz a tripulação de volta.",
+    "missingSample": "O rover nunca saiu, então nenhuma amostra de rocha voltou. Mande o rover pelo menos uma vez: custa 2 células e 2 de ar.",
+    "locked": "A missão 2 abre quando a tripulação volta para casa com a dose dentro do limite.",
+    "chartRanOut": "Acabou",
+    "chartSol": "Sol"
   },
   "card": {
     "labels": {
@@ -265,7 +283,7 @@
     "learnMore": "Quero entender melhor",
     "close": "Fechar",
     "realPhoto": "FOTO REAL",
-    "enhanced": "cor realçada",
+    "enhanced": "Cor realçada",
     "photoCredit": "{{credit}} · {{mission}} · {{date}} · {{place}}"
   },
   "footer": {
@@ -282,7 +300,7 @@
       "inside": "Dentro",
       "outside": "Fora",
       "sky": "Céu",
-      "soon": "em breve"
+      "soon": "Em breve"
     },
     "objects": {
       "battery": "Bateria",
@@ -304,7 +322,7 @@
       "food": "+{{n}} de comida em 2 sóis",
       "shield": "+{{n}} de escudo",
       "expedition": "−2 de ar, uma descoberta",
-      "askEarth": "resposta hoje à noite"
+      "askEarth": "Resposta hoje à noite"
     },
     "next": "Seguir",
     "mode": {
@@ -334,34 +352,34 @@
     "trail": {
       "label": "Os 7 sóis da missão",
       "home": "Casa",
-      "today": "hoje",
+      "today": "Hoje",
       "calm": "Sol calmo",
-      "event": "evento solar, talvez chegue a Marte",
-      "dust": "poeira: {{count}} células",
-      "cut": "plano cortado pela poeira",
+      "event": "Evento solar, talvez chegue a Marte",
+      "dust": "Poeira: {{count}} células",
+      "cut": "Plano cortado pela poeira",
       "harvest": "+{{count}} de comida chega",
       "air": "Ar",
       "food": "Comida",
-      "reachesHome": "chega em casa",
-      "runsOut": "acaba no sol {{n}}",
+      "reachesHome": "Chega em casa",
+      "runsOut": "Acaba no sol {{n}}",
       "lineAir": "Linha do ar: {{status}}.",
       "lineFood": "Linha da comida: {{status}}.",
       "assumption": "Se todo sol fosse igual a hoje."
     },
     "meters": {
       "power": "Energia",
-      "cellsLeft_one": "falta {{count}} célula",
-      "cellsLeft_other": "faltam {{count}} células",
+      "cellsLeft_one": "Falta {{count}} célula",
+      "cellsLeft_other": "Faltam {{count}} células",
       "air": "Ar",
       "food": "Comida",
       "exposure": "Exposição",
       "todayTomorrow": "{{today}} → {{tomorrow}}",
       "todayTomorrowLabel": "{{name}}: {{today}} hoje, {{tomorrow}} amanhã, {{word}}",
-      "cellsLeft_zero": "todas no lugar"
+      "cellsLeft_zero": "Todas no lugar"
     },
     "battery": {
       "label": "Bateria: {{free}} células livres, {{heating}} travadas no aquecimento",
-      "heating": "aquecimento"
+      "heating": "Aquecimento"
     },
     "tiles": {
       "lifeSupport": "Suporte à Vida",
@@ -372,15 +390,15 @@
       "aria": "{{name}}: {{count}} células. {{effect}}. Toque para pôr uma célula.",
       "ariaLocked": "{{name}}: travado até o sol {{n}}.",
       "remove": "Tirar uma célula de {{name}}",
-      "locked": "sol {{n}}",
-      "tapToAdd": "toque para pôr",
+      "locked": "Sol {{n}}",
+      "tapToAdd": "Toque para pôr",
       "effect": {
         "lifeSupport": "+{{n}} de ar hoje à noite",
         "greenhouse": "+{{n}} de comida no sol {{sol}}",
-        "greenhouseLate": "fica pronto depois da missão",
-        "shield": "bloqueia {{n}} hoje à noite",
+        "greenhouseLate": "Fica pronto depois da missão",
+        "shield": "Bloqueia {{n}} hoje à noite",
         "expedition": "−{{n}} de ar · uma descoberta",
-        "askEarth": "resposta hoje à noite"
+        "askEarth": "Resposta hoje à noite"
       }
     },
     "crew": {
@@ -398,7 +416,7 @@
     "replay": "Ver a noite de novo"
   },
   "world": {
-    "place": "Cratera Jezero · Sol {{n}} de {{total}}",
+    "place": "Missão 1 · Jezero · Sol {{n}} de {{total}} · Terreno ilustrado, não é foto",
     "illustration": "Terreno ilustrado, inspirado na cratera Jezero; não é foto.",
     "mission": {
       "title": "Controle da Missão",
@@ -406,8 +424,10 @@
       "placeAll": "Distribua as {{free}} células ({{used}}/{{free}})",
       "airHome": "O ar chega ao foguete",
       "foodHome": "A comida chega ao foguete",
-      "done": "feito",
-      "todo": "ainda não"
+      "done": "Feito",
+      "todo": "Ainda não",
+      "sample": "Levar {{goal}} amostra de rocha para casa (Rover): {{n}}/{{goal}}",
+      "dose": "Dose de radiação dentro do limite: {{n}}/{{max}}"
     },
     "forecast": {
       "title": "O céu hoje",
@@ -420,13 +440,14 @@
     },
     "hand": {
       "title": "Células na mão",
-      "count_zero": "todas no lugar",
+      "count_zero": "Todas no lugar",
       "count_one": "{{count}} célula",
       "count_other": "{{count}} células",
       "heating": "{{n}} aquecem a base",
       "pass": "Passar a noite",
       "placeFirst_one": "Falta pôr {{count}} célula",
-      "placeFirst_other": "Faltam pôr {{count}} células"
+      "placeFirst_other": "Faltam pôr {{count}} células",
+      "lost": "{{n}} perdidas pela radiação"
     },
     "machines": {
       "lifeSupport": "Máquina de ar",
@@ -450,15 +471,18 @@
       "airBad": "O ar acaba no sol {{n}}",
       "foodOk": "A comida chega ao foguete",
       "foodBad": "A comida acaba no sol {{n}}",
-      "today": "hoje",
-      "airCritical": "Ar crítico! Alimente a máquina de ar"
+      "today": "Hoje",
+      "airCritical": "Ar crítico! Alimente a máquina de ar",
+      "dose": "Dose de radiação",
+      "doseText": "{{n}} de {{max}}",
+      "doseOver": "Passou do limite!"
     },
     "float": {
       "lifeSupport": "+{{n}} de ar",
       "greenhouse": "+{{n}} de comida no sol {{sol}}",
       "shield": "+{{n}} de escudo",
       "expedition": "−{{n}} de ar",
-      "askEarth": "resposta à noite"
+      "askEarth": "Resposta à noite"
     },
     "night": "A noite cai em Jezero…",
     "sceneLabel": "Cena da base em Marte. Use a barra de baixo para jogar sem a vista 3D.",
@@ -484,28 +508,38 @@
       "record": "Registro real do DONKI da NASA: {{id}}, {{date}}.",
       "shieldHint": "Se chegar a Marte esta noite, só o Escudo protege a tripulação.",
       "tomorrow": "Amanhã: {{what}}",
-      "go": "Planejar o sol"
+      "go": "Planejar o sol",
+      "damage": "Na noite passada a radiação danificou os eletrônicos: {{n}} células a menos hoje.",
+      "earth": "A Terra respondeu: {{answer}}"
     },
     "nightStrike": "As partículas do Sol estão chegando a Marte!",
     "nightMiss": "O evento solar não veio para Marte.",
     "nightRover": "O rover está indo até o delta…",
     "report": {
       "title": "Relatório do sol {{n}}",
-      "air": "Máquina fez +{{made}} · tripulação respirou −{{breathed}}",
-      "food": "Colheita +{{harvested}} · tripulação comeu −{{eaten}}",
+      "air": "Máquina de ar +{{made}} · 4 astronautas respiraram −{{breathed}}",
+      "food": "Colheita +{{harvested}} · 4 astronautas comeram −{{eaten}}",
       "noEvent": "Nenhum evento solar esta noite.",
       "hit": "O evento chegou a Marte: risco {{risk}} − escudo {{shield}} → exposição +{{delta}}",
       "miss": "O evento não chegou a Marte. As células do escudo foram gastas mesmo assim.",
       "discovery": "Descoberta do rover: {{site}}",
       "realNasa": "DADO REAL DA NASA",
-      "suits": "trajes −{{suits}}",
+      "suits": "trajes do rover −{{suits}}",
       "eyebrow": "Missão 1 · Noite do sol {{n}}",
       "labelAir": "Ar",
       "labelFood": "Comida",
       "labelRad": "Radiação",
       "labelRover": "Rover",
       "exposure": "{{word}}",
-      "radHint": "Radiação: partículas invisíveis do Sol que podem fazer mal à tripulação. O Escudo bloqueia."
+      "radHint": "Radiação: partículas invisíveis do Sol que podem fazer mal à tripulação. O Escudo bloqueia.",
+      "airHint": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{sols}} noites.",
+      "airEmpty": "O tanque está vazio: não há ar para a tripulação.",
+      "foodHint": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{sols}} noites.",
+      "foodEmpty": "Não há mais comida para a tripulação.",
+      "unknown": "Não há medição de que esta erupção chegou a Marte. No jogo ela não atinge a base.",
+      "damage": "O que o escudo não bloqueou danificou os eletrônicos: {{n}} células a menos amanhã.",
+      "dose": "Dose {{n}} de {{max}}. Acima de {{max}}, o médico da missão manda a tripulação para casa.",
+      "sample": "Amostra de rocha coletada em {{site}}. Amostras no foguete: {{count}}/{{goal}}."
     },
     "sites": {
       "rochette": "a rocha Rochette",
@@ -525,13 +559,33 @@
       "source": "NASA Science: como são o nascer e o pôr do sol em Marte?"
     },
     "harvest": "+{{n}} comida · sol {{sol}}",
-    "harvestMarks": "Colheitas chegando: {{list}}"
+    "harvestMarks": "Colheitas chegando: {{list}}",
+    "earth": {
+      "yes": "o evento solar de amanhã vai chegar a Marte (previsão de um modelo da NASA). Planeje o Escudo.",
+      "no": "o evento solar de amanhã não vai chegar a Marte. Dá para economizar as células do Escudo.",
+      "unknown": "não há medição dizendo se o evento de amanhã chega a Marte. A Terra não sabe.",
+      "calm": "nenhum evento solar é esperado amanhã.",
+      "last": "não há amanhã nesta missão, então a resposta não ajuda.",
+      "label": "Antena"
+    },
+    "act": {
+      "add": "Pôr 1 célula",
+      "remove": "Tirar 1 célula",
+      "near": "Perto de: {{name}}"
+    },
+    "habitat": "Casa da tripulação",
+    "zoomIn": "Aproximar",
+    "zoomOut": "Afastar",
+    "nightShield": "O escudo segurou! A tripulação está segura.",
+    "nightExposed": "Tripulação exposta! A radiação passou pelo escudo."
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",
     "line": "Traga quatro astronautas para casa. 7 sóis. Nenhuma escolha é grátis.",
     "nasaData": "Dados reais da NASA neste jogo",
-    "credit": "FOTO REAL · Cratera Jezero, Marte · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · cor realçada"
+    "credit": "FOTO REAL · Cratera Jezero, Marte · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · cor realçada",
+    "line1": "Traga quatro astronautas para casa. 7 sóis.",
+    "line2": "Nenhuma escolha é grátis."
   },
   "brief": {
     "portrait": "Seu personagem: o comandante da base, de traje espacial branco.",

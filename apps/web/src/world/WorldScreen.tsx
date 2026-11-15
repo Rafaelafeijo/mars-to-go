@@ -4,14 +4,14 @@
  * Each sol: forecast banner → plan → night in 3D → visual sol report with a real NASA fact.
  * Numbers come from packages/sim; facts and photos from packages/content (verified sources).
  */
-import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   V,
   airSols,
   cellsUsed,
   conditionsFor,
-  exposureWord,
+  foodSols,
   freeCells,
   openDestinations,
   project,
@@ -20,6 +20,7 @@ import {
   validateAllocation,
   type Allocation,
   type Destination,
+  type EarthAnswer,
   type NightStep,
 } from '@mars-to-go/sim';
 import { SOL_FACTS, catalogEvent, type Locale } from '@mars-to-go/content';
@@ -48,7 +49,8 @@ function hasWebGL(): boolean {
   }
 }
 
-const sumSteps = (steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const sumSteps =(steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 
 interface Props {
   game: Game;
@@ -66,7 +68,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const night = screen === 'night' ? game.night : null;
   const base = night ? night.before : game.state;
   const cond = conditionsFor(def, base.sol);
-  const free = freeCells(cond.dust);
+  const lost = base.lostCells ?? 0;
+  const free = freeCells(cond.dust, lost);
   const open = openDestinations(base.mode, base.sol);
   const [a, setA] = useState<Allocation>(EMPTY);
   const plan = night ? night.allocation : a;
@@ -140,11 +143,39 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   };
   const remove = (d: Destination) => setA((p) => ({ ...p, [d]: d === 'expedition' || d === 'askEarth' ? 0 : Math.max(0, p[d] - 1) }));
 
+  // Keyboard: E adds a cell to the machine the astronaut is next to.
+  const addRef = useRef(add);
+  useEffect(() => {
+    addRef.current = add;
+  });
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'e' && near && !(e.target instanceof HTMLInputElement)) addRef.current(near);
+    };
+    globalThis.addEventListener('keydown', onKey);
+    return () => globalThis.removeEventListener('keydown', onKey);
+  }, [near]);
+
   const labels = Object.fromEntries(DESTS.map((d) => [d, t(`world.machines.${d}`)])) as Record<Destination, string>;
   const sols = Array.from({ length: V.MISSION_SOLS }, (_, i) => i + 1);
   const reach = (ends: number | null) => (ends === null ? V.MISSION_SOLS + 1 : ends) - base.sol + 1;
   const span = V.MISSION_SOLS - base.sol + 2;
-  const eventText = ev ? t('world.forecast.event', { kind: t(`forecast.kinds.${ev.kind}`), label: ev.classLabel }) : '';
+  // Sentence case; the CME label is already inside its kind ("cloud of particles (CME)").
+  const evLabel = (e: { kind: string; classLabel: string }) => (e.kind === 'cme' ? '' : e.classLabel);
+  const eventText = ev ? cap(t('world.forecast.event', { kind: t(`forecast.kinds.${ev.kind}`), label: evLabel(ev) }).replace(/\s+\./, '.')) : '';
+
+  // Earth's answer: tonight (report) and the next morning (banner).
+  const earthText = (ans: EarthAnswer | undefined): string | null => {
+    if (!ans) return null;
+    if (ans.aboutSol === null) return t('world.earth.last');
+    if (!ans.eventId) return t('world.earth.calm');
+    if (ans.reachesMars === true) return t('world.earth.yes');
+    if (ans.reachesMars === 'unknown') return t('world.earth.unknown');
+    return t('world.earth.no');
+  };
+  const lastLog = base.log[base.log.length - 1];
+  const morningEarth = lastLog && lastLog.sol === base.sol - 1 ? earthText(lastLog.earthAnswer) : null;
+  const doseNow = night ? (night.result.state.exposure) : base.exposure;
 
   // Sol report numbers, straight from the simulation steps of tonight.
   const steps = night?.result.steps ?? [];
@@ -155,7 +186,11 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const eaten = -sumSteps(steps, ['eat']);
   const radiation = steps.find((s) => s.id === 'radiation');
   const discovery = steps.find((s) => s.id === 'outside')?.detail?.site;
+  const damage = steps.find((s) => s.id === 'damage')?.detail?.cells;
+  const tonightEarth = earthText(night?.result.earthAnswer);
   const after = night?.result.state;
+  const shieldHeld = radiation?.detail?.reachesMars === true && radiation.delta === 0;
+  const exposed = radiation?.detail?.reachesMars === true && radiation.delta > 0;
 
   return (
     <div className={`world${night ? ' world--night' : ''}`}>
@@ -179,6 +214,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
               event={skyEvent}
               skyView={skyView && !isNight}
               onEdge={setEdge}
+              habitatLabel={t('world.habitat')}
+              exposed={exposed}
             />
           </Suspense>
         ) : (
@@ -227,6 +264,18 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             </span>
             <span className="bar__text">{foodOk ? t('world.trail.foodOk') : t('world.trail.foodBad', { n: projection.foodEndsOnSol })}</span>
           </div>
+          {/* ADR-0033: the crew's radiation dose against the limit. */}
+          <div className={`bar tone-rad${doseNow > V.DOSE_LIMIT ? ' bar--critical' : ''}`} role="img" aria-label={`${t('world.trail.dose')}: ${t('world.trail.doseText', { n: doseNow, max: V.DOSE_LIMIT })}`}>
+            <Icon name="radiation" size={14} />
+            <span className="dose">
+              {Array.from({ length: V.DOSE_LIMIT + 1 }, (_, i) => (
+                <span key={i} className={`dose__seg${i < doseNow ? ' is-on' : ''}${i === V.DOSE_LIMIT ? ' is-over' : ''}`} />
+              ))}
+            </span>
+            <span className="bar__text">
+              {t('world.trail.dose')} · {doseNow > V.DOSE_LIMIT ? t('world.trail.doseOver') : t('world.trail.doseText', { n: doseNow, max: V.DOSE_LIMIT })}
+            </span>
+          </div>
         </div>
       </section>
 
@@ -245,6 +294,17 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             <Icon name="rocket" size={16} /> {t('menu.home')}
           </button>
         </nav>
+      )}
+
+      {webgl && !isNight && (
+        <div className="world__zoom">
+          <button type="button" aria-label={t('world.zoomIn')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 0.8 }))}>
+            <Icon name="plus" size={18} />
+          </button>
+          <button type="button" aria-label={t('world.zoomOut')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 1.25 }))}>
+            <Icon name="minus" size={18} />
+          </button>
+        </div>
       )}
 
       {!isNight && (
@@ -292,6 +352,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                 { ok: left === 0, text: t('world.mission.placeAll', { free, used: free - left }) },
                 { ok: airOk, text: t('world.mission.airHome') },
                 { ok: foodOk, text: t('world.mission.foodHome') },
+                { ok: base.discoveries.length + (plan.expedition ? 1 : 0) >= V.SAMPLES_GOAL, text: t('world.mission.sample', { n: base.discoveries.length, goal: V.SAMPLES_GOAL }) },
+                { ok: doseNow <= V.DOSE_LIMIT, text: t('world.mission.dose', { n: doseNow, max: V.DOSE_LIMIT }) },
               ].map((o) => (
                 <li key={o.text} className={o.ok ? 'is-ok' : undefined}>
                   <Icon name={o.ok ? 'check' : 'cross'} size={14} />
@@ -328,9 +390,12 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         <div className="hud-hand__cells tone-energy" aria-hidden="true">
           {Array.from({ length: V.CELLS_PER_SOL }, (_, i) => {
             const heating = i < V.HEATING_CELLS;
-            const inHand = !heating && i - V.HEATING_CELLS < left;
-            const dust = !heating && i - V.HEATING_CELLS >= free;
-            return <span key={i} className={`hcell${heating ? ' hcell--heat' : inHand ? ' hcell--hand' : dust ? ' hcell--dust' : ''}`} />;
+            const k = i - V.HEATING_CELLS;
+            const inHand = !heating && k < left;
+            const dustCut = freeCells(cond.dust);
+            const broken = !heating && k >= free && k < dustCut; // lost to radiation damage
+            const dust = !heating && k >= dustCut;
+            return <span key={i} className={`hcell${heating ? ' hcell--heat' : inHand ? ' hcell--hand' : broken ? ' hcell--lost' : dust ? ' hcell--dust' : ''}`} />;
           })}
         </div>
         <p className="hud-hand__count">
@@ -339,6 +404,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             {' '}
             · <Icon name="heat" size={12} /> {t('world.hand.heating', { n: V.HEATING_CELLS })}
           </span>
+          {lost > 0 && <span className="hud-hand__lost"> · {t('world.hand.lost', { n: lost })}</span>}
         </p>
         <button type="button" className="btn btn--primary" disabled={!ready || night !== null} onClick={() => onLock(a)}>
           <Icon name="moon" size={18} /> {ready ? t('world.hand.pass') : t('world.hand.placeFirst', { count: left })}
@@ -347,10 +413,29 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
 
       {/* Bottom: place and machine bar (the accessible way to play) */}
       <section className="hud-bottom" aria-labelledby="bar-title">
-        <p className="hud-bottom__place">
-          {t('world.missionPlace', { n: base.sol, total: V.MISSION_SOLS })}
-          <span className="hud-bottom__ill"> · {t('world.illustration')}</span>
-        </p>
+        {/* Near a machine: a clear action button (tap or E), not only the bar below. */}
+        {near && open.includes(near) && !night && (
+          <div className={`act tone-${TONE[near]}`}>
+            <span className="act__name">
+              <Icon name={ICON[near]} size={18} /> {labels[near]}
+            </span>
+            {a[near] > 0 && (
+              <button type="button" className="act__btn act__btn--minus" onClick={() => remove(near)} aria-label={`${t('world.act.remove')} · ${labels[near]}`}>
+                <Icon name="minus" size={18} />
+              </button>
+            )}
+            <button
+              type="button"
+              className="act__btn"
+              disabled={left < cost(near) || ((near === 'expedition' || near === 'askEarth') && a[near] === 1)}
+              onClick={() => add(near)}
+              aria-label={`${t('world.act.add')} · ${labels[near]}`}
+            >
+              <Icon name="plus" size={18} /> {t('world.act.add')}
+            </button>
+          </div>
+        )}
+        <p className="hud-bottom__place">{t('world.place', { n: base.sol, total: V.MISSION_SOLS })}</p>
         <h2 id="bar-title" className="sr-only">
           {t('world.hotbar')}
         </h2>
@@ -397,7 +482,17 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             {ev && <p>{eventText}</p>}
             {ev && <p className="banner__record">{t('world.banner.record', { id: ev.id, date: longDate(ev.date, i18n.language) })}</p>}
             {ev && <p className="banner__hint">{t('world.banner.shieldHint')}</p>}
-            {!ev && tm && <p>{t('world.banner.tomorrow', { what: t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: tm.classLabel }) })}</p>}
+            {!ev && tm && <p>{t('world.banner.tomorrow', { what: cap(t('world.forecast.tomorrowEvent', { kind: t(`forecast.kinds.${tm.kind}`), label: evLabel(tm) }).replace(/\s+,/, ',')) })}</p>}
+            {lost > 0 && (
+              <p className="banner__alert">
+                <Icon name="energy" size={18} /> {t('world.banner.damage', { n: lost })}
+              </p>
+            )}
+            {morningEarth && (
+              <p className="banner__earth">
+                <Icon name="antenna" size={18} /> {t('world.banner.earth', { answer: morningEarth })}
+              </p>
+            )}
             <button type="button" className="btn btn--primary" onClick={() => setBanner(false)}>
               {t('world.banner.go')}
             </button>
@@ -409,6 +504,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         <div className="world__night" role="status">
           <Icon name="moon" size={28} /> {t('world.night')}
           {skyEvent && <span className="world__night-ev">{skyEvent.strikes ? t('world.nightStrike') : t('world.nightMiss')}</span>}
+          {shieldHeld && <span className="world__night-ok">{t('world.nightShield')}</span>}
+          {exposed && <span className="world__night-bad">{t('world.nightExposed')}</span>}
           {plan.expedition > 0 && <span className="world__night-ev">{t('world.nightRover')}</span>}
         </div>
       )}
@@ -430,24 +527,36 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                   <span className="stat__what">
                     {t('world.report.air', { made, breathed })}
                     {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
+                    <span className={`stat__hint${after.air < 0 ? ' is-bad' : ''}`}>
+                      {after.air < 0 ? t('world.report.airEmpty') : t('world.report.airHint', { breathed, after: after.air, sols: airSols(after.air) })}
+                    </span>
                   </span>
                 </li>
                 <li className="stat tone-food">
                   <span className="stat__icon"><Icon name="food" size={22} /></span>
                   <span className="stat__label">{t('world.report.labelFood')}</span>
                   <strong className="stat__value">{base.food} → {after.food}</strong>
-                  <span className="stat__what">{t('world.report.food', { harvested, eaten })}</span>
+                  <span className="stat__what">
+                    {t('world.report.food', { harvested, eaten })}
+                    <span className={`stat__hint${after.food < 0 ? ' is-bad' : ''}`}>
+                      {after.food < 0 ? t('world.report.foodEmpty') : t('world.report.foodHint', { eaten, after: after.food, sols: foodSols(after.food) })}
+                    </span>
+                  </span>
                 </li>
-                <li className="stat tone-rad">
+                <li className={`stat tone-rad${after.exposure > V.DOSE_LIMIT ? ' stat--bad' : ''}`}>
                   <span className="stat__icon"><Icon name="shield" size={22} /></span>
                   <span className="stat__label">{t('world.report.labelRad')}</span>
-                  <strong className="stat__value">{t(`meters.exposureWords.${exposureWord(after.exposure)}`)}</strong>
+                  <strong className="stat__value">{base.exposure} → {after.exposure}</strong>
                   <span className="stat__what">
                     {!radiation?.detail?.eventId
                       ? t('world.report.noEvent')
                       : radiation.detail.reachesMars === true
                         ? t('world.report.hit', { risk: radiation.detail.risk, shield: radiation.detail.shield, delta: radiation.delta })
-                        : t('world.report.miss')}
+                        : radiation.detail.reachesMars === 'unknown'
+                          ? t('world.report.unknown')
+                          : t('world.report.miss')}
+                    {typeof damage === 'number' && <span className="stat__hint is-bad">{t('world.report.damage', { n: damage })}</span>}
+                    <span className="stat__hint">{t('world.report.dose', { n: after.exposure, max: V.DOSE_LIMIT })}</span>
                     <span className="stat__hint">{t('world.report.radHint')}</span>
                   </span>
                 </li>
@@ -455,8 +564,16 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                   <li className="stat tone-energy">
                     <span className="stat__icon"><Icon name="rover" size={22} /></span>
                     <span className="stat__label">{t('world.report.labelRover')}</span>
+                    <strong className="stat__value">+1</strong>
+                    <span className="stat__what">{t('world.report.sample', { site: t(`world.sites.${discovery}`), count: after.discoveries.length, goal: V.SAMPLES_GOAL })}</span>
+                  </li>
+                )}
+                {tonightEarth && (
+                  <li className="stat tone-energy">
+                    <span className="stat__icon"><Icon name="antenna" size={22} /></span>
+                    <span className="stat__label">{t('world.earth.label')}</span>
                     <span className="stat__value" />
-                    <span className="stat__what">{t('world.report.discovery', { site: t(`world.sites.${discovery}`) })}</span>
+                    <span className="stat__what">{t('world.banner.earth', { answer: tonightEarth })}</span>
                   </li>
                 )}
               </ul>

@@ -29,17 +29,21 @@ async function waitForServer() {
 }
 
 // [lifeSupport, greenhouse, shield] per sol; respects the guided unlocks of mission 1.
-const PLAN = [[5, 2, 0], [5, 2, 0], [5, 2, 0], [6, 1, 0], [5, 0, 2], [7, 0, 0], [7, 0, 0]];
+// ADR-0033: the rover goes out on sol 6 (2 cells) for the rock sample; shield 2 on sol 5 keeps the dose in.
+const PLAN_WORLD = [[5, 2, 0], [5, 2, 0], [5, 2, 0], [6, 1, 0], [5, 0, 2], [5, 0, 0, 1], [7, 0, 0]];
+// Fallback screens: no rover (home, but "with failures").
+const PLAN_OTHER = [[5, 2, 0], [5, 2, 0], [5, 2, 0], [6, 1, 0], [5, 0, 2], [7, 0, 0], [7, 0, 0]];
+const PLAN = mode === 'world' ? PLAN_WORLD : PLAN_OTHER;
 const T = {
   en: {
     play: 'Play', start: 'Start sol 1', add: 'Add a cell to', lock: 'Lock the plan', skip: 'Just show me', toLog: 'See the sol log',
-    next: /Next sol|See how the mission ended/, home: 'Everyone came home!', names: ['Life Support', 'Greenhouse', 'Shield'],
-    machines: ['Air machine', 'Greenhouse', 'Shield'], worldAdd: 'Add a cell to the', pass: 'Pass the night', planSol: 'Plan the sol',
+    next: /Next sol|See how the mission ended/, home: /Mission accomplished!|Mission with failures/, success: 'Mission accomplished!', names: ['Life Support', 'Greenhouse', 'Shield'],
+    machines: ['Air machine', 'Greenhouse', 'Shield', 'Rover'], worldAdd: 'Add a cell to the', pass: 'Pass the night', planSol: 'Plan the sol',
   },
   'pt-BR': {
     play: 'Jogar', start: 'Começar o sol 1', add: 'Pôr uma célula em', lock: 'Travar o plano', skip: 'Só me mostre', toLog: 'Ver o diário do sol',
-    next: /Próximo sol|Ver como a missão terminou/, home: 'Voltamos todos!', names: ['Suporte à Vida', 'Estufa', 'Escudo'],
-    machines: ['Máquina de ar', 'Estufa', 'Escudo'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite', planSol: 'Planejar o sol',
+    next: /Próximo sol|Ver como a missão terminou/, home: /Missão bem-sucedida!|Missão com falhas/, success: 'Missão bem-sucedida!', names: ['Suporte à Vida', 'Estufa', 'Escudo'],
+    machines: ['Máquina de ar', 'Estufa', 'Escudo', 'Rover'], worldAdd: 'Pôr uma célula em:', pass: 'Passar a noite', planSol: 'Planejar o sol',
   },
 }[lang];
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -107,10 +111,11 @@ try {
     await page.getByRole('button', { name: T.toLog }).click();
     await page.getByRole('button', { name: T.next }).click();
   }
-  await page.getByRole('heading', { name: T.home }).waitFor({ timeout: 10000 }).catch(() => {});
+  const endHeading = page.getByRole('heading', { level: 1, name: mode === 'world' ? T.success : T.home });
+  await endHeading.waitFor({ timeout: 10000 }).catch(() => {});
   await shot('07-end');
-  const ok = await page.getByRole('heading', { name: T.home }).isVisible();
-  console.log(ok ? `PLAYTHROUGH OK (${lang}, ${mode}): everyone came home` : `PLAYTHROUGH FAILED (${lang}, ${mode})`);
+  const ok = await endHeading.isVisible();
+  console.log(ok ? `PLAYTHROUGH OK (${lang}, ${mode}): everyone came home${mode === 'world' ? ', mission accomplished' : ''}` : `PLAYTHROUGH FAILED (${lang}, ${mode})`);
   if (!ok) failed = true;
 
   if (mode === 'world' && lang === 'en') {

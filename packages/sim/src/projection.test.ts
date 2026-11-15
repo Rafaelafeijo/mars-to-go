@@ -34,7 +34,9 @@ describe('project: "if every sol were like today" (SIM_MODEL §16)', () => {
   it('Game A sol 1 plan reaches home: cut on the dust sol, harvests arrive two sols later', () => {
     const p = project(TEST_DEF, start(), alloc([5, 2, 0, 0, 0]));
     expect(p.air.map((x) => x.value)).toEqual([10, 10, 10, 8, 8, 8, 8]);
-    expect(p.food.map((x) => x.value)).toEqual([4, 2, 4, 6, 8, 6, 8]);
+    // ADR-0033: no shield → the risk-2 and risk-3 hits damage the electronics, so sols 3 and 6
+    // have fewer cells and the repeated plan loses greenhouse cells.
+    expect(p.food.map((x) => x.value)).toEqual([4, 2, 4, 6, 4, 2, 4]);
     expect(p.airEndsOnSol).toBeNull();
     expect(p.foodEndsOnSol).toBeNull();
     expect(p.reachesHome).toBe(true);
@@ -70,8 +72,8 @@ describe('project: "if every sol were like today" (SIM_MODEL §16)', () => {
 
   it('marks each projected sol with its free cells and whether the plan was cut', () => {
     const p = project(TEST_DEF, start(), alloc([5, 2, 0, 0, 0]));
-    expect(p.sols.map((x) => x.freeCells)).toEqual([7, 7, 7, 3, 7, 7, 7]);
-    expect(p.sols.map((x) => x.cut)).toEqual([false, false, false, true, false, false, false]);
+    expect(p.sols.map((x) => x.freeCells)).toEqual([7, 7, 5, 3, 7, 5, 7]);
+    expect(p.sols.map((x) => x.cut)).toEqual([false, false, true, true, false, true, false]);
   });
 
   it('works with a partial plan while the child is still placing cells', () => {

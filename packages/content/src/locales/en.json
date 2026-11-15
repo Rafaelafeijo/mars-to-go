@@ -48,7 +48,7 @@
   "sol": {
     "label": "SOL {{n}}",
     "labelOf": "SOL {{n}} of {{total}}",
-    "caption": "day {{n}} on Mars"
+    "caption": "Day {{n}} on Mars"
   },
   "meters": {
     "title": "Reserves",
@@ -61,15 +61,15 @@
     "solsOfReserve_other": "{{count}} sols of reserve",
     "solsCaption": "a sol is a day on Mars",
     "words": {
-      "critical": "critical",
-      "tight": "tight",
-      "safe": "safe",
-      "plenty": "plenty"
+      "critical": "Critical",
+      "tight": "Tight",
+      "safe": "Safe",
+      "plenty": "Plenty"
     },
     "exposureWords": {
-      "low": "low",
-      "medium": "medium",
-      "high": "high"
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
     },
     "solsOfReserve_zero": "0 sols of reserve"
   },
@@ -84,10 +84,10 @@
     },
     "risk": "Risk if it reaches Mars: {{word}}.",
     "riskWords": [
-      "none",
-      "low",
-      "medium",
-      "high"
+      "None",
+      "Low",
+      "Medium",
+      "High"
     ],
     "maybe": "Maybe it reaches Mars. Maybe not.",
     "tomorrow": "Tomorrow:",
@@ -134,26 +134,26 @@
       "lifeSupport": {
         "name": "Life Support",
         "does": "+1 air tonight per cell",
-        "cost": "cells only"
+        "cost": "Cells only"
       },
       "greenhouse": {
         "name": "Greenhouse",
         "does": "+2 food per cell, in 2 sols",
-        "cost": "nothing tonight"
+        "cost": "Nothing tonight"
       },
       "shield": {
         "name": "Shield",
-        "does": "blocks 1 risk point per cell tonight",
-        "cost": "spent even if the event does not come"
+        "does": "Blocks 1 risk point per cell tonight",
+        "cost": "Spent even if the event does not come"
       },
       "expedition": {
         "name": "Expedition",
-        "does": "a real discovery at a Jezero site",
+        "does": "A real discovery at a Jezero site",
         "cost": "2 cells, 2 air, crew outside"
       },
       "askEarth": {
         "name": "Ask Earth",
-        "does": "an answer about tomorrow, tonight",
+        "does": "An answer about tomorrow, tonight",
         "cost": "1 cell; the answer is slow"
       }
     }
@@ -187,7 +187,8 @@
     "lifeSupport_one": "Life Support: {{count}} cell → air {{before}} + {{delta}} = {{after}}",
     "lifeSupport_other": "Life Support: {{count}} cells → air {{before}} + {{delta}} = {{after}}",
     "plantLate_one": "Planting {{count}} cell → ready on sol {{harvestSol}}, after the mission ends",
-    "plantLate_other": "Planting {{count}} cells → ready on sol {{harvestSol}}, after the mission ends"
+    "plantLate_other": "Planting {{count}} cells → ready on sol {{harvestSol}}, after the mission ends",
+    "damage": "Radiation damaged the electronics: {{cells}} fewer cells on sol {{sol}}"
   },
   "night": {
     "title": "Night",
@@ -229,14 +230,31 @@
     "playAgain": "Play this mission again with another plan?",
     "goBack": "Go back to the sol where everything changed (sol {{n}})",
     "backHome": "Back to home",
-    "discoveries_zero": "no discoveries",
+    "discoveries_zero": "No discoveries",
     "margin_zero": "No air or food to spare: the crew made it with nothing left over.",
     "why": {
       "air": "Why? On sol {{n}} the air machine made {{made}}, but four people breathe {{breathed}} every night. The tank went from {{before}} to {{after}}.",
-      "food": "Why? On sol {{n}} the harvest gave {{harvested}}, but the crew eats {{eaten}} every night. Food went from {{before}} to {{after}}. Plants take 2 sols: plant earlier."
+      "food": "Why? On sol {{n}} the harvest gave {{harvested}}, but the crew eats {{eaten}} every night. Food went from {{before}} to {{after}}. Plants take 2 sols: plant earlier.",
+      "radiation": "Why? On sol {{n}} the solar event had risk {{risk}} and the shield blocked {{shield}}. The dose went from {{before}} to {{after}}, above the limit of {{max}}."
     },
     "chart": "Air and food after each night",
-    "next": "Next: Mission 2 · The May storm (a real solar storm measured on Mars)."
+    "next": "Next: Mission 2 · The May storm (a real solar storm measured on Mars).",
+    "result": {
+      "success": "Mission accomplished!",
+      "with_failures": "Mission with failures",
+      "early_return": "Early return"
+    },
+    "objectives": {
+      "title": "Mission objectives",
+      "home": "Everyone came home",
+      "sample": "Rock samples on the rocket: {{n}} of {{goal}}",
+      "dose": "Radiation dose: {{n}} of {{max}} (limit)"
+    },
+    "earlyRadiation": "The radiation dose went over the limit on sol {{n}}. The mission doctor brings the crew home.",
+    "missingSample": "The rover never went out, so no rock sample came home. Send the rover at least once: it costs 2 cells and 2 air.",
+    "locked": "Mission 2 opens when the crew comes home with the dose within the limit.",
+    "chartRanOut": "Ran out",
+    "chartSol": "Sol"
   },
   "card": {
     "labels": {
@@ -265,7 +283,7 @@
     "learnMore": "I want to understand more",
     "close": "Close",
     "realPhoto": "REAL PHOTO",
-    "enhanced": "enhanced color",
+    "enhanced": "Enhanced color",
     "photoCredit": "{{credit}} · {{mission}} · {{date}} · {{place}}"
   },
   "footer": {
@@ -282,7 +300,7 @@
       "inside": "Inside",
       "outside": "Outside",
       "sky": "Sky",
-      "soon": "soon"
+      "soon": "Soon"
     },
     "objects": {
       "battery": "Battery",
@@ -304,7 +322,7 @@
       "food": "+{{n}} food in 2 sols",
       "shield": "+{{n}} shield",
       "expedition": "−2 air, a discovery",
-      "askEarth": "answer tonight"
+      "askEarth": "Answer tonight"
     },
     "next": "Next",
     "mode": {
@@ -334,16 +352,16 @@
     "trail": {
       "label": "The 7 sols of the mission",
       "home": "Home",
-      "today": "today",
-      "calm": "calm Sun",
-      "event": "solar event, maybe reaches Mars",
-      "dust": "dust: {{count}} cells",
-      "cut": "plan cut by dust",
+      "today": "Today",
+      "calm": "Calm Sun",
+      "event": "Solar event, maybe reaches Mars",
+      "dust": "Dust: {{count}} cells",
+      "cut": "Plan cut by dust",
       "harvest": "+{{count}} food arrives",
       "air": "Air",
       "food": "Food",
-      "reachesHome": "reaches home",
-      "runsOut": "runs out on sol {{n}}",
+      "reachesHome": "Reaches home",
+      "runsOut": "Runs out on sol {{n}}",
       "lineAir": "Air line: {{status}}.",
       "lineFood": "Food line: {{status}}.",
       "assumption": "If every sol were like today."
@@ -357,11 +375,11 @@
       "exposure": "Exposure",
       "todayTomorrow": "{{today}} → {{tomorrow}}",
       "todayTomorrowLabel": "{{name}}: {{today}} today, {{tomorrow}} tomorrow, {{word}}",
-      "cellsLeft_zero": "all placed"
+      "cellsLeft_zero": "All placed"
     },
     "battery": {
       "label": "Battery: {{free}} cells free, {{heating}} locked to heating",
-      "heating": "heating"
+      "heating": "Heating"
     },
     "tiles": {
       "lifeSupport": "Life Support",
@@ -372,15 +390,15 @@
       "aria": "{{name}}: {{count}} cells. {{effect}}. Tap to add a cell.",
       "ariaLocked": "{{name}}: locked until sol {{n}}.",
       "remove": "Take a cell back from {{name}}",
-      "locked": "sol {{n}}",
-      "tapToAdd": "tap to add",
+      "locked": "Sol {{n}}",
+      "tapToAdd": "Tap to add",
       "effect": {
         "lifeSupport": "+{{n}} air tonight",
         "greenhouse": "+{{n}} food on sol {{sol}}",
-        "greenhouseLate": "ready after the mission",
-        "shield": "blocks {{n}} tonight",
+        "greenhouseLate": "Ready after the mission",
+        "shield": "Blocks {{n}} tonight",
         "expedition": "−{{n}} air · a discovery",
-        "askEarth": "answer tonight"
+        "askEarth": "Answer tonight"
       }
     },
     "crew": {
@@ -398,7 +416,7 @@
     "replay": "Watch the night again"
   },
   "world": {
-    "place": "Jezero Crater · Sol {{n}} of {{total}}",
+    "place": "Mission 1 · Jezero · Sol {{n}} of {{total}} · Illustrated terrain, not a photo",
     "illustration": "Illustrated terrain inspired by Jezero Crater, not a photo.",
     "mission": {
       "title": "Mission Control",
@@ -406,8 +424,10 @@
       "placeAll": "Place all {{free}} cells ({{used}}/{{free}})",
       "airHome": "Air reaches the rocket",
       "foodHome": "Food reaches the rocket",
-      "done": "done",
-      "todo": "not yet"
+      "done": "Done",
+      "todo": "Not yet",
+      "sample": "Bring {{goal}} rock sample home (Rover): {{n}}/{{goal}}",
+      "dose": "Radiation dose within the limit: {{n}}/{{max}}"
     },
     "forecast": {
       "title": "Sky today",
@@ -415,18 +435,19 @@
       "event": "{{kind}} {{label}}. Maybe it reaches Mars.",
       "dust": "Dust storm: only {{n}} cells today.",
       "tomorrow": "Tomorrow:",
-      "tomorrowCalm": "calm Sun.",
+      "tomorrowCalm": "Calm Sun.",
       "tomorrowEvent": "{{kind}} {{label}}, maybe."
     },
     "hand": {
       "title": "Cells in hand",
-      "count_zero": "all placed",
+      "count_zero": "All placed",
       "count_one": "{{count}} cell",
       "count_other": "{{count}} cells",
       "heating": "{{n}} keep the base warm",
       "pass": "Pass the night",
       "placeFirst_one": "Place {{count}} more cell",
-      "placeFirst_other": "Place {{count}} more cells"
+      "placeFirst_other": "Place {{count}} more cells",
+      "lost": "{{n}} lost to radiation"
     },
     "machines": {
       "lifeSupport": "Air machine",
@@ -450,15 +471,18 @@
       "airBad": "Air runs out on sol {{n}}",
       "foodOk": "Food reaches the rocket",
       "foodBad": "Food runs out on sol {{n}}",
-      "today": "today",
-      "airCritical": "Air critical! Feed the air machine"
+      "today": "Today",
+      "airCritical": "Air critical! Feed the air machine",
+      "dose": "Radiation dose",
+      "doseText": "{{n}} of {{max}}",
+      "doseOver": "Over the limit!"
     },
     "float": {
       "lifeSupport": "+{{n}} air",
       "greenhouse": "+{{n}} food on sol {{sol}}",
       "shield": "+{{n}} shield",
       "expedition": "−{{n}} air",
-      "askEarth": "answer tonight"
+      "askEarth": "Answer tonight"
     },
     "night": "Night falls on Jezero…",
     "sceneLabel": "Mars base scene. Use the bar below to play without the 3D view.",
@@ -484,28 +508,38 @@
       "record": "Real NASA DONKI record {{id}}, {{date}}.",
       "shieldHint": "If it reaches Mars tonight, only the Shield protects the crew.",
       "tomorrow": "Tomorrow: {{what}}",
-      "go": "Plan the sol"
+      "go": "Plan the sol",
+      "damage": "Last night the radiation damaged the electronics: {{n}} fewer cells today.",
+      "earth": "Earth answered: {{answer}}"
     },
     "nightStrike": "The solar particles are reaching Mars!",
     "nightMiss": "The solar event did not come to Mars.",
     "nightRover": "The rover is driving to the delta…",
     "report": {
       "title": "Sol {{n}} report",
-      "air": "Machine made +{{made}} · crew breathed −{{breathed}}",
-      "food": "Harvest +{{harvested}} · crew ate −{{eaten}}",
+      "air": "Air machine +{{made}} · 4 astronauts breathed −{{breathed}}",
+      "food": "Harvest +{{harvested}} · 4 astronauts ate −{{eaten}}",
       "noEvent": "No solar event tonight.",
       "hit": "The event hit Mars: risk {{risk}} − shield {{shield}} → exposure +{{delta}}",
       "miss": "The event did not reach Mars. The shield cells were spent anyway.",
       "discovery": "Rover discovery: {{site}}",
       "realNasa": "REAL NASA DATA",
-      "suits": "suits −{{suits}}",
+      "suits": "rover space suits −{{suits}}",
       "eyebrow": "Mission 1 · Night of sol {{n}}",
       "labelAir": "Air",
       "labelFood": "Food",
       "labelRad": "Radiation",
       "labelRover": "Rover",
       "exposure": "{{word}}",
-      "radHint": "Radiation: invisible particles from the Sun that can harm the crew. The Shield blocks them."
+      "radHint": "Radiation: invisible particles from the Sun that can harm the crew. The Shield blocks them.",
+      "airHint": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{sols}} more nights.",
+      "airEmpty": "The tank is empty: there is no air for the crew.",
+      "foodHint": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{sols}} more nights.",
+      "foodEmpty": "There is no food left for the crew.",
+      "unknown": "There is no measurement that this flare reached Mars. In the game it does not hit the base.",
+      "damage": "What the shield did not block damaged the electronics: {{n}} fewer cells tomorrow.",
+      "dose": "Dose {{n}} of {{max}}. Above {{max}}, the mission doctor sends the crew home.",
+      "sample": "Rock sample collected at {{site}}. Samples on the rocket: {{count}}/{{goal}}."
     },
     "sites": {
       "rochette": "the rock Rochette",
@@ -525,13 +559,33 @@
       "source": "NASA Science: What do sunrises and sunsets look like on Mars?"
     },
     "harvest": "+{{n}} food · sol {{sol}}",
-    "harvestMarks": "Harvests coming: {{list}}"
+    "harvestMarks": "Harvests coming: {{list}}",
+    "earth": {
+      "yes": "tomorrow's solar event will reach Mars (NASA model forecast). Plan the Shield.",
+      "no": "tomorrow's solar event will not reach Mars. You can save the Shield cells.",
+      "unknown": "there is no measurement of whether tomorrow's event reaches Mars. Earth does not know.",
+      "calm": "no solar event is expected tomorrow.",
+      "last": "there is no tomorrow in this mission, so the answer does not help.",
+      "label": "Antenna"
+    },
+    "act": {
+      "add": "Add 1 cell",
+      "remove": "Take 1 cell",
+      "near": "Near the {{name}}"
+    },
+    "habitat": "Crew home",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "nightShield": "The shield held! The crew is safe.",
+    "nightExposed": "Crew exposed! Radiation got through the shield."
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
     "line": "Bring four astronauts home. 7 sols. No choice is free.",
     "nasaData": "Real NASA data in this game",
-    "credit": "REAL PHOTO · Jezero Crater, Mars · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · enhanced color"
+    "credit": "REAL PHOTO · Jezero Crater, Mars · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · enhanced color",
+    "line1": "Bring four astronauts home. 7 sols.",
+    "line2": "No choice is free."
   },
   "brief": {
     "portrait": "Your character: the base commander, in a white space suit.",

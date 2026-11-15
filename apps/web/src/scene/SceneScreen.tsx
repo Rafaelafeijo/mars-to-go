@@ -49,6 +49,7 @@ const STEP_OBJECT: Record<NightStep['id'], Destination | 'crew' | null> = {
   expeditionRecalled: 'expedition',
   outside: 'expedition',
   radiation: 'shield',
+  damage: 'shield',
   earthAnswer: 'askEarth',
 };
 
@@ -106,7 +107,7 @@ export function SceneScreen({ game, onAnswer, onLock, onPick, onEndNight, onNext
   const night = game.night;
   const base = screen === 'morning' ? game.state : (night?.before ?? game.state);
   const cond = conditionsFor(def, base.sol);
-  const free = freeCells(cond.dust);
+  const free = freeCells(cond.dust, base.lostCells ?? 0);
   const open = openDestinations(base.mode, base.sol);
   const ev = catalogEvent(cond.event?.id);
 

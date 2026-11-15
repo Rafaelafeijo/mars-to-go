@@ -62,7 +62,7 @@ export function SolScreen({ game, onLock, onNightDone }: Props) {
   const night = screen === 'night' ? game.night : null;
   const base = night ? night.before : game.state;
   const cond = conditionsFor(def, base.sol);
-  const free = freeCells(cond.dust);
+  const free = freeCells(cond.dust, base.lostCells ?? 0);
   const open = openDestinations(base.mode, base.sol);
 
   const [a, setA] = useState<Allocation>(EMPTY);

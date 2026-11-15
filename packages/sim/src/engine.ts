@@ -39,9 +39,9 @@ export function conditionsFor(def: MissionDef, sol: number): SolConditions {
   return def.sols[sol - 1] ?? { dust: false, event: null };
 }
 
-/** Cells the child can place: total cells minus the fixed heating cells. */
-export function freeCells(dust: boolean): number {
-  return (dust ? V.CELLS_DUST_SOL : V.CELLS_PER_SOL) - V.HEATING_CELLS;
+/** Cells the child can place: total cells minus the fixed heating cells, minus cells lost to radiation damage (ADR-0033). */
+export function freeCells(dust: boolean, lostCells = 0): number {
+  return Math.max(0, (dust ? V.CELLS_DUST_SOL : V.CELLS_PER_SOL) - V.HEATING_CELLS - lostCells);
 }
 
 /** Guided mission 1 unlocks destinations over time (ADR-0019). */
@@ -85,7 +85,7 @@ export function validateAllocation(state: MissionState, a: Allocation, dust: boo
   for (const [dest, n] of used) {
     if (n > 0 && !open.includes(dest)) errors.push({ code: 'locked', destination: dest, opensOnSol: unlockSol(dest) });
   }
-  const free = freeCells(dust);
+  const free = freeCells(dust, state.lostCells ?? 0);
   const total = cellsUsed(a);
   if (total !== free) errors.push({ code: 'wrongTotal', used: total, free });
   return errors;
@@ -190,6 +190,16 @@ export function resolveNight(def: MissionDef, state: MissionState, plan: SolPlan
   });
   exposure += added;
 
+  // 6b. ADR-0033: what the shield did not block also damages the electronics: fewer cells tomorrow.
+  const lostCells = Math.min(V.RADIATION_DAMAGE_MAX_CELLS, added * V.RADIATION_DAMAGE_CELLS_PER_POINT);
+  if (lostCells > 0) {
+    push({
+      id: 'damage', resource: 'none', before: 0, delta: 0, after: 0,
+      detail: { cells: lostCells, sol: sol + 1 },
+      scienceIds: ['RADIATION_DAMAGE_CELLS_PER_POINT', 'RADIATION_DAMAGE_MAX_CELLS'],
+    });
+  }
+
   // 7. Earth's answer about tomorrow arrives tonight, after the plan was locked (ADR-0025).
   let earthAnswer: EarthAnswer | undefined;
   if (a.askEarth === 1) {
@@ -214,6 +224,10 @@ export function resolveNight(def: MissionDef, state: MissionState, plan: SolPlan
   if (air < 0 || food < 0) {
     status = 'early_return';
     failure = { sol, cause: air < 0 ? 'air' : 'food' };
+  } else if (exposure > V.DOSE_LIMIT) {
+    // ADR-0033: over the dose limit, the flight surgeon brings the crew home.
+    status = 'early_return';
+    failure = { sol, cause: 'radiation' };
   } else if (sol >= V.MISSION_SOLS) {
     status = 'returned_all';
   }
@@ -224,6 +238,7 @@ export function resolveNight(def: MissionDef, state: MissionState, plan: SolPlan
     air,
     food,
     exposure,
+    lostCells,
     pendingHarvests: pending,
     discoveries,
     status,

@@ -76,7 +76,7 @@ export function Morning({ game, onAnswer, onLock }: { game: Game; onAnswer: (a: 
   const { t } = useTranslation();
   const { def, state } = game;
   const cond = conditionsFor(def, state.sol);
-  const free = freeCells(cond.dust);
+  const free = freeCells(cond.dust, state.lostCells ?? 0);
   const open = openDestinations(state.mode, state.sol);
   const [a, setA] = useState<Allocation>(EMPTY);
   const used = cellsUsed(a);

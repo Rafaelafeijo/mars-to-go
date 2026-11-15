@@ -30,7 +30,9 @@ export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () 
           <br />
           TO GO
         </h1>
-        <p className="hero__line">{t('hero.line')}</p>
+        <p className="hero__line">
+          <span>{t('hero.line1')}</span> <span>{t('hero.line2')}</span>
+        </p>
         <p className="hero__role" aria-live="off">
           {t('home.rolePrefix')} <strong>{roles[role]}</strong>
         </p>
@@ -44,8 +46,11 @@ export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () 
           </button>
         </div>
         <label className="hero__assist">
-          <input type="checkbox" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
-          <span>{t('home.assisted')}</span>
+          <input type="checkbox" role="switch" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
+          <span>
+            {t('home.assisted')}
+            <small>{t('home.assistedHint')}</small>
+          </span>
         </label>
       </div>
       <p className="hero__credit">{t('hero.credit')}</p>

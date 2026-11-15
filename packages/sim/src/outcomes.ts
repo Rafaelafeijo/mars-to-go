@@ -43,13 +43,42 @@ export function verdict(state: MissionState): Verdict | null {
   return 'with_margin';
 }
 
+export interface MissionObjectives {
+  /** Everyone came home on the rocket. */
+  home: boolean;
+  /** At least SAMPLES_GOAL rock samples (rover trips) are on the rocket. */
+  sample: boolean;
+  /** The crew's dose stayed within the limit. */
+  dose: boolean;
+}
+
+/** The three mission objectives (ADR-0033). */
+export function missionObjectives(state: MissionState): MissionObjectives {
+  return {
+    home: state.status === 'returned_all',
+    sample: state.discoveries.length >= V.SAMPLES_GOAL,
+    dose: state.exposure <= V.DOSE_LIMIT,
+  };
+}
+
+export type MissionResult = 'success' | 'with_failures' | 'early_return';
+
+/** Success = all three objectives; home but an objective missed = with failures. */
+export function missionResult(state: MissionState): MissionResult | null {
+  if (state.status === 'playing') return null;
+  if (state.status === 'early_return') return 'early_return';
+  const o = missionObjectives(state);
+  return o.home && o.sample && o.dose ? 'success' : 'with_failures';
+}
+
 /**
  * "The sol where everything changed": the last sol a different plan could have fixed it.
  * Food: failedSol − GREENHOUSE_DELAY_SOLS. Air: failedSol − 1. Never before sol 1.
  */
 export function turningPointSol(state: MissionState): number | null {
   if (!state.failure) return null;
-  const back = state.failure.cause === 'food' ? V.GREENHOUSE_DELAY_SOLS : 1;
+  // Radiation: the night it went over was the last chance (shield that night).
+  const back = state.failure.cause === 'food' ? V.GREENHOUSE_DELAY_SOLS : state.failure.cause === 'radiation' ? 0 : 1;
   return Math.max(1, state.failure.sol - back);
 }
 
