@@ -556,8 +556,8 @@
       "foodLeft_zero": "There is now {{after}}: not enough for another night.",
       "foodLeft_one": "There is now {{after}}: enough for {{count}} more night.",
       "foodLeft_other": "There is now {{after}}: enough for {{count}} more nights.",
-      "doseNow": "Dose {{n}} of {{max}}.",
-      "doseRule": "Above {{max}}, the mission doctor sends the crew home."
+      "doseNow": "The dose is now {{n}} of {{max}}.",
+      "doseRule": "Above {{max}} radiation points, the mission doctor sends the crew home."
     },
     "sites": {
       "rochette": "the rock Rochette",
@@ -684,7 +684,7 @@
     }
   },
   "sunWeek": {
-    "badge": "REAL NASA DATA · UPDATED TWICE A DAY",
+    "badge": "REAL NASA DATA",
     "title": "The Sun this week",
     "flares": "Flares",
     "cmes": "Particle clouds (CMEs)",

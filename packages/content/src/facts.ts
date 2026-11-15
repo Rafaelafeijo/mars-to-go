@@ -435,11 +435,13 @@ export const SOL_FACTS_M2: SolFact[] = [
             'pt-BR': "O interior de uma mochila de traje espacial da Apollo, fotografada na Terra em 1968 sem a tampa: o equipamento que dá ar e o limpa."
       }
     },
-    sourceName: 'NASA/TDA Research, ICES 2011 (NTRS 20110008446)',
-    sourceUrl: NTRS('20110008446'),
+    // Read in full on 2026-11-15: CO2 brief OCHMO-TB-004 Rev B pp. 10–11 (flow path, why CO2 must go),
+    // ECLSS brief OCHMO-TB-002 Rev A p. 18 ("pure O2 atmosphere", LiOH or METOX cartridge, humidity).
+    sourceName: 'NASA-STD-3001 Technical Briefs: Carbon Dioxide (OCHMO-TB-004, pp. 10–11) and ECLSS (OCHMO-TB-002, p. 18)',
+    sourceUrl: 'https://www.nasa.gov/wp-content/uploads/2023/03/co2-technical-brief-ochmo.pdf',
     text: {
-      en: { title: 'Breathing out on Mars is hard', body: 'In space, a suit can throw the gas we breathe out into the vacuum. On Mars that does not work, because the air outside is already carbon dioxide. Engineers working with NASA wrote that it "will be challenging".' },
-      'pt-BR': { title: 'Expirar em Marte é difícil', body: 'No espaço, o traje pode jogar no vácuo o gás que expiramos. Em Marte isso não funciona, porque o ar de fora já é gás carbônico. Engenheiros que trabalham com a NASA escreveram que isso "será desafiador".' },
+      en: { title: 'How astronauts breathe in a suit', body: 'A fan in the backpack blows pure oxygen into the helmet from behind the head; it flows over the face and down through the suit. The used gas goes back to the backpack, which takes out the carbon dioxide (it causes headaches and tiredness if it builds up) and the extra wetness, and sends the oxygen around again.' },
+      'pt-BR': { title: 'Como os astronautas respiram no traje', body: 'Um ventilador na mochila sopra oxigênio puro dentro do capacete, por trás da cabeça; ele passa pelo rosto e desce pelo traje. O gás usado volta para a mochila, que tira o gás carbônico (ele dá dor de cabeça e cansaço se acumular) e a umidade, e manda o oxigênio de volta.' },
     },
   }),
 ];
@@ -597,10 +599,10 @@ export const NASA_SOURCES: NasaSource[] = [
   },
   {
     id: 'nasa-studies',
-    name: 'NASA technical studies (NTRS 20160004210, 20110008446, 20210000827; NASA-SP-2009-566; PIA24033)',
+    name: 'NASA technical studies (NTRS 20160004210, 20210000827; NASA-SP-2009-566; NASA-STD-3001 technical briefs OCHMO-TB-002 and OCHMO-TB-004; PIA24033)',
     what: {
-      en: 'How a real Mars base would work: oxygen stored as a liquid in tanks, a 30-kilowatt power plant, suits on Mars, how far astronauts may walk (Moon planning), and spacesuit materials already on Mars.',
-      'pt-BR': 'Como uma base de verdade em Marte funcionaria: oxigênio guardado como líquido em tanques, uma usina de 30 quilowatts, trajes em Marte, até onde astronautas podem andar (planejamento da Lua) e materiais de traje que já estão em Marte.',
+      en: 'How a real Mars base would work: oxygen stored as a liquid in tanks, a 30-kilowatt power plant, how astronauts breathe inside a suit, how far they may walk (Moon planning), and spacesuit materials already on Mars.',
+      'pt-BR': 'Como uma base de verdade em Marte funcionaria: oxigênio guardado como líquido em tanques, uma usina de 30 quilowatts, como os astronautas respiram dentro do traje, até onde podem andar (planejamento da Lua) e materiais de traje que já estão em Marte.',
     },
     whereInGame: {
       en: 'The facts of mission 2, the air tank and the walking-limit warning.',

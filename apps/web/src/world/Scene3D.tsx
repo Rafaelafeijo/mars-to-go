@@ -138,7 +138,7 @@ function makePlate(text: string, pips: number, color: string, look: PlateLook): 
   const c = document.createElement('canvas');
   const ctx = c.getContext('2d');
   if (!ctx) return { tex: new THREE.CanvasTexture(c), aspect: 1 };
-  const font = '600 34px system-ui, sans-serif';
+  const font = "600 34px 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif";
   ctx.font = font;
   const dot = 26;
   const w = Math.max(ctx.measureText(text).width + 56 + dot, pips * 22 + 48, 120);

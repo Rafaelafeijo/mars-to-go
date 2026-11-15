@@ -1,7 +1,9 @@
 /*
  * Design tokens (ADR-0023). Dark background, one warm Mars accent.
  * Contrast: text pairs below are ≥ 4.5:1 on --color-bg.
- * Fonts are system stacks until open-license fonts are chosen and recorded in docs/ASSETS.md.
+ * Body font: Atkinson Hyperlegible Next (Braille Institute, OFL-1.1), self-hosted via
+ * @fontsource-variable and recorded in docs/ASSETS.md; system fonts as fallback.
+ * Titles keep the monospace stack (approved).
  */
 :root {
   --color-bg: #14100e;
@@ -13,7 +15,7 @@
   --color-line: #3a2f29;
   --color-focus: #ffd27a;
 
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Atkinson Hyperlegible Next Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --radius: 12px;

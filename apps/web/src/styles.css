@@ -2549,8 +2549,12 @@ button.top__brand {
   }
 }
 .sun-week {
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
+  /* A sun glow in the corner fading to a violet "particle" glow: modern, still readable. */
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgb(255 140 60 / 0.38), transparent 55%),
+    radial-gradient(90% 70% at 0% 100%, rgb(185 162 255 / 0.22), transparent 60%),
+    var(--glass);
+  border: 1px solid rgb(255 180 120 / 0.35);
   border-radius: 18px;
   padding: 20px 22px;
   box-shadow: 0 20px 50px rgb(0 0 0 / 0.45);
@@ -2562,6 +2566,7 @@ button.top__brand {
 }
 .sun-week__badge {
   display: inline-block;
+  white-space: nowrap;
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.65rem;

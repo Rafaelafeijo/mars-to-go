@@ -556,8 +556,8 @@
       "foodLeft_zero": "Agora há {{after}}: não dá para mais nenhuma noite.",
       "foodLeft_one": "Agora há {{after}}: dá para mais {{count}} noite.",
       "foodLeft_other": "Agora há {{after}}: dá para mais {{count}} noites.",
-      "doseNow": "Dose {{n}} de {{max}}.",
-      "doseRule": "Acima de {{max}}, o médico da missão manda a tripulação para casa."
+      "doseNow": "A dose agora é {{n}} de {{max}}.",
+      "doseRule": "Acima de {{max}} pontos de radiação, o médico da missão manda a tripulação para casa."
     },
     "sites": {
       "rochette": "a rocha Rochette",
@@ -684,7 +684,7 @@
     }
   },
   "sunWeek": {
-    "badge": "DADO REAL DA NASA · ATUALIZADO 2 VEZES POR DIA",
+    "badge": "DADO REAL DA NASA",
     "title": "O Sol nesta semana",
     "flares": "Erupções",
     "cmes": "Nuvens de partículas (CMEs)",

@@ -43,7 +43,9 @@ O terreno, o céu e o Sol são desenhados em código (ilustração inspirada na 
 
 ## Fontes tipográficas
 
-Nenhuma ainda; o jogo usa as fontes do sistema. Fontes com licença aberta serão registradas aqui antes do uso (ADR-0023).
+| Fonte | Autor | Licença | Origem | Uso |
+| --- | --- | --- | --- | --- |
+| Atkinson Hyperlegible Next (variável) | Braille Institute of America | SIL Open Font License 1.1 | npm `@fontsource-variable/atkinson-hyperlegible-next@5.3.0` (hospedada no próprio jogo, sem pedido ao Google Fonts) | Texto principal e rótulos 3D. Escolhida pela legibilidade (7 a 12 anos, baixa visão). Os títulos mantêm a fonte monoespaçada do sistema. |
 
 ## Ícones, sons, música
 

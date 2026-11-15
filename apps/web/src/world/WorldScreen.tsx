@@ -632,8 +632,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
               ))}
             </svg>
             <p className="crisis__status" id="crisis-text">
-              <strong>{t('world.crisis.meter', { risk: stormRisk, shield: shieldNow })}</strong>{' '}
-              {need === 0 ? (enoughAtStart && movedTotal === 0 ? t('world.crisis.enough') : t('world.crisis.covered')) : t('world.crisis.need', { count: need })}
+              {t('world.crisis.meter', { risk: stormRisk, shield: shieldNow })}{' '}
+              <strong>{need === 0 ? (enoughAtStart && movedTotal === 0 ? t('world.crisis.enough') : t('world.crisis.covered')) : t('world.crisis.need', { count: need })}</strong>
             </p>
 
             {need > 0 && (
@@ -763,10 +763,10 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                       </span>
                     )}
                     <span className="stat__hint">
+                      {t('world.report.doseRule', { max: V.DOSE_LIMIT })}{' '}
                       <strong className={`stat__key${after.exposure > V.DOSE_LIMIT ? ' is-bad' : after.exposure === V.DOSE_LIMIT ? ' is-warn' : ''}`}>
                         {t('world.report.doseNow', { n: after.exposure, max: V.DOSE_LIMIT })}
-                      </strong>{' '}
-                      {t('world.report.doseRule', { max: V.DOSE_LIMIT })}
+                      </strong>
                     </span>
                     <span className="stat__hint">{t('world.report.radHint')}</span>
                   </span>

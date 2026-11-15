@@ -43,7 +43,9 @@ The terrain, sky and Sun are drawn in code (illustration inspired by Jezero Crat
 
 ## Fonts
 
-None yet; the game uses system fonts. Open-license fonts will be recorded here before use (ADR-0023).
+| Font | Author | License | Source | Use |
+| --- | --- | --- | --- | --- |
+| Atkinson Hyperlegible Next (variable) | Braille Institute of America | SIL Open Font License 1.1 | npm `@fontsource-variable/atkinson-hyperlegible-next@5.3.0` (self-hosted, no request to Google Fonts) | Body text and 3D labels. Chosen for legibility (ages 7–12, low vision). Titles keep the system monospace stack. |
 
 ## Icons, sounds, music
 

@@ -21,7 +21,7 @@ function Chart({ game }: { game: Game }) {
   const L = 44;
   const R = 16;
   const T = 16;
-  const B = 34;
+  const B = 44;
   const max = Math.max(12, start.air, ...points.map((p) => Math.max(p.air, p.food)));
   const min = Math.min(0, ...points.map((p) => Math.min(p.air, p.food)));
   const x = (sol: number) => L + ((sol - 1) / (V.MISSION_SOLS - 1)) * (W - L - R);
@@ -61,7 +61,8 @@ function Chart({ game }: { game: Game }) {
               {p.air}
             </text>
             <rect x={x(p.sol) - 5} y={y(p.food) - 5} width="10" height="10" fill={p.food < 0 ? '#ff5a4a' : '#7cd17a'} stroke="#14100e" strokeWidth="2" />
-            <text x={x(p.sol)} y={y(p.food) + 20} textAnchor="middle" fontSize="12" fontWeight="700" fill="#cdeccb">
+            {/* Food value under its point, or above it when the point sits on the bottom line. */}
+            <text x={x(p.sol) + 12} y={y(p.food) + (y(p.food) > H - B - 16 ? -8 : 20)} textAnchor="start" fontSize="12" fontWeight="700" fill="#cdeccb">
               {p.food}
             </text>
           </g>
