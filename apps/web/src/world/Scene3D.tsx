@@ -791,7 +791,8 @@ function World(props: SceneProps) {
             ) : m.d === 'greenhouse' ? (
               <Greenhouse growing={props.growing} harvestLabel={props.harvestLabel} />
             ) : (
-              <Model name={m.model} x={m.pos[0]} z={m.pos[1]} scale={m.scale} rot={m.rot} />
+              // The dish model's origin is at a corner: center it under its label.
+              <Model name={m.model} x={m.pos[0]} z={m.pos[1]} scale={m.scale} rot={m.rot} center={m.d === 'askEarth'} />
             )}
             <Plate
               text={labels[m.d]}
