@@ -111,7 +111,7 @@ CMEs in the game (all `risk 2`):
 
 ---
 
-## 3. Mars environment (brief §6.5)
+## 3. Mars environment (original brief §6.5, in the git history)
 
 All from NASA Mars Fact Sheet (last updated 2025-05-19) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html — unless noted. Label: measured, Mars. Mode: archive.
 

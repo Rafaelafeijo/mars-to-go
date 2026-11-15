@@ -35,7 +35,7 @@ Informal session, no exported file (playtest mode did not exist yet). Recorded b
 | End | Early return for lack of air on sol 3; the reason was not clear. |
 | Overall | He was moved by the game; concept assimilation was not clear to the parent. |
 
-### The five final questions (brief §11)
+### The five final questions (original brief §11, in the git history)
 
 1. Time to understand the first allocation without help: not measured.
 2. Where he got stuck: critical air, food, rover and antenna, reason for the early return.

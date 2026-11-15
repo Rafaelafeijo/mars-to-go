@@ -6,7 +6,7 @@ NASA Space Apps Challenge 2026, challenge "Build a Junior Astronaut Mission Trai
 
 1. `docs/CHALLENGE_STATEMENT.md` — the official challenge text. Source of truth.
 2. `docs/en/CHALLENGE_CHECKLIST.md` — check it before planning each slice and before each commit that changes the game.
-3. `docs/en/PROJECT_BRIEF.md` — the game design.
+3. `README.md` — the game as it is today. The original design brief (`docs/en/PROJECT_BRIEF.md`) and the kickoff prompt were removed from the tree on 2026-11-15; they stay in the git history (last version at commit `febbf1a`). Where they differ from the code, SIM_MODEL, the ADRs and the README win.
 4. `docs/en/SIM_MODEL.md`, `docs/en/DATA_MAP.md`, `docs/en/ARCHITECTURE.md` — approved in Phase 0.
 5. `docs/en/adr/` — decisions already taken.
 6. `docs/en/CHALLENGE_CHECKLIST.md` section G — what the project page needs. The page drafts live in `private/SUBMISSION.en.md` (git-ignored, local only; never commit them).
@@ -42,7 +42,7 @@ Does a 7–12-year-old walk away understanding a real constraint of deep-space s
 ## How to work
 
 - Short plan first, then wait for the user's OK.
-- Vertical slices in the order of `docs/PROJECT_BRIEF.md` section 10. Each slice ends deployed and playable.
+- Vertical slices, each one ending deployed and playable (the original order was in the brief's section 10, now in the git history).
 - In `packages/sim`: test first, then code.
 - Progressive commits per validated phase; Conventional Commits; a git tag per phase.
 - Typecheck, lint and tests before every commit.

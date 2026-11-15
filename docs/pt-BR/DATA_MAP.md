@@ -111,7 +111,7 @@ CMEs no jogo (todas com `risco 2`):
 
 ---
 
-## 3. Ambiente de Marte (briefing §6.5)
+## 3. Ambiente de Marte (§6.5 do briefing original, no histórico do git)
 
 Tudo da NASA Mars Fact Sheet (atualizada em 2025-05-19) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html — salvo indicação. Rótulo: medido, Marte. Modo: arquivo.
 

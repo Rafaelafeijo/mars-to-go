@@ -35,7 +35,7 @@ Sessão informal, sem arquivo exportado (o modo de teste ainda não existia). Re
 | Fim | Retorno antecipado por falta de ar no sol 3; o motivo não ficou claro. |
 | Geral | Se emocionou com o jogo; a assimilação dos conceitos não ficou clara para a responsável. |
 
-### As cinco perguntas finais (brief §11)
+### As cinco perguntas finais (§11 do briefing original, no histórico do git)
 
 1. Tempo até entender a primeira distribuição sem ajuda: não medido.
 2. Onde travou: ar crítico, comida, rover e antena, motivo do retorno antecipado.

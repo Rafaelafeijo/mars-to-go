@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **The game idea, the design and every decision are the team's.** The brief, the challenge checklist and the initial ADRs were written by the team before coding. Later ADRs (up to ADR-0035) record decisions the team took after design reviews and playtests.
+- **The game idea, the design and every decision are the team's.** The brief, the challenge checklist and the initial ADRs were written by the team before coding (the brief was removed from the tree on 2026-11-15 because the README and SIM_MODEL replace it; it stays in the git history, last version at commit `febbf1a`). Later ADRs (up to ADR-0035) record decisions the team took after design reviews and playtests.
 - **Code and docs are generated with Claude Code (Anthropic) and reviewed by the team.** Many commit messages say so ("Generated with Claude Code, reviewed by the team."); this file is the complete record.
 - **Research and fact-checking:** Claude Code subagents searched and read NASA sources (DONKI records, NASA articles, Photojournal and images.nasa.gov pages, NTRS reports, NASA-STD-3001 briefs) and reported quotes and values. Every number in the game comes from a source listed in `packages/sim/src/science.ts`, `DATA_MAP.md` and `SCIENCE.md`; values that could not be confirmed are marked "to confirm" and are not shown.
 - **The demo video's narration is AI-generated** (Kokoro-82M, text-to-speech); see "Generated media" below. Nothing else in the video is AI-generated.

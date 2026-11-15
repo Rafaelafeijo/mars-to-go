@@ -4,7 +4,7 @@
 
 ## Resumo
 
-- **A ideia do jogo, o design e todas as decisões são do time.** O briefing, o checklist do desafio e as ADRs iniciais foram escritos pelo time antes de programar. As ADRs seguintes (até a ADR-0035) registram decisões que o time tomou depois de revisões de design e testes com criança.
+- **A ideia do jogo, o design e todas as decisões são do time.** O briefing, o checklist do desafio e as ADRs iniciais foram escritos pelo time antes de programar (o briefing saiu da árvore do repositório em 2026-11-15, porque o README e o SIM_MODEL o substituem; ele continua no histórico do git, última versão no commit `febbf1a`). As ADRs seguintes (até a ADR-0035) registram decisões que o time tomou depois de revisões de design e testes com criança.
 - **O código e a documentação são gerados com Claude Code (Anthropic) e revisados pelo time.** Muitas mensagens de commit dizem isso ("Generated with Claude Code, reviewed by the team."); este arquivo é o registro completo.
 - **Pesquisa e conferência de fatos:** subagentes do Claude Code buscaram e leram fontes da NASA (registros do DONKI, artigos da NASA, páginas do Photojournal e do images.nasa.gov, relatórios do NTRS, briefs da NASA-STD-3001) e trouxeram citações e valores. Todo número do jogo vem de uma fonte listada em `packages/sim/src/science.ts`, `DATA_MAP.md` e `SCIENCE.md`; valores que não puderam ser confirmados ficam marcados "a confirmar" e não aparecem.
 - **A narração do vídeo de demonstração é gerada por IA** (Kokoro-82M, texto para fala); veja "Mídia gerada" abaixo. Nada mais no vídeo é gerado por IA.
