@@ -1,7 +1,7 @@
 /* Mobile first (360 px portrait), dark, one warm accent (ADR-0023). Function before polish. */
 :root {
   /* One side margin for the top bar, the hero and the footer, so they line up. */
-  --gutter: clamp(16px, 5vw, 64px);
+  --gutter: clamp(16px, 5vw, 96px);
   /* Glass panels (after the second playtest): dark, thin light border, soft shadow. */
   --glass: rgb(16 12 11 / 0.86);
   --glass-line: rgb(255 255 255 / 0.1);
@@ -2521,6 +2521,99 @@ button.top__brand {
   display: block;
   color: var(--color-text-muted);
   font-size: 0.8rem;
+}
+
+/* Home: "The Sun this week" (real DONKI snapshot). Card on wide screens, one line on phones. */
+.hero__side {
+  display: none;
+}
+.hero__sun-compact {
+  margin-top: 10px;
+}
+.sun-week--compact {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+@media (min-width: 1100px) {
+  .hero__sun-compact {
+    display: none;
+  }
+  .hero__side {
+    display: block;
+    position: absolute;
+    right: var(--gutter);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+  }
+}
+.sun-week {
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 0.45);
+  backdrop-filter: blur(8px);
+}
+.sun-week h2 {
+  font-size: 1.25rem;
+  margin: 6px 0 14px;
+}
+.sun-week__badge {
+  display: inline-block;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #c4b5a8;
+  border: 1px solid rgb(196 181 168 / 0.5);
+  border-radius: 99px;
+  padding: 2px 8px;
+}
+.sun-week__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.sun-week__stats div {
+  background: rgb(255 255 255 / 0.04);
+  border-radius: 12px;
+  padding: 10px;
+}
+.sun-week__stats dt {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+.sun-week__stats dd {
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #cbb8ff;
+}
+.sun-week__top {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+.sun-week__id {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+.sun-week__explain {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+.sun-week__copy {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }
 
 /* World: one-line place strip, like the footer. */

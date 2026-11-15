@@ -617,5 +617,16 @@
       "live": "AO VIVO",
       "archive": "ARQUIVO"
     }
+  },
+  "sunWeek": {
+    "badge": "DADO REAL DA NASA · CÓPIA DE ARQUIVO",
+    "title": "O Sol nesta semana",
+    "flares": "Erupções",
+    "cmes": "Nuvens de partículas (CMEs)",
+    "seps": "Tempestades de partículas",
+    "strongest": "Maior erupção: {{cls}}, em {{date}}.",
+    "explain": "Uma erupção é um clarão repentino no Sol. Uma CME é uma nuvem de partículas que o Sol lança no espaço. As missões do jogo usam eventos reais como esses.",
+    "copy": "Cópia de {{date}}, não é ao vivo",
+    "compact": "O Sol nesta semana: {{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)"
   }
 }

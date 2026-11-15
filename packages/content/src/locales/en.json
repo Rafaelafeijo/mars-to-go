@@ -617,5 +617,16 @@
       "live": "LIVE",
       "archive": "ARCHIVE"
     }
+  },
+  "sunWeek": {
+    "badge": "REAL NASA DATA · ARCHIVE COPY",
+    "title": "The Sun this week",
+    "flares": "Flares",
+    "cmes": "Particle clouds (CMEs)",
+    "seps": "Particle storms",
+    "strongest": "Strongest flare: {{cls}}, on {{date}}.",
+    "explain": "A flare is a sudden flash of light on the Sun. A CME is a cloud of particles the Sun throws into space. The game's missions use real events like these.",
+    "copy": "Copy of {{date}}, not live",
+    "compact": "The Sun this week: {{flares}} flares, {{cmes}} particle clouds (NASA DONKI)"
   }
 }

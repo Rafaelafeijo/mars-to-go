@@ -285,11 +285,11 @@ export const NASA_SOURCES: NasaSource[] = [
       'pt-BR': 'Erupções solares, ejeções de massa coronal (CMEs) e eventos de partículas reais, mais as previsões do modelo WSA-ENLIL da NASA de quando uma CME chega a Marte.',
     },
     whereInGame: {
-      en: 'The forecast of each sol (M1.3 flare of 2024-05-10, CME of 2024-05-11 forecast to reach Mars on 2024-05-13), the answer to Ask Earth, and "Today in space" on the home screen, fetched live through our API with a daily snapshot. The mission events come from a bundled archive catalog.',
-      'pt-BR': 'A previsão de cada sol (erupção M1.3 de 10/05/2024, CME de 11/05/2024 prevista para chegar a Marte em 13/05/2024), a resposta de Perguntar à Terra e o "Hoje no espaço" da tela inicial, buscado ao vivo pela nossa API com uma cópia diária. Os eventos da missão vêm de um catálogo de arquivo dentro do jogo.',
+      en: 'The forecast of each sol (M1.3 flare of 2024-05-10, CME of 2024-05-11 forecast to reach Mars on 2024-05-13) and the Antenna\'s answer, from a bundled archive catalog; and "The Sun this week" on the home screen, from a DONKI copy saved twice a day and shown with its date (not live).',
+      'pt-BR': 'A previsão de cada sol (erupção M1.3 de 10/05/2024, CME de 11/05/2024 prevista para chegar a Marte em 13/05/2024) e a resposta da Antena, de um catálogo de arquivo dentro do jogo; e "O Sol nesta semana" na tela inicial, de uma cópia do DONKI salva duas vezes por dia e mostrada com a sua data (não é ao vivo).',
     },
     url: 'https://ccmc.gsfc.nasa.gov/DONKI/',
-    mode: 'live',
+    mode: 'archive',
   },
   {
     id: 'curiosity-rad',

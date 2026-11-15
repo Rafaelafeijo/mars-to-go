@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { photoSrcSet } from '../cards/Photo';
 import { prefersReducedMotion } from '../lib/format';
 import { Icon } from '../world/Icon';
+import { SunThisWeek } from './SunThisWeek';
 
 export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () => void; assisted: boolean; onAssisted: (on: boolean) => void; onNasaData: () => void }) {
   const { t } = useTranslation();
@@ -52,6 +53,12 @@ export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () 
             <small>{t('home.assistedHint')}</small>
           </span>
         </label>
+        <div className="hero__sun-compact">
+          <SunThisWeek compact />
+        </div>
+      </div>
+      <div className="hero__side">
+        <SunThisWeek />
       </div>
       <p className="hero__credit">{t('hero.credit')}</p>
     </div>
