@@ -248,7 +248,8 @@
       "title": "Objetivos da missão",
       "home": "Todos voltaram para casa",
       "sample": "Amostras de rocha no foguete: {{n}} de {{goal}}",
-      "dose": "Dose de radiação: {{n}} de {{max}} (limite)"
+      "dose": "Dose de radiação: {{n}} de {{max}} (limite)",
+      "sampleDelta": "Amostra da frente do delta: {{n}} de 1"
     },
     "earlyRadiation": "A dose de radiação passou do limite no sol {{n}}. O médico da missão traz a tripulação de volta.",
     "missingSample": "O rover nunca saiu, então nenhuma amostra de rocha voltou. Mande o rover pelo menos uma vez: custa 2 células e 2 de ar.",
@@ -256,7 +257,8 @@
     "chartRanOut": "Acabou",
     "chartSol": "Sol",
     "nextPlay": "Jogar a Missão 2 · A tempestade de maio",
-    "missionsTitle": "Missões"
+    "missionsTitle": "Missões",
+    "missingDelta": "Nenhuma amostra veio da frente do delta. Nesta missão só o delta vale: escolha-o quando mandar o rover (3 de ar, +2 de dose)."
   },
   "card": {
     "labels": {
@@ -430,7 +432,8 @@
       "todo": "Ainda não",
       "sample": "Levar {{goal}} amostra de rocha para casa (Rover): {{n}}/{{goal}}",
       "dose": "Dose de radiação dentro do limite: {{n}}/{{max}}",
-      "sampleLocked": "Levar {{goal}} amostra de rocha para casa (o Rover abre no sol {{n}})"
+      "sampleLocked": "Levar {{goal}} amostra de rocha para casa (o Rover abre no sol {{n}})",
+      "sampleDelta": "Trazer a amostra da frente do delta (Rover): {{n}}/1"
     },
     "forecast": {
       "title": "O céu hoje",
@@ -540,18 +543,21 @@
       "airEmpty": "O tanque está vazio: não há ar para a tripulação.",
       "foodEmpty": "Não há mais comida para a tripulação.",
       "unknown": "Não há medição de que esta erupção chegou a Marte. No jogo ela não atinge a base.",
-      "dose": "Dose {{n}} de {{max}}. Acima de {{max}}, o médico da missão manda a tripulação para casa.",
       "sample": "Amostra de rocha coletada em {{site}}. Amostras no foguete: {{count}}/{{goal}}.",
-      "airHint_zero": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: não dá para mais nenhuma noite.",
-      "airHint_one": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{count}} noite.",
-      "airHint_other": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{count}} noites.",
-      "foodHint_zero": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: não dá para mais nenhuma noite.",
-      "foodHint_one": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noite.",
-      "foodHint_other": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noites.",
       "damage_one": "O que o escudo não bloqueou danificou os eletrônicos: {{count}} célula a menos amanhã.",
       "damage_other": "O que o escudo não bloqueou danificou os eletrônicos: {{count}} células a menos amanhã.",
       "spareShield_one": "{{count}} célula de Escudo foi além do necessário: o risco era só {{risk}}.",
-      "spareShield_other": "{{count}} células de Escudo foram além do necessário: o risco era só {{risk}}."
+      "spareShield_other": "{{count}} células de Escudo foram além do necessário: o risco era só {{risk}}.",
+      "airRule": "Toda noite a tripulação respira {{breathed}} de ar.",
+      "airLeft_zero": "O tanque agora tem {{after}}: não dá para mais nenhuma noite.",
+      "airLeft_one": "O tanque agora tem {{after}}: dá para mais {{count}} noite.",
+      "airLeft_other": "O tanque agora tem {{after}}: dá para mais {{count}} noites.",
+      "foodRule": "Toda noite a tripulação come {{eaten}} de comida.",
+      "foodLeft_zero": "Agora há {{after}}: não dá para mais nenhuma noite.",
+      "foodLeft_one": "Agora há {{after}}: dá para mais {{count}} noite.",
+      "foodLeft_other": "Agora há {{after}}: dá para mais {{count}} noites.",
+      "doseNow": "Dose {{n}} de {{max}}.",
+      "doseRule": "Acima de {{max}}, o médico da missão manda a tripulação para casa."
     },
     "sites": {
       "rochette": "a rocha Rochette",
@@ -630,7 +636,18 @@
       "calm": "nenhum evento solar é esperado hoje."
     },
     "antennaSent": "Mensagem enviada à Terra. A resposta sobre amanhã chega hoje à noite.",
-    "nightAntenna": "Sinal para a Terra… a resposta leva de {{min}} a {{max}} minutos para cada lado."
+    "nightAntenna": "Sinal para a Terra… a resposta leva de {{min}} a {{max}} minutos para cada lado.",
+    "sitePick": "Para onde vai o rover?",
+    "siteChoice": {
+      "rochette": {
+        "name": "Rochette (perto)",
+        "cost": "2 de ar · +1 de dose"
+      },
+      "delta-front": {
+        "name": "Frente do delta (2,3 km)",
+        "cost": "3 de ar · +2 de dose · melhor lugar para procurar sinais de vida antiga"
+      }
+    }
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",

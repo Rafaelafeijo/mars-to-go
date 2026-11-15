@@ -174,6 +174,8 @@ try {
         const slot = page.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[i]}`)}`) });
         for (let k = 0; k < row[i]; k++) await slot.click();
       }
+      // ADR-0035: mission 2 only counts the sample from the delta front.
+      if (row[3]) await page.getByRole('button', { name: /^Delta front/ }).click();
       await page.getByRole('button', { name: T.pass }).click();
       if (CRISIS_SOLS.includes(sol)) {
         await page.getByRole('alertdialog').waitFor();

@@ -248,7 +248,8 @@
       "title": "Mission objectives",
       "home": "Everyone came home",
       "sample": "Rock samples on the rocket: {{n}} of {{goal}}",
-      "dose": "Radiation dose: {{n}} of {{max}} (limit)"
+      "dose": "Radiation dose: {{n}} of {{max}} (limit)",
+      "sampleDelta": "Sample from the delta front: {{n}} of 1"
     },
     "earlyRadiation": "The radiation dose went over the limit on sol {{n}}. The mission doctor brings the crew home.",
     "missingSample": "The rover never went out, so no rock sample came home. Send the rover at least once: it costs 2 cells and 2 air.",
@@ -256,7 +257,8 @@
     "chartRanOut": "Ran out",
     "chartSol": "Sol",
     "nextPlay": "Play Mission 2 · The May storm",
-    "missionsTitle": "Missions"
+    "missionsTitle": "Missions",
+    "missingDelta": "No sample came from the delta front. In this mission only the delta counts: choose it when you send the rover (3 air, +2 dose)."
   },
   "card": {
     "labels": {
@@ -430,7 +432,8 @@
       "todo": "Not yet",
       "sample": "Bring {{goal}} rock sample home (Rover): {{n}}/{{goal}}",
       "dose": "Radiation dose within the limit: {{n}}/{{max}}",
-      "sampleLocked": "Bring {{goal}} rock sample home (the Rover opens on sol {{n}})"
+      "sampleLocked": "Bring {{goal}} rock sample home (the Rover opens on sol {{n}})",
+      "sampleDelta": "Bring the sample from the delta front (Rover): {{n}}/1"
     },
     "forecast": {
       "title": "Sky today",
@@ -540,18 +543,21 @@
       "airEmpty": "The tank is empty: there is no air for the crew.",
       "foodEmpty": "There is no food left for the crew.",
       "unknown": "There is no measurement that this flare reached Mars. In the game it does not hit the base.",
-      "dose": "Dose {{n}} of {{max}}. Above {{max}}, the mission doctor sends the crew home.",
       "sample": "Rock sample collected at {{site}}. Samples on the rocket: {{count}}/{{goal}}.",
-      "airHint_zero": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: not enough for another night.",
-      "airHint_one": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{count}} more night.",
-      "airHint_other": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{count}} more nights.",
-      "foodHint_zero": "Every night the crew eats {{eaten}} food. There is now {{after}}: not enough for another night.",
-      "foodHint_one": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more night.",
-      "foodHint_other": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more nights.",
       "damage_one": "What the shield did not block damaged the electronics: {{count}} cell fewer tomorrow.",
       "damage_other": "What the shield did not block damaged the electronics: {{count}} cells fewer tomorrow.",
       "spareShield_one": "{{count}} Shield cell was more than needed: the risk was only {{risk}}.",
-      "spareShield_other": "{{count}} Shield cells were more than needed: the risk was only {{risk}}."
+      "spareShield_other": "{{count}} Shield cells were more than needed: the risk was only {{risk}}.",
+      "airRule": "Every night the crew breathes {{breathed}} air.",
+      "airLeft_zero": "The tank now has {{after}}: not enough for another night.",
+      "airLeft_one": "The tank now has {{after}}: enough for {{count}} more night.",
+      "airLeft_other": "The tank now has {{after}}: enough for {{count}} more nights.",
+      "foodRule": "Every night the crew eats {{eaten}} food.",
+      "foodLeft_zero": "There is now {{after}}: not enough for another night.",
+      "foodLeft_one": "There is now {{after}}: enough for {{count}} more night.",
+      "foodLeft_other": "There is now {{after}}: enough for {{count}} more nights.",
+      "doseNow": "Dose {{n}} of {{max}}.",
+      "doseRule": "Above {{max}}, the mission doctor sends the crew home."
     },
     "sites": {
       "rochette": "the rock Rochette",
@@ -630,7 +636,18 @@
       "calm": "no solar event is expected today."
     },
     "antennaSent": "Message sent to Earth. The answer about tomorrow arrives tonight.",
-    "nightAntenna": "Signal to Earth… the answer takes {{min}} to {{max}} minutes each way."
+    "nightAntenna": "Signal to Earth… the answer takes {{min}} to {{max}} minutes each way.",
+    "sitePick": "Where does the rover go?",
+    "siteChoice": {
+      "rochette": {
+        "name": "Rochette (near)",
+        "cost": "2 air · +1 dose"
+      },
+      "delta-front": {
+        "name": "Delta front (2.3 km)",
+        "cost": "3 air · +2 dose · best place to look for signs of ancient life"
+      }
+    }
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",

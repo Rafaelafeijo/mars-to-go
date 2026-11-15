@@ -145,6 +145,8 @@ export const MISSION_2: MissionDef = {
   id: 'm2',
   mode: 'free',
   seed: 2,
+  // ADR-0035: the sample must come from the delta front, the best place to look for signs of ancient life.
+  sampleSite: 'delta-front',
   sols: [
     { dust: false, event: ev('2024-05-14T16:46:00-FLR-001') },
     { dust: false, event: ev('2024-05-14T17:48:00-CME-001') },

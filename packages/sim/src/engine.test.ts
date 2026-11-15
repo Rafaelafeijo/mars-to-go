@@ -12,6 +12,7 @@ import {
 import { exposureWord, marginSols, meterWord, missionObjectives, missionResult, predictionOptions, turningPointSol, verdict, whatIf } from './outcomes';
 import { GAME_A, GAME_B, GAME_BONUS, GAME_C, TEST_DEF, alloc, type Row } from './fixtures';
 import type { MissionDef, MissionState } from './types';
+import { V } from './science';
 
 function play(rows: Row[], def: MissionDef = TEST_DEF) {
   let s = newMission(def);
@@ -244,6 +245,29 @@ describe('words and hindsight', () => {
     expect(missionResult(bonus)).toBe('success');
     const c = play(GAME_C).state;
     expect(missionResult(c)).toBe('early_return');
+  });
+
+  it('ADR-0035: the delta front is far — more suit air and more dose than a near site', () => {
+    const s = newMission(TEST_DEF);
+    const near = resolveNight(TEST_DEF, s, { allocation: { ...alloc([3, 2, 0, 1, 0]), expeditionSite: 'rochette' } });
+    const far = resolveNight(TEST_DEF, s, { allocation: { ...alloc([3, 2, 0, 1, 0]), expeditionSite: 'delta-front' } });
+    expect(near.state.air - far.state.air).toBe(V.EXPEDITION_FAR_AIR - V.EXPEDITION_AIR);
+    expect(near.state.exposure).toBe(V.EXPEDITION_EXPOSURE);
+    expect(far.state.exposure).toBe(V.EXPEDITION_FAR_EXPOSURE);
+    expect(far.state.discoveries).toEqual(['delta-front']);
+  });
+
+  it('ADR-0035: without a site, the rover goes to the first near site not yet visited', () => {
+    let s = newMission(TEST_DEF);
+    s = resolveNight(TEST_DEF, s, { allocation: alloc([3, 2, 0, 1, 0]) }).state;
+    expect(s.discoveries).toEqual(['rochette']);
+  });
+
+  it('ADR-0035: a mission can require the sample from a given site', () => {
+    const def = { ...TEST_DEF, sampleSite: 'delta-front' };
+    const base = { ...newMission(def), status: 'returned_all' as const, exposure: 0 };
+    expect(missionObjectives({ ...base, discoveries: ['rochette'] }, def).sample).toBe(false);
+    expect(missionObjectives({ ...base, discoveries: ['delta-front'] }, def).sample).toBe(true);
   });
 
   it('turning point for air is the sol before the failure', () => {

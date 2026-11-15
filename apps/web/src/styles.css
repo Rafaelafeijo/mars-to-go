@@ -2616,6 +2616,52 @@ button.top__brand {
   color: var(--color-text-muted);
 }
 
+/* Design review E: the conclusion of each report line stands out (bold, brighter; warm when close). */
+.stat__key {
+  color: var(--color-text);
+  font-weight: 800;
+}
+.stat__key.is-warn {
+  color: #ffd27a;
+}
+.stat__key.is-bad {
+  color: #ff9b8a;
+}
+/* Rover destination choice. */
+.site-pick {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  margin-top: 6px;
+}
+.site-pick__title {
+  font-size: 0.78rem !important;
+  font-weight: 700;
+  color: #f5b642;
+}
+.site-pick button {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  min-height: var(--tap);
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(245 182 66 / 0.4);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.site-pick button[aria-pressed='true'] {
+  background: rgb(245 182 66 / 0.18);
+  border-color: #f5b642;
+}
+.site-pick small {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
 /* Design review C. Antenna feedback; phone: shorter sky panel, more room between panels. */
 .hud-hand__sent {
   grid-column: 1 / -1;

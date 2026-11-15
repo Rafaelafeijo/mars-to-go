@@ -61,6 +61,9 @@ const constants = {
   /** Unblocked radiation damages electronics: cells lost on the next sol, per unblocked point. */
   RADIATION_DAMAGE_CELLS_PER_POINT: rule(1, 'cell per exposure point', 'simplification'),
   RADIATION_DAMAGE_MAX_CELLS: rule(2, 'cell', 'simplification'),
+  /** ADR-0035: the delta front is far (2.3 km, PIA24485): more suit air and more time outside. */
+  EXPEDITION_FAR_AIR: rule(3, 'air unit'),
+  EXPEDITION_FAR_EXPOSURE: rule(2, 'exposure point', 'simplification'),
   /** Rock samples the rocket must carry home for a successful mission (like Perseverance's samples). */
   SAMPLES_GOAL: rule(1, 'sample', 'scenario'),
   CRISIS_SECONDS: rule(10, 's'),

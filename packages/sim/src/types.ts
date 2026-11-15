@@ -32,6 +32,8 @@ export interface MissionDef {
   seed: number;
   /** One entry per sol, index 0 = sol 1. */
   sols: SolConditions[];
+  /** ADR-0035: a mission may require its sample from one site (mission 2: the delta front). */
+  sampleSite?: string;
 }
 
 export interface Allocation {

@@ -64,11 +64,14 @@ describe('data cards (rule 16)', () => {
     const win: [number, number, number, 0 | 1, 0 | 1][] = [[4, 2, 0, 0, 1], [5, 0, 0, 1, 0], [3, 1, 2, 0, 1], [6, 1, 0, 0, 0], [4, 1, 2, 0, 0], [5, 0, 2, 0, 0], [4, 0, 3, 0, 0]];
     let s = newMission(MISSION_2);
     for (const [ls, gh, sh, ex, ask] of win) {
-      const a = { lifeSupport: ls, greenhouse: gh, shield: sh, expedition: ex, askEarth: ask };
+      // The rover goes to the delta front, the site mission 2 asks for (ADR-0035).
+      const a = { lifeSupport: ls, greenhouse: gh, shield: sh, expedition: ex, askEarth: ask, expeditionSite: 'delta-front' };
       expect(validateAllocation(s, a, false), `sol ${s.sol}`).toEqual([]);
       s = resolveNight(MISSION_2, s, { allocation: a }).state;
     }
-    expect(missionResult(s)).toBe('success');
+    expect(missionResult(s, MISSION_2)).toBe('success');
+    // A sample from a near site does not count in mission 2.
+    expect(missionResult({ ...s, discoveries: ['rochette'] }, MISSION_2)).toBe('with_failures');
 
     let t = newMission(MISSION_2);
     for (let i = 0; i < 5 && t.status === 'playing'; i++) {

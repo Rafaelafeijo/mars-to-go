@@ -91,8 +91,9 @@ export function EndScreen({
 }) {
   const { t } = useTranslation();
   const s = game.state;
-  const result = missionResult(s) ?? 'early_return';
-  const goals = missionObjectives(s);
+  const result = missionResult(s, game.def) ?? 'early_return';
+  const goals = missionObjectives(s, game.def);
+  const site = game.def.sampleSite;
   const home = s.status === 'returned_all';
   const turn = turningPointSol(s);
   const failLog = s.failure ? s.log.find((l) => l.sol === s.failure?.sol) : undefined;
@@ -105,7 +106,10 @@ export function EndScreen({
 
   const rows = [
     { ok: goals.home, text: t('end.objectives.home') },
-    { ok: goals.sample, text: t('end.objectives.sample', { n: s.discoveries.length, goal: V.SAMPLES_GOAL }) },
+    {
+      ok: goals.sample,
+      text: site ? t('end.objectives.sampleDelta', { n: s.discoveries.includes(site) ? 1 : 0 }) : t('end.objectives.sample', { n: s.discoveries.length, goal: V.SAMPLES_GOAL }),
+    },
     { ok: goals.dose, text: t('end.objectives.dose', { n: s.exposure, max: V.DOSE_LIMIT }) },
   ];
 
@@ -151,7 +155,7 @@ export function EndScreen({
             </li>
           ))}
         </ul>
-        {home && !goals.sample && <p className="end__why">{t('end.missingSample')}</p>}
+        {home && !goals.sample && <p className="end__why">{site ? t('end.missingDelta') : t('end.missingSample')}</p>}
       </section>
 
       <Chart game={game} />

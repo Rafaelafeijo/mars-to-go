@@ -16,6 +16,9 @@ import type {
 
 /** Discovery sites at Jezero (DATA_MAP J2–J4). Text and photos live in packages/content. */
 export const DISCOVERY_IDS = ['rochette', 'kodiak', 'delta-front'] as const;
+/** ADR-0035: near sites cost the usual suit air; the delta front is 2.3 km away (PIA24485). */
+export const NEAR_SITES: string[] = ['rochette', 'kodiak'];
+export const FAR_SITES: string[] = ['delta-front'];
 
 export function newMission(def: MissionDef): MissionState {
   return {
@@ -168,13 +171,17 @@ export function resolveNight(def: MissionDef, state: MissionState, plan: SolPlan
   // 5. Expedition: suits use stored air; outside, the habitat no longer protects the crew.
   if (a.expedition === 1) {
     const recalled = plan.crisis?.kind === 'solarStorm' && plan.crisis.choice === 'recallExpedition';
-    push({ id: recalled ? 'expeditionRecalled' : 'expedition', resource: 'air', before: air, delta: -V.EXPEDITION_AIR, scienceIds: ['EXPEDITION_AIR'] });
-    air -= V.EXPEDITION_AIR;
+    // ADR-0035: no site given → the first near site not visited yet; the far site costs more.
+    const site: string = a.expeditionSite ?? NEAR_SITES.find((d) => !discoveries.includes(d)) ?? 'rochette';
+    const far = FAR_SITES.includes(site);
+    const suitAir = far ? V.EXPEDITION_FAR_AIR : V.EXPEDITION_AIR;
+    push({ id: recalled ? 'expeditionRecalled' : 'expedition', resource: 'air', before: air, delta: -suitAir, detail: { site }, scienceIds: [far ? 'EXPEDITION_FAR_AIR' : 'EXPEDITION_AIR'] });
+    air -= suitAir;
     if (!recalled) {
-      const site = a.expeditionSite ?? DISCOVERY_IDS.find((d) => !discoveries.includes(d)) ?? DISCOVERY_IDS[0];
       if (!discoveries.includes(site)) discoveries.push(site);
-      push({ id: 'outside', resource: 'exposure', before: exposure, delta: V.EXPEDITION_EXPOSURE, detail: { site }, scienceIds: ['EXPEDITION_EXPOSURE'] });
-      exposure += V.EXPEDITION_EXPOSURE;
+      const outside = far ? V.EXPEDITION_FAR_EXPOSURE : V.EXPEDITION_EXPOSURE;
+      push({ id: 'outside', resource: 'exposure', before: exposure, delta: outside, detail: { site }, scienceIds: [far ? 'EXPEDITION_FAR_EXPOSURE' : 'EXPEDITION_EXPOSURE'] });
+      exposure += outside;
     }
   }
 

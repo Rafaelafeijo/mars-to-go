@@ -52,11 +52,11 @@ export interface MissionObjectives {
   dose: boolean;
 }
 
-/** The three mission objectives (ADR-0033). */
-export function missionObjectives(state: MissionState): MissionObjectives {
+/** The three mission objectives (ADR-0033); a mission may ask for the sample from one site (ADR-0035). */
+export function missionObjectives(state: MissionState, def?: Pick<MissionDef, 'sampleSite'>): MissionObjectives {
   return {
     home: state.status === 'returned_all',
-    sample: state.discoveries.length >= V.SAMPLES_GOAL,
+    sample: def?.sampleSite ? state.discoveries.includes(def.sampleSite) : state.discoveries.length >= V.SAMPLES_GOAL,
     dose: state.exposure <= V.DOSE_LIMIT,
   };
 }
@@ -64,10 +64,10 @@ export function missionObjectives(state: MissionState): MissionObjectives {
 export type MissionResult = 'success' | 'with_failures' | 'early_return';
 
 /** Success = all three objectives; home but an objective missed = with failures. */
-export function missionResult(state: MissionState): MissionResult | null {
+export function missionResult(state: MissionState, def?: Pick<MissionDef, 'sampleSite'>): MissionResult | null {
   if (state.status === 'playing') return null;
   if (state.status === 'early_return') return 'early_return';
-  const o = missionObjectives(state);
+  const o = missionObjectives(state, def);
   return o.home && o.sample && o.dose ? 'success' : 'with_failures';
 }
 

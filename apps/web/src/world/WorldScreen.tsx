@@ -417,14 +417,20 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                 { ok: left === 0, text: t('world.mission.placeAll', { free, used: free - left }) },
                 { ok: airOk, text: t('world.mission.airHome') },
                 { ok: foodOk, text: t('world.mission.foodHome') },
-                {
-                  ok: base.discoveries.length + (plan.expedition ? 1 : 0) >= V.SAMPLES_GOAL,
-                  // Before the Rover opens, say when it opens instead of showing a failure.
-                  locked: !open.includes('expedition'),
-                  text: open.includes('expedition')
-                    ? t('world.mission.sample', { n: base.discoveries.length, goal: V.SAMPLES_GOAL })
-                    : t('world.mission.sampleLocked', { goal: V.SAMPLES_GOAL, n: unlockSol('expedition') }),
-                },
+                def.sampleSite
+                  ? {
+                      // ADR-0035: this mission only counts the sample from one site (the delta front).
+                      ok: base.discoveries.includes(def.sampleSite) || (plan.expedition === 1 && plan.expeditionSite === def.sampleSite),
+                      text: t('world.mission.sampleDelta', { n: base.discoveries.includes(def.sampleSite) ? 1 : 0 }),
+                    }
+                  : {
+                      ok: base.discoveries.length + (plan.expedition ? 1 : 0) >= V.SAMPLES_GOAL,
+                      // Before the Rover opens, say when it opens instead of showing a failure.
+                      locked: !open.includes('expedition'),
+                      text: open.includes('expedition')
+                        ? t('world.mission.sample', { n: base.discoveries.length, goal: V.SAMPLES_GOAL })
+                        : t('world.mission.sampleLocked', { goal: V.SAMPLES_GOAL, n: unlockSol('expedition') }),
+                    },
                 { ok: doseNow <= V.DOSE_LIMIT, text: t('world.mission.dose', { n: doseNow, max: V.DOSE_LIMIT }) },
               ].map((o) => (
                 <li key={o.text} className={o.ok ? 'is-ok' : 'locked' in o && o.locked ? 'is-locked' : undefined}>
@@ -479,6 +485,20 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
           </span>
           {lost > 0 && <span className="hud-hand__lost"> · {t('world.hand.lost', { n: lost })}</span>}
         </p>
+        {/* ADR-0035: the child chooses where the rover goes; the far site costs more. */}
+        {a.expedition === 1 && !night && (
+          <div className="site-pick" role="group" aria-label={t('world.sitePick')}>
+            <p className="site-pick__title">
+              <Icon name="rover" size={14} /> {t('world.sitePick')}
+            </p>
+            {(['rochette', 'delta-front'] as const).map((s) => (
+              <button key={s} type="button" aria-pressed={(a.expeditionSite ?? 'rochette') === s} onClick={() => setA((p) => ({ ...p, expeditionSite: s }))}>
+                <strong>{t(`world.siteChoice.${s}.name`)}</strong>
+                <small>{t(`world.siteChoice.${s}.cost`)}</small>
+              </button>
+            ))}
+          </div>
+        )}
         {a.askEarth === 1 && !night && (
           <p className="hud-hand__sent" role="status">
             <Icon name="antenna" size={14} /> {t('world.antennaSent')}
@@ -701,8 +721,12 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                   <span className="stat__what">
                     {t('world.report.air', { made, breathed })}
                     {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
-                    <span className={`stat__hint${after.air < 0 ? ' is-bad' : ''}`}>
-                      {after.air < 0 ? t('world.report.airEmpty') : t('world.report.airHint', { breathed, after: after.air, count: airSols(after.air) })}
+                    {/* Rule in plain text, the conclusion highlighted (design review E). */}
+                    <span className="stat__hint">
+                      {t('world.report.airRule', { breathed })}{' '}
+                      <strong className={`stat__key${after.air < 0 ? ' is-bad' : airSols(after.air) <= 1 ? ' is-warn' : ''}`}>
+                        {after.air < 0 ? t('world.report.airEmpty') : t('world.report.airLeft', { after: after.air, count: airSols(after.air) })}
+                      </strong>
                     </span>
                   </span>
                 </li>
@@ -712,8 +736,11 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                   <strong className="stat__value">{base.food} → {after.food}</strong>
                   <span className="stat__what">
                     {t('world.report.food', { harvested, eaten })}
-                    <span className={`stat__hint${after.food < 0 ? ' is-bad' : ''}`}>
-                      {after.food < 0 ? t('world.report.foodEmpty') : t('world.report.foodHint', { eaten, after: after.food, count: foodSols(after.food) })}
+                    <span className="stat__hint">
+                      {t('world.report.foodRule', { eaten })}{' '}
+                      <strong className={`stat__key${after.food < 0 ? ' is-bad' : foodSols(after.food) <= 1 ? ' is-warn' : ''}`}>
+                        {after.food < 0 ? t('world.report.foodEmpty') : t('world.report.foodLeft', { after: after.food, count: foodSols(after.food) })}
+                      </strong>
                     </span>
                   </span>
                 </li>
@@ -735,7 +762,12 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                         {t('world.report.spareShield', { count: Number(radiation.detail.shield) - Number(radiation.detail.risk), risk: radiation.detail.risk })}
                       </span>
                     )}
-                    <span className="stat__hint">{t('world.report.dose', { n: after.exposure, max: V.DOSE_LIMIT })}</span>
+                    <span className="stat__hint">
+                      <strong className={`stat__key${after.exposure > V.DOSE_LIMIT ? ' is-bad' : after.exposure === V.DOSE_LIMIT ? ' is-warn' : ''}`}>
+                        {t('world.report.doseNow', { n: after.exposure, max: V.DOSE_LIMIT })}
+                      </strong>{' '}
+                      {t('world.report.doseRule', { max: V.DOSE_LIMIT })}
+                    </span>
                     <span className="stat__hint">{t('world.report.radHint')}</span>
                   </span>
                 </li>
