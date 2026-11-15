@@ -783,7 +783,7 @@ function World(props: SceneProps) {
       {MACHINES.map((m) => {
         const isOpen = open.includes(m.d);
         // The rover is low and close to the camera: its label sits just above it.
-        const top = groundHeight(m.pos[0], m.pos[1]) + (m.d === 'expedition' ? 1.7 : 3.4);
+        const top = groundHeight(m.pos[0], m.pos[1]) + (m.d === 'expedition' ? 1.1 : m.d === 'askEarth' ? 2.4 : 3.4);
         return (
           <group key={m.d} onClick={(e) => tapMachine(m, e)}>
             {m.d === 'expedition' ? (
