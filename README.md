@@ -8,7 +8,7 @@
 [![E2E playthrough](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/e2e.yml/badge.svg)](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/e2e.yml)
 [![Deploy to GitHub Pages](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/pages.yml/badge.svg)](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/pages.yml)
 
-## ▶ Play now: **https://rafaelafeijo.github.io/mars-to-go/**
+## ▶ Play now: [rafaelafeijo.github.io/mars-to-go](https://rafaelafeijo.github.io/mars-to-go/)
 
 Free, in the browser, no download, no account. Best on a computer; fully playable on phones and tablets. English by default, Portuguese one tap away (top bar).
 
@@ -68,14 +68,14 @@ The challenge says kids usually see a mission's outcome, never the trade-offs be
 
 - **Most "educational" apps are digital worksheets.** Hirsh-Pasek et al. (2015) found that most apps in the market "are simply digital worksheets, games, and puzzles that have been reproduced in an e-format without any explicit consideration of how children learn." ([*Psychological Science in the Public Interest* 16(1):3–34](https://doi.org/10.1177/1529100615569721))
 - **58% of top-downloaded children's learning apps are lower-quality.** In a content analysis of 124 apps, 72 (58%) scored as lower-quality, and 73% scored low on active learning, where the lowest score means the app "drills skills, and feels like an online workbook." (Meyer et al., 2021, [*Journal of Children and Media*](https://doi.org/10.1080/17482798.2021.1882516))
-- **Quizzes dominate; simulations are rare.** A mapping of 176 studies on mobile educational games (2019–2024) found quiz mechanics in 40.91% of studies and simulation in 10.80% (Sales & Oliveira, 2025, [*Journal on Interactive Systems*](https://doi.org/10.5753/jis.2025.5947), Table 4). A 2025 review of 91 children's games found quizzes in 41.8% and simulations in 19.8% (Damenu et al., [arXiv:2508.17414](https://arxiv.org/abs/2508.17414), preprint).
+- **Quizzes dominate; simulations are rare.** A mapping of 176 studies on mobile educational games (2019–2024) found quiz mechanics in 40.91% of studies and simulation in 10.80% (Sales & Oliveira, 2025, [*Journal on Interactive Systems*](https://doi.org/10.5753/jis.2025.5947), Table 4). The pattern repeats in another field: a 2025 systematic review of cybersecurity educational games for children (91 games in 68 papers, 2010–2024) found quizzes in 41.8% of the games and simulations in 19.8% (Damenu et al., [arXiv:2508.17414](https://arxiv.org/abs/2508.17414), preprint).
 
 Mars to Go is a simulation, not a quiz: the child learns by deciding, then sees the consequence and the reason.
 
 ### In Brazil, where we live
 
-- **The curriculum asks for exactly this.** Brazil's national curriculum (BNCC) asks 9th-graders to "select arguments about the viability of human survival outside Earth, based on the conditions necessary for life, the characteristics of the planets and the distances and times involved in interplanetary travel" (skill EF09CI16, quoted from [Nova Escola](https://novaescola.org.br/bncc/conteudo/70/saiba-como-ensinar-o-eixo-tematico-terra-e-universo-em-ciencias) and BNCC copies; our translation).
-- **But astronomy teaching is described as "simplistic".** A 2022 review describes "an ensino simplista [simplistic teaching] with different failures in the different educational spheres," and cites a study where only 10% of biology teacher-training courses in Paraná offered basic astronomy (Buffon, Neves & Pereira, 2022, [*Ciência & Educação* 28:e22006](https://doi.org/10.1590/1516-731320220006)). Textbooks are "often the only source the teacher consults" (Langhi & Nardi, [*Caderno Brasileiro de Ensino de Física* 24(1)](https://periodicos.ufsc.br/index.php/fisica/article/view/6055)).
+- **The topic is in the curriculum, but only in the 9th grade.** Brazil's national curriculum (BNCC) asks 9th-graders (around age 14) to "select arguments about the viability of human survival outside Earth, based on the conditions necessary for life, the characteristics of the planets and the distances and times involved in interplanetary and interstellar travel" (skill EF09CI16, [official BNCC document, MEC](http://basenacionalcomum.mec.gov.br/images/BNCC_EI_EF_110518_versaofinal_site.pdf), PDF page 352; our translation). Mars to Go brings the same question earlier, to ages 7–12, through play.
+- **But astronomy teaching is described as "simplistic".** A 2022 study with science teachers of grades 6–9 describes "an ensino simplista [simplistic teaching] with different failures in the different educational spheres," and cites a study where only 10% of biology teacher-training courses in Paraná offered basic astronomy (Buffon, Neves & Pereira, 2022, [*Ciência & Educação* 28:e22006](https://doi.org/10.1590/1516-731320220006)). Textbooks are "often the only source the teacher consults" (Langhi & Nardi, [*Caderno Brasileiro de Ensino de Física* 24(1)](https://periodicos.ufsc.br/index.php/fisica/article/view/6055)).
 - **And interest is huge.** 1,386,046 students from 13,053 schools took part in the 2023 Brazilian Astronomy and Astronautics Olympiad (OBA), with 74,694 teachers ([OBA 2023 report](https://sistema.oba.org.br/sisglob/sisglob_arquivos/2026/Relatorio%20da%2026%20OBA%20-%202023-compactado.pdf)).
 
 ### And worldwide
@@ -170,7 +170,11 @@ The child places **5** cells in the Air machine and **2** in the Greenhouse:
 - Food: 6 + 0 − 2 = **4**; the 2 greenhouse cells will deliver 2 × 2 = **4 food on sol 3**
 - Radiation: no event tonight, dose stays **0**
 
-That is exactly the report the game shows (screenshot in section 2), and it is a test: the three worked games of the design document (`Guardian`, `Scientist`, `early return`) are reproduced number by number in [`engine.test.ts`](packages/sim/src/engine.test.ts).
+That is the report the game shows after that night:
+
+<img src="docs/media/phone-report.jpg" width="300" alt="Sol 1 report on a phone: air 10 to 10 (Air machine +5, 4 astronauts breathed −5), food 6 to 4, radiation 0 to 0, with the conclusion of each line in bold">
+
+The rules are tested the same way: the three worked games of the design document (`Guardian`, `Scientist`, `early return`) are reproduced number by number in [`engine.test.ts`](packages/sim/src/engine.test.ts).
 
 ### Why no choice is free (and no plan always wins)
 
@@ -262,7 +266,7 @@ Sources, places and dates: [`docs/en/DATA_MAP.md`](docs/en/DATA_MAP.md).
 - The math is shown, not hidden: live projection while planning, a step-by-step night, and a report with the conclusion in bold (section 3).
 - A real child changed the game five times (section 7), and his own question ("how do astronauts breathe in a suit?") became NASA content in the game.
 - Free, in the browser, on any device, in two languages: no barrier for a school or a family.
-- Curriculum fit in Brazil: BNCC skill EF09CI16 asks students to argue about human survival outside Earth, which is exactly what the game makes them do (section 1).
+- Curriculum link in Brazil: the 9th-grade skill EF09CI16 (BNCC) asks students to argue whether humans can survive outside Earth; the game brings that question earlier, to ages 7–12, through decisions they make themselves (section 1).
 
 ### Creativity — "Is it a new way to learn this?"
 

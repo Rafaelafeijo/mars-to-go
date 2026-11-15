@@ -9,7 +9,7 @@ NASA Space Apps Challenge 2026, challenge "Build a Junior Astronaut Mission Trai
 3. `docs/en/PROJECT_BRIEF.md` — the game design.
 4. `docs/en/SIM_MODEL.md`, `docs/en/DATA_MAP.md`, `docs/en/ARCHITECTURE.md` — approved in Phase 0.
 5. `docs/en/adr/` — decisions already taken.
-6. `docs/en/SUBMISSION.md` — what the project page needs.
+6. `docs/en/CHALLENGE_CHECKLIST.md` section G — what the project page needs. The page drafts live in `private/SUBMISSION.en.md` (git-ignored, local only; never commit them).
 
 Docs live in `docs/en/` (default) and `docs/pt-BR/`; references below to `docs/X.md` mean both.
 

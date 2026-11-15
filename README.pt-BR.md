@@ -8,7 +8,7 @@
 [![E2E playthrough](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/e2e.yml/badge.svg)](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/e2e.yml)
 [![Deploy to GitHub Pages](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/pages.yml/badge.svg)](https://github.com/Rafaelafeijo/mars-to-go/actions/workflows/pages.yml)
 
-## ▶ Jogue agora: **https://rafaelafeijo.github.io/mars-to-go/**
+## ▶ Jogue agora: [rafaelafeijo.github.io/mars-to-go](https://rafaelafeijo.github.io/mars-to-go/)
 
 Grátis, no navegador, sem download e sem conta. Fica melhor no computador, mas dá para jogar tudo no celular e no tablet. Abre em inglês; o português está a um toque (barra do topo).
 
@@ -68,14 +68,14 @@ O desafio diz que as crianças costumam ver o resultado de uma missão, nunca as
 
 - **A maioria dos apps "educativos" são fichas de exercício digitais.** Hirsh-Pasek et al. (2015) concluíram que a maioria dos apps do mercado "are simply digital worksheets, games, and puzzles that have been reproduced in an e-format without any explicit consideration of how children learn." ([*Psychological Science in the Public Interest* 16(1):3–34](https://doi.org/10.1177/1529100615569721))
 - **58% dos apps de aprendizagem infantil mais baixados são de qualidade inferior.** Numa análise de conteúdo de 124 apps, 72 (58%) ficaram como de qualidade inferior, e 73% tiveram nota baixa em aprendizagem ativa, em que a nota mais baixa significa que o app "drills skills, and feels like an online workbook" (repete exercícios e parece uma apostila on-line). (Meyer et al., 2021, [*Journal of Children and Media*](https://doi.org/10.1080/17482798.2021.1882516))
-- **Os questionários dominam; as simulações são raras.** Um mapeamento de 176 estudos sobre jogos educativos para celular (2019–2024) encontrou mecânicas de questionário em 40,91% dos estudos e de simulação em 10,80% (Sales & Oliveira, 2025, [*Journal on Interactive Systems*](https://doi.org/10.5753/jis.2025.5947), Tabela 4). Uma revisão de 2025 com 91 jogos infantis encontrou questionários em 41,8% e simulações em 19,8% (Damenu et al., [arXiv:2508.17414](https://arxiv.org/abs/2508.17414), pré-publicação).
+- **Os questionários dominam; as simulações são raras.** Um mapeamento de 176 estudos sobre jogos educativos para celular (2019–2024) encontrou mecânicas de questionário em 40,91% dos estudos e de simulação em 10,80% (Sales & Oliveira, 2025, [*Journal on Interactive Systems*](https://doi.org/10.5753/jis.2025.5947), Tabela 4). O padrão se repete em outra área: uma revisão sistemática de 2025 sobre jogos educativos de cibersegurança para crianças (91 jogos em 68 artigos, 2010–2024) encontrou questionários em 41,8% dos jogos e simulações em 19,8% (Damenu et al., [arXiv:2508.17414](https://arxiv.org/abs/2508.17414), pré-publicação).
 
 Mars to Go é uma simulação, não um questionário: a criança aprende decidindo, e depois vê a consequência e o motivo.
 
 ### No Brasil, onde vivemos
 
-- **O currículo pede exatamente isso.** A Base Nacional Comum Curricular (BNCC) pede que alunos do 9º ano saibam "Selecionar argumentos sobre a viabilidade da sobrevivência humana fora da Terra, com base nas condições necessárias à vida, nas características dos planetas e nas distâncias e nos tempos envolvidos em viagens interplanetárias e interestelares." (habilidade EF09CI16, citada de [Nova Escola](https://novaescola.org.br/bncc/conteudo/70/saiba-como-ensinar-o-eixo-tematico-terra-e-universo-em-ciencias) e de cópias da BNCC).
-- **Mas o ensino de astronomia é descrito como "simplista".** Uma revisão de 2022 afirma: "Os resultados apontam para um ensino simplista com diferentes falhas nas distintas esferas educacionais", e cita um estudo em que só 10% dos cursos de licenciatura em biologia do Paraná ofereciam astronomia básica (Buffon, Neves & Pereira, 2022, [*Ciência & Educação* 28:e22006](https://doi.org/10.1590/1516-731320220006)). Os livros didáticos "representam, muitas vezes, a única fonte de consulta utilizada pelo professor" (Langhi & Nardi, [*Caderno Brasileiro de Ensino de Física* 24(1)](https://periodicos.ufsc.br/index.php/fisica/article/view/6055)).
+- **O tema está no currículo, mas só no 9º ano.** A Base Nacional Comum Curricular (BNCC) pede que alunos do 9º ano (por volta dos 14 anos) saibam "Selecionar argumentos sobre a viabilidade da sobrevivência humana fora da Terra, com base nas condições necessárias à vida, nas características dos planetas e nas distâncias e nos tempos envolvidos em viagens interplanetárias e interestelares." (habilidade EF09CI16, [documento oficial da BNCC, MEC](http://basenacionalcomum.mec.gov.br/images/BNCC_EI_EF_110518_versaofinal_site.pdf), página 352 do PDF). O Mars to Go traz a mesma pergunta mais cedo, para 7 a 12 anos, em forma de jogo.
+- **Mas o ensino de astronomia é descrito como "simplista".** Um estudo de 2022 com professores de Ciências do 6º ao 9º ano afirma: "Os resultados apontam para um ensino simplista com diferentes falhas nas distintas esferas educacionais", e cita um estudo em que só 10% dos cursos de licenciatura em biologia do Paraná ofereciam astronomia básica (Buffon, Neves & Pereira, 2022, [*Ciência & Educação* 28:e22006](https://doi.org/10.1590/1516-731320220006)). Os livros didáticos "representam, muitas vezes, a única fonte de consulta utilizada pelo professor" (Langhi & Nardi, [*Caderno Brasileiro de Ensino de Física* 24(1)](https://periodicos.ufsc.br/index.php/fisica/article/view/6055)).
 - **E o interesse é enorme.** 1.386.046 estudantes de 13.053 escolas participaram da Olimpíada Brasileira de Astronomia e Astronáutica (OBA) de 2023, com 74.694 professores ([relatório da OBA 2023](https://sistema.oba.org.br/sisglob/sisglob_arquivos/2026/Relatorio%20da%2026%20OBA%20-%202023-compactado.pdf)).
 
 ### E no mundo
@@ -170,7 +170,11 @@ A criança coloca **5** células na Máquina de ar e **2** na Estufa:
 - Comida: 6 + 0 − 2 = **4**; as 2 células da Estufa vão entregar 2 × 2 = **4 de comida no sol 3**
 - Radiação: nenhum evento nesta noite, a dose continua **0**
 
-É exatamente o relatório que o jogo mostra (captura de tela na seção 2), e é um teste: as três partidas resolvidas do documento de design (`Guardian`, `Scientist`, `early return`) são reproduzidas número por número em [`engine.test.ts`](packages/sim/src/engine.test.ts).
+É o relatório que o jogo mostra depois dessa noite:
+
+<img src="docs/media/phone-report.jpg" width="300" alt="Relatório do sol 1 no celular: ar de 10 para 10 (Máquina de ar +5, 4 astronautas respiraram −5), comida de 6 para 4, radiação de 0 para 0, com a conclusão de cada linha em negrito">
+
+As regras são testadas do mesmo jeito: as três partidas resolvidas do documento de design (`Guardian`, `Scientist`, `early return`) são reproduzidas número por número em [`engine.test.ts`](packages/sim/src/engine.test.ts).
 
 ### Por que nenhuma escolha é de graça (e nenhum plano vence sempre)
 
@@ -262,7 +266,7 @@ Fontes, lugares e datas: [`docs/pt-BR/DATA_MAP.md`](docs/pt-BR/DATA_MAP.md).
 - A conta é mostrada, não escondida: projeção ao vivo durante o planejamento, uma noite passo a passo e um relatório com a conclusão em negrito (seção 3).
 - Uma criança de verdade mudou o jogo cinco vezes (seção 7), e a pergunta dela ("como os astronautas respiram no traje?") virou conteúdo da NASA no jogo.
 - Grátis, no navegador, em qualquer aparelho, em dois idiomas: nenhuma barreira para uma escola ou uma família.
-- Encaixe no currículo brasileiro: a habilidade EF09CI16 da BNCC pede que os alunos argumentem sobre a sobrevivência humana fora da Terra, que é exatamente o que o jogo os faz fazer (seção 1).
+- Ligação com o currículo brasileiro: a habilidade EF09CI16 da BNCC, do 9º ano, pede que os alunos argumentem se os humanos podem sobreviver fora da Terra; o jogo traz essa pergunta mais cedo, para 7 a 12 anos, por meio de decisões que as próprias crianças tomam (seção 1).
 
 ### Criatividade — "É um jeito novo de aprender isso?"
 
