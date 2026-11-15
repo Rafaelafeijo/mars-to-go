@@ -633,7 +633,7 @@
     },
     "antennaSent": "Mensagem enviada à Terra. A resposta sobre amanhã chega hoje à noite.",
     "nightAntenna": "Sinal para a Terra… a resposta leva de {{min}} a {{max}} minutos para cada lado.",
-    "sitePick": "Para onde vai o rover?",
+    "sitePick": "Para onde vai o rover? (uma viagem = 2 células)",
     "siteChoice": {
       "rochette": {
         "name": "Rochette (perto)",

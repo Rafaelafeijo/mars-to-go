@@ -95,6 +95,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const [near, setNear] = useState<Destination | null>(null);
   const [webgl] = useState(hasWebGL);
   const [missionOpen, setMissionOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
+  // Phone: the sky panel starts closed (it covered the scene); one tap opens it. Computer: open, as before.
+  const [skyOpen, setSkyOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
   const [banner, setBanner] = useState(true);
   const [menu, setMenu] = useState(false);
   const [skyView, setSkyView] = useState(false);
@@ -364,8 +366,9 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         </div>
       </section>
 
-      {/* Phone direction pad: hold an arrow to walk (the panels cover the ground below the astronaut). */}
-      {webgl && !isNight && !skyView && (
+      {/* Phone direction pad: hold an arrow to walk (the panels cover the ground below the astronaut).
+          Hidden while the rover's destination choice is open: on phones it sat on top of the choices. */}
+      {webgl && !isNight && !skyView && a.expedition !== 1 && (
         <div className="world__pad" role="group" aria-label={t('world.pad.label')}>
           {(['up', 'left', 'right', 'down'] as const).map((d) => (
             <button
@@ -493,24 +496,33 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
       </section>
 
       {/* Right top: sky and the Mars thermometer */}
-      <section className={`hud-sky wpanel${ev ? ' hud-sky--event' : ''}${skyView ? ' is-sky-view' : ''}`} aria-labelledby="sky-title">
-        <h2 id="sky-title">{t('world.forecast.title')}</h2>
-        <p>
-          <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} /> {cond.dust ? t('world.forecast.dust', { n: free }) : ev ? eventText : t('world.forecast.calm')}
-        </p>
-        <p className="thermo" aria-label={t('world.thermo.aria', { day: V.MARS_DAY_TEMP_MAX_C, night: V.MARS_DAY_TEMP_MIN_C })}>
-          <Icon name="heat" size={14} className="tone-air" />
-          <span className="thermo__bar" aria-hidden="true">
-            <span className={`thermo__fill${isNight ? ' is-night' : ''}`} />
-          </span>
-          <strong>{isNight ? V.MARS_DAY_TEMP_MIN_C : V.MARS_DAY_TEMP_MAX_C} °C</strong>
-        </p>
-        <p className="muted small thermo__long">{t('world.thermo.source')}</p>
-        <p className="muted small thermo__short">{t('world.thermo.short')}</p>
+      <section className={`hud-sky wpanel${ev ? ' hud-sky--event' : ''}${skyView ? ' is-sky-view' : ''}${skyOpen ? '' : ' is-closed'}`} aria-labelledby="sky-title">
+        <h2 className="hud-sky__title">
+          <button type="button" className="hud-sky__head" aria-expanded={skyOpen} onClick={() => setSkyOpen((o) => !o)}>
+            <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={14} className={ev ? 'tone-rad' : 'tone-sun'} />
+            <span id="sky-title">{t('world.forecast.title')}</span>
+          </button>
+        </h2>
+        {skyOpen && (
+          <>
+            <p>
+              <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} /> {cond.dust ? t('world.forecast.dust', { n: free }) : ev ? eventText : t('world.forecast.calm')}
+            </p>
+            <p className="thermo" aria-label={t('world.thermo.aria', { day: V.MARS_DAY_TEMP_MAX_C, night: V.MARS_DAY_TEMP_MIN_C })}>
+              <Icon name="heat" size={14} className="tone-air" />
+              <span className="thermo__bar" aria-hidden="true">
+                <span className={`thermo__fill${isNight ? ' is-night' : ''}`} />
+              </span>
+              <strong>{isNight ? V.MARS_DAY_TEMP_MIN_C : V.MARS_DAY_TEMP_MAX_C} °C</strong>
+            </p>
+            <p className="muted small thermo__long">{t('world.thermo.source')}</p>
+            <p className="muted small thermo__short">{t('world.thermo.short')}</p>
+          </>
+        )}
       </section>
 
       {/* Right bottom: cells in hand and pass the night */}
-      <section className="hud-hand wpanel" aria-labelledby="hand-title">
+      <section className={`hud-hand wpanel${a.expedition === 1 && !night ? ' has-site' : ''}`} aria-labelledby="hand-title">
         <h2 id="hand-title" className="sr-only">
           {t('world.hand.title')}
         </h2>

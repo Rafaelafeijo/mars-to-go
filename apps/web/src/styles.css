@@ -3371,6 +3371,74 @@ button.top__brand {
   }
 }
 
+/* ── Phone review I (after submission): rover choice reachable, sky panel closed by default ── */
+/* The sky panel title is a button (open/close). It looks like the old title. */
+.hud-sky__title {
+  margin: 0 0 2px;
+}
+.hud-sky__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.hud-sky.is-closed .hud-sky__title {
+  margin: 0;
+}
+@media (min-width: 900px) {
+  /* Computer: unchanged look (no icon in the title; the panel starts open). */
+  .hud-sky__head svg {
+    display: none;
+  }
+}
+@media (max-width: 899px) {
+  .hud-sky__head {
+    min-height: var(--tap);
+  }
+  /* Open sky panel goes above the toolbar; closed, it is one small header. */
+  .hud-sky:not(.is-closed) {
+    z-index: 7;
+  }
+  /* Toolbar: one row under the top panels, so it never covers the cells panel or the rover choice. */
+  .world__tools {
+    top: 166px;
+    right: 6px;
+    transform: none;
+    flex-direction: row;
+    border-radius: 999px;
+  }
+  .tool + .tool {
+    border-top: 0;
+    border-left: 1px solid var(--glass-line);
+  }
+  .world__menu {
+    top: 216px !important;
+    right: 6px !important;
+    left: auto !important;
+    transform: none;
+  }
+  .hud-skycard {
+    right: 6px;
+  }
+  /* Rover destination: the two choices side by side, so the panel grows less. */
+  .hud-hand.has-site .site-pick {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hud-hand.has-site .site-pick__title {
+    grid-column: 1 / -1;
+  }
+}
+
 /* Edge warning: a small notice that never blocks taps (it fades away by itself). */
 .world__edge {
   pointer-events: none;

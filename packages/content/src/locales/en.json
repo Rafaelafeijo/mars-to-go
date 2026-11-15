@@ -633,7 +633,7 @@
     },
     "antennaSent": "Message sent to Earth. The answer about tomorrow arrives tonight.",
     "nightAntenna": "Signal to Earth… the answer takes {{min}} to {{max}} minutes each way.",
-    "sitePick": "Where does the rover go?",
+    "sitePick": "Where does the rover go? (one trip = 2 cells)",
     "siteChoice": {
       "rochette": {
         "name": "Rochette (near)",
