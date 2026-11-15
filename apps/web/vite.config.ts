@@ -14,7 +14,8 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  "connect-src 'self' data: blob:",
+  // Our own API (Railway) for the live DONKI data on the home screen; nothing else.
+  "connect-src 'self' data: blob: https://mars-to-go-api-production.up.railway.app",
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",

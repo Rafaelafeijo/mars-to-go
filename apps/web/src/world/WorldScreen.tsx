@@ -56,6 +56,14 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 type CrisisSource = 'lifeSupport' | 'greenhouse' | 'askEarth';
 const CRISIS_SOURCES: CrisisSource[] = ['lifeSupport', 'greenhouse', 'askEarth'];
 const NO_MOVES: Record<CrisisSource, number> = { lifeSupport: 0, greenhouse: 0, askEarth: 0 };
+/** Phone direction pad: Scene3D reads globalThis.__marsPad every frame. */
+type PadDir = 'up' | 'down' | 'left' | 'right';
+/** Drawn triangles (no arrow characters: some phones render them as emoji). */
+const PAD_ROTATE: Record<PadDir, number> = { up: 0, right: 90, down: 180, left: 270 };
+function padSet(d: PadDir, on: boolean) {
+  const g = globalThis as unknown as { __marsPad?: Record<string, boolean> };
+  g.__marsPad = { ...(g.__marsPad ?? {}), [d]: on };
+}
 const sumSteps =(steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 
 interface Props {
@@ -90,7 +98,16 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const [banner, setBanner] = useState(true);
   const [menu, setMenu] = useState(false);
   const [skyView, setSkyView] = useState(false);
-  const [edge, setEdge] = useState(false);
+  // Edge warning (design review H): shown for 4 s each time the astronaut reaches the edge,
+  // never blocks taps, so it never needs closing.
+  const [edgeShown, setEdgeShown] = useState(false);
+  const edgeTimer = useRef<number | undefined>(undefined);
+  const setEdge = (near: boolean) => {
+    window.clearTimeout(edgeTimer.current);
+    setEdgeShown(near);
+    if (near) edgeTimer.current = window.setTimeout(() => setEdgeShown(false), 4000);
+  };
+  const edge = edgeShown;
   const [showFps] = useState(() => new URLSearchParams(window.location.search).get('fps') === '1');
   const [fps, setFps] = useState<number | null>(null);
   useEffect(() => {
@@ -347,9 +364,55 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         </div>
       </section>
 
-      <button type="button" className="world__menu-btn" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
-        {t('menu.label')}
-      </button>
+      {/* Phone direction pad: hold an arrow to walk (the panels cover the ground below the astronaut). */}
+      {webgl && !isNight && !skyView && (
+        <div className="world__pad" role="group" aria-label={t('world.pad.label')}>
+          {(['up', 'left', 'right', 'down'] as const).map((d) => (
+            <button
+              key={d}
+              type="button"
+              className={`pad__btn pad__btn--${d}`}
+              aria-label={t(`world.pad.${d}`)}
+              onPointerDown={(e) => {
+                e.currentTarget.setPointerCapture(e.pointerId);
+                padSet(d, true);
+              }}
+              onPointerUp={() => padSet(d, false)}
+              onPointerCancel={() => padSet(d, false)}
+              onLostPointerCapture={() => padSet(d, false)}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style={{ transform: `rotate(${PAD_ROTATE[d]}deg)` }}>
+                <path d="M8 3 L14 12 L2 12 Z" fill="currentColor" />
+              </svg>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* One toolbar for the view and the menu (design review H): a column of icons on phones,
+          one joined bar on computers — no loose floating buttons. */}
+      <div className="world__tools" role="toolbar" aria-label={t('world.tools')}>
+        {!isNight && (
+          <button type="button" className="tool tool--sky" aria-pressed={skyView} aria-label={skyView ? t('world.sky.back') : t('world.sky.look')} onClick={() => setSkyView((s) => !s)}>
+            <Icon name={skyView ? 'flag' : 'sun'} size={18} className={skyView ? undefined : 'tone-sun'} />
+            <span className="tool__label">{skyView ? t('world.sky.back') : t('world.sky.look')}</span>
+          </button>
+        )}
+        {webgl && !isNight && (
+          <>
+            <button type="button" className="tool" aria-label={t('world.zoomIn')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 0.8 }))}>
+              <Icon name="plus" size={18} />
+            </button>
+            <button type="button" className="tool" aria-label={t('world.zoomOut')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 1.25 }))}>
+              <Icon name="minus" size={18} />
+            </button>
+          </>
+        )}
+        <button type="button" className="tool tool--menu" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+          {t('menu.label')}
+        </button>
+      </div>
       {menu && (
         <nav className="world__menu wpanel" aria-label={t('menu.label')}>
           <button type="button" onClick={() => { setMenu(false); onNasaData(); }}>
@@ -362,23 +425,6 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             <Icon name="rocket" size={16} /> {t('menu.home')}
           </button>
         </nav>
-      )}
-
-      {webgl && !isNight && (
-        <div className="world__zoom">
-          <button type="button" aria-label={t('world.zoomIn')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 0.8 }))}>
-            <Icon name="plus" size={18} />
-          </button>
-          <button type="button" aria-label={t('world.zoomOut')} onClick={() => globalThis.dispatchEvent(new CustomEvent('mars-zoom', { detail: 1.25 }))}>
-            <Icon name="minus" size={18} />
-          </button>
-        </div>
-      )}
-
-      {!isNight && (
-        <button type="button" className="world__sky-btn" aria-pressed={skyView} onClick={() => setSkyView((s) => !s)}>
-          <Icon name={skyView ? 'flag' : 'sun'} size={16} className={skyView ? undefined : 'tone-sun'} /> {skyView ? t('world.sky.back') : t('world.sky.look')}
-        </button>
       )}
 
       {/* Sky view: the camera looks up; real NASA facts about the Mars sky, with a real photo */}
@@ -397,8 +443,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
       )}
 
       {edge && !isNight && (
-        <div className="world__edge" role="alert">
-          <Icon name="cross" size={18} />
+        <div className="world__edge" role="status">
+          <Icon name="walk" size={18} />
           <span>
             <strong>{t('world.edge.title')}</strong> {t('world.edge.text')}
           </span>
@@ -447,7 +493,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
       </section>
 
       {/* Right top: sky and the Mars thermometer */}
-      <section className={`hud-sky wpanel${ev ? ' hud-sky--event' : ''}`} aria-labelledby="sky-title">
+      <section className={`hud-sky wpanel${ev ? ' hud-sky--event' : ''}${skyView ? ' is-sky-view' : ''}`} aria-labelledby="sky-title">
         <h2 id="sky-title">{t('world.forecast.title')}</h2>
         <p>
           <Icon name={cond.dust ? 'dust' : ev ? 'storm' : 'sun'} size={16} className={ev ? 'tone-rad' : 'tone-sun'} /> {cond.dust ? t('world.forecast.dust', { n: free }) : ev ? eventText : t('world.forecast.calm')}

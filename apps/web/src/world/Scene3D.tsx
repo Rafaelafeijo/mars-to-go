@@ -618,8 +618,7 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
       keys.current = {};
     };
     globalThis.addEventListener('blur', blur);
-    const noMenu = (e: Event) => e.preventDefault();
-    el.addEventListener('contextmenu', noMenu);
+    // The right-click menu stays available (inspect, etc.); only the left button walks (Terrain).
     el.addEventListener('wheel', wheel, { passive: false });
     el.addEventListener('pointerdown', pdown);
     el.addEventListener('pointermove', pmove);
@@ -630,7 +629,6 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
       globalThis.removeEventListener('keyup', up);
       globalThis.removeEventListener('mars-zoom', zoomEvent);
       globalThis.removeEventListener('blur', blur);
-      el.removeEventListener('contextmenu', noMenu);
       el.removeEventListener('wheel', wheel);
       el.removeEventListener('pointerdown', pdown);
       el.removeEventListener('pointermove', pmove);
@@ -643,7 +641,13 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
     const p = playerRef.current;
     if (!p) return;
     const k = keys.current;
-    const dir = new THREE.Vector3((k.d || k.arrowright ? 1 : 0) - (k.a || k.arrowleft ? 1 : 0), 0, (k.s || k.arrowdown ? 1 : 0) - (k.w || k.arrowup ? 1 : 0));
+    // Phone direction pad (WorldScreen) writes here while a button is held.
+    const pad = (globalThis as unknown as { __marsPad?: Record<string, boolean> }).__marsPad ?? {};
+    const right = k.d || k.arrowright || pad.right;
+    const left = k.a || k.arrowleft || pad.left;
+    const down = k.s || k.arrowdown || pad.down;
+    const up = k.w || k.arrowup || pad.up;
+    const dir = new THREE.Vector3((right ? 1 : 0) - (left ? 1 : 0), 0, (down ? 1 : 0) - (up ? 1 : 0));
     // Keys win over an old tap target, and cancel it (otherwise he walked back to it later).
     if (dir.lengthSq() > 0 && target) onCancel();
     if (dir.lengthSq() === 0 && target) {
@@ -687,7 +691,10 @@ function Player({ target, onArrive, onCancel, onNear, onEdge, skyView, playerRef
       : new THREE.Vector3(p.position.x, p.position.y + 0.8 + (portrait ? 8.7 : 4.2) * z * z, p.position.z + (portrait ? 15 : 10) * z);
     camera.position.lerp(want, ease);
     const lookUp = 1.6 + Math.max(0, 1 - z) * 4; // zoomed in: look up toward the horizon and sky
-    const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + lookUp, p.position.z - 5);
+    // Portrait phones: look at a point in front of the astronaut so he sits higher on the screen,
+    // leaving free ground below him above the bottom panels (design review H).
+    const lookAhead = portrait ? 1.5 : -5;
+    const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + lookUp, p.position.z + lookAhead);
     look.current.lerp(wantLook, ease);
     camera.lookAt(look.current);
     let best: Destination | null = null;

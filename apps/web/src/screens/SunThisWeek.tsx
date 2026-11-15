@@ -1,7 +1,10 @@
 /**
- * "The Sun this week" on the home screen: real NASA DONKI events from the snapshot the Pages
- * workflow saves twice a day (ADR-0004 layer 2). Always shown as a dated copy, never as live.
- * If the snapshot is missing, nothing is shown.
+ * "The Sun this week" on the home screen (ADR-0004 layers 1 and 2):
+ * 1. LIVE: our API (Railway) asks NASA DONKI for the last 7 days and caches it 30 minutes;
+ *    the card says "live" with the time of that fetch.
+ * 2. If the API does not answer (or only has a stale cache), the snapshot the Pages workflow
+ *    saves twice a day is shown as a dated copy — never labeled live.
+ * If both are missing, nothing is shown.
  */
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +22,26 @@ interface Snapshot {
   flares: Flare[];
   cmes: unknown[];
   seps: unknown[];
+  /** true when it came from the live API (fresh fetch or its 30-minute cache). */
+  live?: boolean;
+}
+
+/** Our API (Railway): live DONKI with a 30-minute cache. Same origin on the Railway mirror. */
+const API_URL ='https://mars-to-go-api-production.up.railway.app';
+
+async function loadLive(): Promise<Snapshot | null> {
+  const res = await fetch(`${API_URL}/space-weather`, { signal: AbortSignal.timeout(6000) });
+  if (!res.ok) return null;
+  const j = (await res.json()) as { fetchedAt?: string; cache?: string; range: Snapshot['range']; flares: Flare[]; cmes: unknown[]; seps: unknown[] };
+  if (!j.fetchedAt || !Array.isArray(j.flares) || j.cache === 'stale') return null;
+  return { updatedAt: j.fetchedAt, range: j.range, flares: j.flares, cmes: j.cmes, seps: j.seps, live: true };
+}
+
+async function loadCopy(): Promise<Snapshot | null> {
+  const r = await fetch(`${import.meta.env.BASE_URL}data/space-weather.json`);
+  if (!r.ok) return null;
+  const j = (await r.json()) as Snapshot;
+  return Array.isArray(j.flares) ? { ...j, live: false } : null;
 }
 
 const CLASS_RANK: Record<string, number> = { A: 0, B: 1, C: 2, M: 3, X: 4 };
@@ -31,12 +54,12 @@ export function SunThisWeek({ compact = false }: { compact?: boolean }) {
 
   useEffect(() => {
     let alive = true;
-    fetch(`${import.meta.env.BASE_URL}data/space-weather.json`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j: Snapshot | null) => {
-        if (alive && j && Array.isArray(j.flares)) setData(j);
-      })
-      .catch(() => {});
+    loadLive()
+      .catch(() => null)
+      .then((live) => live ?? loadCopy().catch(() => null))
+      .then((d) => {
+        if (alive && d) setData(d);
+      });
     return () => {
       alive = false;
     };
@@ -47,7 +70,7 @@ export function SunThisWeek({ compact = false }: { compact?: boolean }) {
   // Reading of the week (DATA_MAP D5): "busy" if any flare reached M5 or more (NOAA radio
   // blackout scale R2 "moderate" or higher) or any solar particle event was recorded; else "calm".
   const busy = (top ? strength(top.classType) >= strength('M5') : false) || data.seps.length > 0;
-  // The copy is saved twice a day by the Pages workflow: show exactly when (UTC), never "live".
+  // Always say exactly when the data was fetched (UTC), and whether it is live or the saved copy.
   const updated = t('sunWeek.when', { date: longDate(data.updatedAt.slice(0, 10), i18n.language), time: data.updatedAt.slice(11, 16) });
 
   if (compact) {
@@ -61,7 +84,7 @@ export function SunThisWeek({ compact = false }: { compact?: boolean }) {
 
   return (
     <aside className="sun-week" aria-labelledby="sun-week-title">
-      <p className="sun-week__badge">{t('sunWeek.badge')}</p>
+      <p className={`sun-week__badge${data.live ? ' is-live' : ''}`}>{data.live ? t('sunWeek.badgeLive') : t('sunWeek.badge')}</p>
       <h2 id="sun-week-title">{t('sunWeek.title')}</h2>
       <dl className="sun-week__stats">
         <div>
@@ -85,7 +108,7 @@ export function SunThisWeek({ compact = false }: { compact?: boolean }) {
         </p>
       )}
       <p className="sun-week__copy">
-        {t('sunWeek.copy', { date: updated })} ·{' '}
+        {data.live ? t('sunWeek.liveAt', { date: updated }) : t('sunWeek.copy', { date: updated })} ·{' '}
         <a href="https://ccmc.gsfc.nasa.gov/DONKI/" target="_blank" rel="noreferrer">
           NASA CCMC DONKI
         </a>

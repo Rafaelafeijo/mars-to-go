@@ -60,7 +60,9 @@ try {
   page.on('request', (r) => {
     const u = new URL(r.url());
     if (!['http:', 'https:'].includes(u.protocol)) return; // data:, blob:
-    if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1') errors.push(`third-party request: ${u.origin}`);
+    // Allowed: the game itself and our own API (live DONKI on the home screen).
+    const ours = ['localhost', '127.0.0.1', 'mars-to-go-api-production.up.railway.app'];
+    if (!ours.includes(u.hostname)) errors.push(`third-party request: ${u.origin}`);
   });
   page.on('console', (m) => {
     if (m.type() === 'error' && /Content Security Policy/i.test(m.text())) errors.push(`CSP: ${m.text()}`);

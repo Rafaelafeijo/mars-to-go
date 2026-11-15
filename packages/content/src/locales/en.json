@@ -643,6 +643,14 @@
         "name": "Delta front (2.3 km)",
         "cost": "3 air · +2 dose · best place to look for signs of ancient life"
       }
+    },
+    "tools": "View and menu",
+    "pad": {
+      "label": "Walk",
+      "up": "Walk forward",
+      "down": "Walk back",
+      "left": "Walk left",
+      "right": "Walk right"
     }
   },
   "hero": {
@@ -690,7 +698,9 @@
     "compact": "{{flares}} flares, {{cmes}} particle clouds (NASA DONKI)",
     "when": "{{date}}, {{time}} UTC",
     "calm": "A calm week on the Sun",
-    "busy": "A busy week on the Sun"
+    "busy": "A busy week on the Sun",
+    "badgeLive": "REAL NASA DATA · LIVE",
+    "liveAt": "Fetched live from NASA on {{date}} (refreshed every 30 minutes)"
   },
   "missionShort": {
     "m1": "Mission 1",

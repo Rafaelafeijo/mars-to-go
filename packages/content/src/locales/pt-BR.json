@@ -643,6 +643,14 @@
         "name": "Frente do delta (2,3 km)",
         "cost": "3 de ar · +2 de dose · melhor lugar para procurar sinais de vida antiga"
       }
+    },
+    "tools": "Vista e menu",
+    "pad": {
+      "label": "Andar",
+      "up": "Andar para a frente",
+      "down": "Andar para trás",
+      "left": "Andar para a esquerda",
+      "right": "Andar para a direita"
     }
   },
   "hero": {
@@ -690,7 +698,9 @@
     "compact": "{{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)",
     "when": "{{date}}, às {{time}} UTC",
     "calm": "Semana calma no Sol",
-    "busy": "Semana agitada no Sol"
+    "busy": "Semana agitada no Sol",
+    "badgeLive": "DADO REAL DA NASA · AO VIVO",
+    "liveAt": "Buscado ao vivo na NASA em {{date}} (atualizado a cada 30 minutos)"
   },
   "missionShort": {
     "m1": "Missão 1",
