@@ -447,8 +447,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                       ? t('world.report.noEvent')
                       : radiation.detail.reachesMars === true
                         ? t('world.report.hit', { risk: radiation.detail.risk, shield: radiation.detail.shield, delta: radiation.delta })
-                        : t('world.report.miss')}{' '}
-                    {t('world.report.radHint')}
+                        : t('world.report.miss')}
+                    <span className="stat__hint">{t('world.report.radHint')}</span>
                   </span>
                 </li>
                 {typeof discovery === 'string' && (

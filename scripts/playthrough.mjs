@@ -76,6 +76,13 @@ try {
         }
       }
       if (sol === 1 || sol === 5) await shot(`04-world-sol${sol}-planned`, false);
+      if (sol === 2) {
+        const sky = page.locator('.world__sky-btn');
+        await sky.click();
+        await page.waitForTimeout(1200);
+        await shot('06-world-sky-view', false);
+        await sky.click();
+      }
       await page.getByRole('button', { name: T.pass }).click();
       await page.getByRole('button', { name: T.next }).waitFor();
       if (sol === 1 || sol === 5) await shot(`05-world-report-sol${sol}`, false);
@@ -118,6 +125,11 @@ try {
     await desk.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[1]}`)}`) }).click();
     await desk.waitForTimeout(600);
     await desk.screenshot({ path: `${out}/08-desktop-sol1.png` });
+    // Sky view (second playtest): camera looks up, NASA sky fact with a real photo.
+    await desk.getByRole('button', { name: 'Look at the sky' }).click();
+    await desk.waitForTimeout(1500);
+    await desk.screenshot({ path: `${out}/09-desktop-sky.png` });
+    await desk.getByRole('button', { name: 'Back to the base' }).click();
 
     // Performance probe on a phone-size page: normal CPU, then 4× slower CPU (low-end phone stand-in).
     const perf = {};

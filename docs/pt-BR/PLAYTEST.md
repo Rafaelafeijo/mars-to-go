@@ -45,6 +45,26 @@ Sessão informal, sem arquivo exportado (o modo de teste ainda não existia). Re
 
 ---
 
+## Revisão de design A (adulto, depois do bloco 1)
+
+Não é sessão com criança: a mãe revisou o commit `9198cfb` no computador, nos dois idiomas. Registrado para que cada mudança tenha o seu motivo.
+
+| Observação | Mudança (commit `c550a4f`) |
+| --- | --- |
+| O rodapé não acompanha a página; margem lateral apertada perto dos botões do topo | Uma só margem lateral para barra do topo, herói e rodapé; rodapé na largura toda |
+| Em português o botão "Jogar" desceu de linha | Os botões ficam numa linha a partir da largura de tablet |
+| Os papéis em português misturavam feminino e masculino | Uma forma para todos os papéis (masculino genérico, como a revisora pediu) |
+| A abertura do sol tem pouco contraste | Fundo mais escuro e desfocado atrás de todo diálogo |
+| Os rótulos das máquinas parecem "Windows 97" e cobrem os painéis | Rótulos de vidro com ponto colorido, tamanho fixo na tela, sem "▶" |
+| A planta nasce "no meio do nada"; mais células não mostram mais plantas | Estufa inflável (a partir do protótipo da Universidade do Arizona com a NASA), uma bandeja por célula; marcas de colheita na barra de comida |
+| O tanque de ar é realista? | Desenhado como tanque de pressão branco com visor de nível; marcado como ilustração (fonte a verificar) |
+| Parede invisível ao andar | Aviso antes do limite ("longe demais, volte") e depois uma parada suave |
+| Quer ver o céu | Céu colorido a partir da descrição da NASA (amarelo a laranja), vista "Olhar o céu" com fato real da NASA e foto; zoom com a roda do mouse |
+| Relatório: pouco contraste, pouco respiro, "baixa" não parece radiação, botão cobre o texto, sem rolagem | Relatório refeito: cartões com rótulo (Ar, Comida, Radiação), corpo com rolagem, botão fixo embaixo |
+| Aspecto de "marca-texto" nos rótulos | Mesmo estilo de vidro para rótulos e painéis |
+
+---
+
 ## Rodada 1
 
 | Campo | Valor |

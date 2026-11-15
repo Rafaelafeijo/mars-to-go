@@ -56,8 +56,9 @@ const MACHINES: MachineSpec[] = [
 const AT = Object.fromEntries(MACHINES.map((m) => [m.d, m])) as Record<Destination, MachineSpec>;
 
 const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: number }[] = [
-  { model: 'hangar_largeA', pos: [1, -9.5], scale: 1.9 },
-  { model: 'container-tall', pos: [4.6, -8], scale: 2.2 },
+  // Kept clear of the greenhouse (it sat "inside" the tunnel from the camera).
+  { model: 'hangar_largeA', pos: [-11, -13], scale: 1.9, rot: 0.4 },
+  { model: 'container-tall', pos: [12, -10], scale: 2.2, rot: -0.3 },
   { model: 'rock_largeA', pos: [-16, -10], scale: 3 },
   { model: 'rock_largeB', pos: [14, -14], scale: 2.6, rot: 1 },
   { model: 'rock_largeA', pos: [18, 8], scale: 2.4, rot: 2 },

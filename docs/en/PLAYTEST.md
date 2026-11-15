@@ -45,6 +45,26 @@ Informal session, no exported file (playtest mode did not exist yet). Recorded b
 
 ---
 
+## Design review A (adult, after block 1)
+
+Not a child session: the parent reviewed commit `9198cfb` on a computer, in both languages. Recorded so each change has its reason.
+
+| Observation | Change (commit `c550a4f`) |
+| --- | --- |
+| Footer does not follow the page; side margin too tight near the top buttons | One side margin for top bar, hero and footer; full-width footer |
+| In Portuguese the "Jogar" button dropped to a new line | Buttons stay on one row from tablet width |
+| Roles in Portuguese mixed feminine and masculine | One form for all roles (generic masculine, as the reviewer asked) |
+| Sol opening dialog lacks contrast | Darker, blurred backdrop behind every dialog |
+| Machine labels look like "Windows 97" and cover the panels | Glass labels with a colored dot, constant size on screen, no "▶" |
+| Plant grows "in the middle of nothing"; more cells do not show more plants | Inflatable greenhouse (after the University of Arizona / NASA prototype), one tray per cell; harvest marks on the food bar |
+| Is the air tank realistic? | Drawn as a white pressure tank with a level window; marked illustration (source to verify) |
+| Invisible wall when walking | Warning before the limit ("too far, turn back"), then a soft stop |
+| Wants to see the sky | Sky colored after NASA's description (yellow to orange), "Look at the sky" view with a real NASA fact and photo; mouse-wheel zoom |
+| Report: low contrast, little breathing room, "low" not clearly radiation, button covers text, no scroll | Report rebuilt: labeled stat cards (Air, Food, Radiation), scrolling body, button fixed at the bottom |
+| "Highlighter" look of labels | Same glass style for labels and panels |
+
+---
+
 ## Round 1
 
 | Field | Value |
