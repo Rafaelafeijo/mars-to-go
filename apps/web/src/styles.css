@@ -1455,6 +1455,9 @@ main.main--one {
 .hud-mission__list li.is-ok {
   color: #7cd17a;
 }
+.hud-mission__list li.is-locked {
+  color: var(--color-text-muted);
+}
 .hud-mission__list li span {
   color: var(--color-text);
 }
@@ -2467,6 +2470,15 @@ button.top__brand {
 .hero__line span {
   display: block;
 }
+/* Each sentence stays on its own single line from tablet width (EN and PT). */
+@media (min-width: 640px) {
+  .hero__line {
+    max-width: none;
+  }
+  .hero__line span {
+    white-space: nowrap;
+  }
+}
 .hero__assist {
   gap: 12px;
   cursor: pointer;
@@ -2598,6 +2610,19 @@ button.top__brand {
   color: var(--color-text);
   white-space: nowrap;
 }
+.act {
+  /* Machine tone, read before the button text color changes currentColor. */
+  --tone: #f5b642;
+}
+.act.tone-air {
+  --tone: #6ab0ff;
+}
+.act.tone-food {
+  --tone: #7cd17a;
+}
+.act.tone-rad {
+  --tone: #b9a2ff;
+}
 .act__btn {
   display: inline-flex;
   align-items: center;
@@ -2606,7 +2631,8 @@ button.top__brand {
   padding: 0 16px;
   border-radius: 999px;
   border: 0;
-  background: currentColor;
+  white-space: nowrap;
+  background: var(--tone);
   font: inherit;
   font-weight: 800;
   cursor: pointer;
@@ -2654,10 +2680,27 @@ button.top__brand {
   justify-content: center;
   cursor: pointer;
 }
+/* Desktop: a small row in the bottom-right corner, under the cells panel. */
 @media (min-width: 900px) {
   .world__zoom {
+    top: auto;
+    bottom: 40px;
     right: 16px;
-    top: 52%;
+    transform: none;
+    flex-direction: row;
+  }
+}
+/* Phone: when the action bar shows, lift the cells panel so they do not overlap. */
+@media (max-width: 899px) {
+  .world--acting .hud-hand {
+    bottom: 188px;
+  }
+  .act {
+    padding: 4px 4px 4px 12px;
+  }
+  .act__btn {
+    min-height: 40px;
+    padding: 0 12px;
   }
 }
 

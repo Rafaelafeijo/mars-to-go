@@ -51,7 +51,7 @@ const MACHINES: MachineSpec[] = [
   { d: 'greenhouse', model: 'hangar_roundGlass', pos: [5.5, -3], scale: 1.8, rot: -0.5 },
   { d: 'shield', model: 'machine_wireless', pos: [-4.6, -9], scale: 2.2 },
   // Parked in view of the start position, so it is seen (locked) from sol 1.
-  { d: 'expedition', model: 'rover', pos: [4.2, 4], scale: 2.6, rot: -0.6 },
+  { d: 'expedition', model: 'rover', pos: [3.6, 1.2], scale: 2.4, rot: -0.6 },
   { d: 'askEarth', model: 'satelliteDish_large', pos: [-8.5, 3], scale: 2, rot: 0.8 },
 ];
 const AT = Object.fromEntries(MACHINES.map((m) => [m.d, m])) as Record<Destination, MachineSpec>;
@@ -69,10 +69,20 @@ const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: numb
   { model: 'craterLarge', pos: [-20, 15], scale: 5 },
 ];
 
-function Model({ name, x, z, scale, rot = 0, y }: { name: string; x: number; z: number; scale: number; rot?: number; y?: number }) {
+function Model({ name, x, z, scale, rot = 0, y, center = false }: { name: string; x: number; z: number; scale: number; rot?: number; y?: number; center?: boolean }) {
   const { scene } = useGLTF(M(name));
   const obj = useMemo(() => scene.clone(true), [scene]);
-  return <primitive object={obj} position={[x, y ?? groundHeight(x, z), z]} scale={scale} rotation={[0, rot, 0]} />;
+  // Some Kenney models have their origin at a corner: center them so labels sit right above.
+  const offset = useMemo(() => {
+    if (!center) return [0, 0, 0] as [number, number, number];
+    const c = new THREE.Box3().setFromObject(obj).getCenter(new THREE.Vector3());
+    return [-c.x, 0, -c.z] as [number, number, number];
+  }, [obj, center]);
+  return (
+    <group position={[x, y ?? groundHeight(x, z), z]} scale={scale} rotation={[0, rot, 0]}>
+      <primitive object={obj} position={offset} />
+    </group>
+  );
 }
 
 function Terrain({ onGround }: { onGround: (p: THREE.Vector3) => void }) {
@@ -363,7 +373,7 @@ function Rover({ driving }: { driving: boolean }) {
   });
   return (
     <group ref={ref}>
-      <Model name={m.model} x={0} z={0} y={0} scale={m.scale} rot={m.rot} />
+      <Model name={m.model} x={0} z={0} y={0} scale={m.scale} rot={m.rot} center />
     </group>
   );
 }

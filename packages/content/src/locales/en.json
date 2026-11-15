@@ -427,7 +427,8 @@
       "done": "Done",
       "todo": "Not yet",
       "sample": "Bring {{goal}} rock sample home (Rover): {{n}}/{{goal}}",
-      "dose": "Radiation dose within the limit: {{n}}/{{max}}"
+      "dose": "Radiation dose within the limit: {{n}}/{{max}}",
+      "sampleLocked": "Bring {{goal}} rock sample home (the Rover opens on sol {{n}})"
     },
     "forecast": {
       "title": "Sky today",
@@ -532,14 +533,18 @@
       "labelRover": "Rover",
       "exposure": "{{word}}",
       "radHint": "Radiation: invisible particles from the Sun that can harm the crew. The Shield blocks them.",
-      "airHint": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{sols}} more nights.",
       "airEmpty": "The tank is empty: there is no air for the crew.",
-      "foodHint": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{sols}} more nights.",
       "foodEmpty": "There is no food left for the crew.",
       "unknown": "There is no measurement that this flare reached Mars. In the game it does not hit the base.",
       "damage": "What the shield did not block damaged the electronics: {{n}} fewer cells tomorrow.",
       "dose": "Dose {{n}} of {{max}}. Above {{max}}, the mission doctor sends the crew home.",
-      "sample": "Rock sample collected at {{site}}. Samples on the rocket: {{count}}/{{goal}}."
+      "sample": "Rock sample collected at {{site}}. Samples on the rocket: {{count}}/{{goal}}.",
+      "airHint_zero": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: not enough for another night.",
+      "airHint_one": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{count}} more night.",
+      "airHint_other": "Every night the crew breathes {{breathed}} air. The tank now has {{after}}: enough for {{count}} more nights.",
+      "foodHint_zero": "Every night the crew eats {{eaten}} food. There is now {{after}}: not enough for another night.",
+      "foodHint_one": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more night.",
+      "foodHint_other": "Every night the crew eats {{eaten}} food. There is now {{after}}: enough for {{count}} more nights."
     },
     "sites": {
       "rochette": "the rock Rochette",
@@ -573,7 +578,7 @@
       "remove": "Take 1 cell",
       "near": "Near the {{name}}"
     },
-    "habitat": "Crew home",
+    "habitat": "Habitat",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "nightShield": "The shield held! The crew is safe.",

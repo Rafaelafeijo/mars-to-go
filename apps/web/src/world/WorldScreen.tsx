@@ -193,7 +193,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const exposed = radiation?.detail?.reachesMars === true && radiation.delta > 0;
 
   return (
-    <div className={`world${night ? ' world--night' : ''}`}>
+    <div className={`world${night ? ' world--night' : ''}${near && open.includes(near) && !night ? ' world--acting' : ''}`}>
       <div className="world__stage">
         {webgl ? (
           <Suspense fallback={<div className="world__still" aria-hidden="true" />}>
@@ -352,11 +352,18 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                 { ok: left === 0, text: t('world.mission.placeAll', { free, used: free - left }) },
                 { ok: airOk, text: t('world.mission.airHome') },
                 { ok: foodOk, text: t('world.mission.foodHome') },
-                { ok: base.discoveries.length + (plan.expedition ? 1 : 0) >= V.SAMPLES_GOAL, text: t('world.mission.sample', { n: base.discoveries.length, goal: V.SAMPLES_GOAL }) },
+                {
+                  ok: base.discoveries.length + (plan.expedition ? 1 : 0) >= V.SAMPLES_GOAL,
+                  // Before the Rover opens, say when it opens instead of showing a failure.
+                  locked: !open.includes('expedition'),
+                  text: open.includes('expedition')
+                    ? t('world.mission.sample', { n: base.discoveries.length, goal: V.SAMPLES_GOAL })
+                    : t('world.mission.sampleLocked', { goal: V.SAMPLES_GOAL, n: unlockSol('expedition') }),
+                },
                 { ok: doseNow <= V.DOSE_LIMIT, text: t('world.mission.dose', { n: doseNow, max: V.DOSE_LIMIT }) },
               ].map((o) => (
-                <li key={o.text} className={o.ok ? 'is-ok' : undefined}>
-                  <Icon name={o.ok ? 'check' : 'cross'} size={14} />
+                <li key={o.text} className={o.ok ? 'is-ok' : 'locked' in o && o.locked ? 'is-locked' : undefined}>
+                  <Icon name={o.ok ? 'check' : 'locked' in o && o.locked ? 'lock' : 'cross'} size={14} />
                   <span>{o.text}</span>
                   <span className="sr-only">{o.ok ? t('world.mission.done') : t('world.mission.todo')}</span>
                 </li>
@@ -528,7 +535,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                     {t('world.report.air', { made, breathed })}
                     {suits > 0 ? ` · ${t('world.report.suits', { suits })}` : ''}
                     <span className={`stat__hint${after.air < 0 ? ' is-bad' : ''}`}>
-                      {after.air < 0 ? t('world.report.airEmpty') : t('world.report.airHint', { breathed, after: after.air, sols: airSols(after.air) })}
+                      {after.air < 0 ? t('world.report.airEmpty') : t('world.report.airHint', { breathed, after: after.air, count: airSols(after.air) })}
                     </span>
                   </span>
                 </li>
@@ -539,7 +546,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                   <span className="stat__what">
                     {t('world.report.food', { harvested, eaten })}
                     <span className={`stat__hint${after.food < 0 ? ' is-bad' : ''}`}>
-                      {after.food < 0 ? t('world.report.foodEmpty') : t('world.report.foodHint', { eaten, after: after.food, sols: foodSols(after.food) })}
+                      {after.food < 0 ? t('world.report.foodEmpty') : t('world.report.foodHint', { eaten, after: after.food, count: foodSols(after.food) })}
                     </span>
                   </span>
                 </li>

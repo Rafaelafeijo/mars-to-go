@@ -427,7 +427,8 @@
       "done": "Feito",
       "todo": "Ainda não",
       "sample": "Levar {{goal}} amostra de rocha para casa (Rover): {{n}}/{{goal}}",
-      "dose": "Dose de radiação dentro do limite: {{n}}/{{max}}"
+      "dose": "Dose de radiação dentro do limite: {{n}}/{{max}}",
+      "sampleLocked": "Levar {{goal}} amostra de rocha para casa (o Rover abre no sol {{n}})"
     },
     "forecast": {
       "title": "O céu hoje",
@@ -532,14 +533,18 @@
       "labelRover": "Rover",
       "exposure": "{{word}}",
       "radHint": "Radiação: partículas invisíveis do Sol que podem fazer mal à tripulação. O Escudo bloqueia.",
-      "airHint": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{sols}} noites.",
       "airEmpty": "O tanque está vazio: não há ar para a tripulação.",
-      "foodHint": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{sols}} noites.",
       "foodEmpty": "Não há mais comida para a tripulação.",
       "unknown": "Não há medição de que esta erupção chegou a Marte. No jogo ela não atinge a base.",
       "damage": "O que o escudo não bloqueou danificou os eletrônicos: {{n}} células a menos amanhã.",
       "dose": "Dose {{n}} de {{max}}. Acima de {{max}}, o médico da missão manda a tripulação para casa.",
-      "sample": "Amostra de rocha coletada em {{site}}. Amostras no foguete: {{count}}/{{goal}}."
+      "sample": "Amostra de rocha coletada em {{site}}. Amostras no foguete: {{count}}/{{goal}}.",
+      "airHint_zero": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: não dá para mais nenhuma noite.",
+      "airHint_one": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{count}} noite.",
+      "airHint_other": "Toda noite a tripulação respira {{breathed}} de ar. O tanque agora tem {{after}}: dá para mais {{count}} noites.",
+      "foodHint_zero": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: não dá para mais nenhuma noite.",
+      "foodHint_one": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noite.",
+      "foodHint_other": "Toda noite a tripulação come {{eaten}} de comida. Agora há {{after}}: dá para mais {{count}} noites."
     },
     "sites": {
       "rochette": "a rocha Rochette",
@@ -573,7 +578,7 @@
       "remove": "Tirar 1 célula",
       "near": "Perto de: {{name}}"
     },
-    "habitat": "Casa da tripulação",
+    "habitat": "Habitat",
     "zoomIn": "Aproximar",
     "zoomOut": "Afastar",
     "nightShield": "O escudo segurou! A tripulação está segura.",
