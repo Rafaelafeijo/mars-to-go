@@ -119,6 +119,7 @@ try {
         const tile = page.getByRole('button', { name: new RegExp(`^${T.names[i]}:`) });
         for (let k = 0; k < row[i]; k++) await tile.click();
       }
+      if (sol === 1) await shot('03-one-sol1-planned', false); // phase 3B step B (one screen), for the README
       await page.getByRole('button', { name: T.lock }).click();
       await page.getByRole('button', { name: T.next }).click();
       continue;
@@ -127,6 +128,7 @@ try {
     for (let i = 0; i < row.length; i++) {
       for (let k = 0; k < row[i]; k++) await page.getByRole('button', { name: `${T.add} ${T.names[i]}` }).click();
     }
+    if (sol === 1) await shot('03-list-sol1-planned'); // phase 3 (list), for the README
     await page.getByRole('button', { name: T.lock }).click();
     await page.getByRole('button', { name: T.skip }).click();
     await page.getByRole('button', { name: T.toLog }).click();
