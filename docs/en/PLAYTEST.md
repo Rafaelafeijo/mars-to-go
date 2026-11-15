@@ -102,7 +102,7 @@ Informal session, no exported file. Recorded by the parent, facts only.
 
 ---
 
-## Design reviews B–F (adult)
+## Design reviews B–H (adult)
 
 Not child sessions: the parent reviewed each build on the computer and on the iPhone 16, in both languages. They shaped most of the game rules.
 
@@ -113,6 +113,8 @@ Not child sessions: the parent reviewed each build on the computer and on the iP
 | D | Crisis only text and always the same answer, even with enough shield; missing photos | Crisis with picture, risk vs shield meter, choose where cells come from; real NASA photos for every mission 2 fact | `5afc51c` |
 | E | The rover needs a real mission; key numbers hidden in text | Rover chooses its site; mission 2 needs the delta front sample (ADR-0035); report conclusions in bold | `8ae30de` |
 | F | Body font looks generic; text starting in bold; Sun card wraps | Atkinson Hyperlegible Next font; one bold pattern; Sun card gradient | `d77d8d2` |
+| G | Home screen: the assisted-mode switch needed a better design; Sun card too long; photo credit not exact; "sol" must stay "sol" | Cadet / Commander level buttons; one-line Sun card with a calm/busy sentence (explanation moved to the NASA data panel); exact photo credit; copy back to sols, smaller level buttons | `99f87c6`, `7c944f3`, `f3815c1` |
+| H | On the phone: no room to tap below the astronaut to walk toward the camera; too many loose buttons; sky card covers the Sun; edge warning could not be closed. "The Sun this week" was not live | Direction pad and higher camera; one toolbar for sky, zoom and menu; sky card moves down; edge warning hides by itself; live DONKI through the API service | `9de3e5d` |
 
 ---
 

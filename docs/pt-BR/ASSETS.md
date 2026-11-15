@@ -59,7 +59,27 @@ Não carregados nesta versão (mantidos com a licença): `astronautA` (o jogo de
 
 ## Ícones, sons, música
 
-Nenhum ainda.
+Nenhum no jogo. A música do vídeo de demonstração está listada abaixo.
+
+## Vídeo de demonstração e imagens do README
+
+O vídeo de demonstração de 29 segundos (https://youtu.be/zaAPhmpyvIg) está publicado no YouTube; os arquivos de origem não entram no repositório. Tudo o que aparece nele está listado aqui.
+
+| Item | Fonte | Crédito | Licença / termos | Uso no vídeo |
+| --- | --- | --- | --- | --- |
+| A Lua (disco inteiro), AS17-152-23311 | https://images.nasa.gov/details/as17-152-23311 | NASA (tripulação da Apollo 17, viagem de volta à Terra, dezembro de 1972) | Diretrizes de mídia da NASA | Abertura, zoom lento |
+| Nascer da Terra (Earthrise), AS08-14-2383 | https://images.nasa.gov/details/as08-14-2383 | NASA (Apollo 8, 24 de dezembro de 1968) | Diretrizes de mídia da NASA | Abertura, recorte 16:9 |
+| Veículo lunar da Apollo 15, AS15-88-11901 | linha 13 acima | NASA | Diretrizes de mídia da NASA | Abertura, recorte 16:9 |
+| Pale Blue Dot Revisited, PIA23645 | https://images.nasa.gov/details/PIA23645 | NASA/JPL-Caltech (Voyager 1, 1990; reprocessada em 2020) | Diretrizes de mídia da NASA | Zoom na Terra, com um anel branco desenhado em volta do ponto |
+| Panorama de Jezero, PIA24921 | linha 1 acima | NASA/JPL-Caltech/ASU/MSSS | Diretrizes de mídia da NASA | Recorte da parte de cima, zoom lento |
+| Música: "Space", de leberch | https://pixabay.com/music/ambiente-space-626368/ (áudio 626368) | leberch, via Pixabay | Pixabay Content License; certificado de licença baixado em 2026-11-15 e guardado pelo time | Fundo, baixa, por baixo da voz |
+| Voz da narração | Kokoro-82M (modelo `kokoro-v1.0.onnx`, voz `af_heart`), rodando localmente com `kokoro-onnx` 0.6.1 (MIT) | Gerada por IA (veja AI_USAGE.md) | Apache-2.0 (modelo); fonemas pelo espeak-ng (GPL-3.0), usado como ferramenta, não distribuído | Toda a narração |
+| Fontes das legendas e dos letreiros | Atkinson Hyperlegible Next (acima); DejaVu Sans Mono Bold | Braille Institute; fontes DejaVu | SIL OFL 1.1; licença DejaVu (Bitstream Vera) | Legendas gravadas e linhas de crédito |
+| Imagens do jogo | Gravadas deste jogo com Playwright e Chromium | Time Rochette | MIT (este repositório) | Todas as cenas de jogo |
+
+Conferências de 2026-11-15: nenhum logo, insígnia, bandeira ou emblema de missão da NASA nas imagens do vídeo; nenhuma pessoa (as imagens da Apollo mostram só equipamentos e paisagens); nenhum menor; nenhuma voz de pessoa real.
+
+**Imagens do README** (`docs/media/*.jpg`): capturas de tela e quadros de vídeo deste jogo (trabalho do próprio time, MIT). A captura da tela inicial inclui o uso que o jogo faz da linha 1 (PIA24921); a capa do vídeo mostra só imagens do jogo.
 
 ## Bibliotecas de código
 

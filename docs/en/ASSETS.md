@@ -59,7 +59,27 @@ Not loaded by this version (kept with their license): `astronautA` (the game dra
 
 ## Icons, sounds, music
 
-None yet.
+None in the game. The demo video's music is listed below.
+
+## Demo video and README images
+
+The 29-second demo video (https://youtu.be/zaAPhmpyvIg) is published on YouTube; its source files are not committed. Everything in it is listed here.
+
+| Item | Source | Credit | License / terms | Use in the video |
+| --- | --- | --- | --- | --- |
+| The Moon (full disc), AS17-152-23311 | https://images.nasa.gov/details/as17-152-23311 | NASA (Apollo 17 crew, transearth coast, December 1972) | NASA media guidelines | Opening, slow zoom |
+| Earthrise, AS08-14-2383 | https://images.nasa.gov/details/as08-14-2383 | NASA (Apollo 8, December 24, 1968) | NASA media guidelines | Opening, crop to 16:9 |
+| Apollo 15 Lunar Roving Vehicle, AS15-88-11901 | row 13 above | NASA | NASA media guidelines | Opening, crop to 16:9 |
+| Pale Blue Dot Revisited, PIA23645 | https://images.nasa.gov/details/PIA23645 | NASA/JPL-Caltech (Voyager 1, 1990; reprocessed 2020) | NASA media guidelines | Zoom on Earth, with a white ring drawn around the dot |
+| Jezero panorama, PIA24921 | row 1 above | NASA/JPL-Caltech/ASU/MSSS | NASA media guidelines | Crop of the upper part, slow zoom |
+| Music: "Space" by leberch | https://pixabay.com/music/ambiente-space-626368/ (audio ID 626368) | leberch, via Pixabay | Pixabay Content License; license certificate downloaded 2026-11-15 and kept by the team | Background, low, under the voice |
+| Narration voice | Kokoro-82M (model `kokoro-v1.0.onnx`, voice `af_heart`), run locally with `kokoro-onnx` 0.6.1 (MIT) | AI-generated (see AI_USAGE.md) | Apache-2.0 (model); phonemes by espeak-ng (GPL-3.0), used as a tool, not distributed | The whole narration |
+| Caption and label fonts | Atkinson Hyperlegible Next (above); DejaVu Sans Mono Bold | Braille Institute; DejaVu fonts | SIL OFL 1.1; DejaVu (Bitstream Vera) license | Burned-in captions and credit lines |
+| Game footage | Recorded from this game with Playwright and Chromium | Team Rochette | MIT (this repository) | All gameplay scenes |
+
+Checks done on 2026-11-15: no NASA logo, insignia, flag or mission patch in any video image; no people (the Apollo images show hardware and landscapes only); no minors; no voice of a real person.
+
+**README images** (`docs/media/*.jpg`): screenshots and video frames of this game (team's own work, MIT). The home screen capture includes the game's own use of row 1 (PIA24921); the video cover includes the game footage only.
 
 ## Code libraries
 

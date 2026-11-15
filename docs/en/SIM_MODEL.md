@@ -35,9 +35,10 @@ Every value here is a game rule, not a measurement, unless the label says *measu
 | `ASK_EARTH_CELLS` | 1 | cell | scenario | The big antenna needs power |
 | `ASK_EARTH_ANSWER_AT` | tonight's log | — | simplification | The real one-way delay is ~4–24 min (DATA_MAP M9); the answer arrives after the plan is locked and shows in tonight's log with the signal travel time |
 | `RADIO_ROUND_TRIP_MIN_MINUTES` | 8 | min | measured (derived) | 2 × ~4 min one-way at closest approach (DATA_MAP M9); shown on the disabled button in a crisis |
-| `EXPOSURE_LOW_MAX` | 2 | exposure point | simplification | Three-level scale, not a dose |
-| `EXPOSURE_MEDIUM_MAX` | 5 | exposure point | simplification | ≥ 6 is "high" |
-| `CRISIS_SECONDS` | 10 | s | scenario | Assisted mode stops the clock |
+| `EXPOSURE_LOW_MAX` | 1 | exposure point | simplification | Three-level scale, not a dose (was 2; changed with the dose limit, §17) |
+| `EXPOSURE_MEDIUM_MAX` | 2 | exposure point | simplification | > 2 is "high" and above the dose limit (was 5; §17) |
+| `CRISIS_SECONDS` | 10 | s | scenario | Commander level |
+| `CRISIS_SECONDS_CADET` | 30 | s | scenario | Cadet level (the assisted mode): more time instead of no clock (design review G) |
 
 Event-to-risk table (simplification, see §5).
 
@@ -293,8 +294,8 @@ Tests (`projection.test.ts`): today's values equal `resolveNight`; Game A's sol 
 
 ## 17. Consequences (ADR-0033, design review B)
 
-- Dose limit \DOSE_LIMIT\ = 2 points: above it at the end of a night → early return, cause \adiation\. Words: low 0–1, medium 2, high > 2.
-- Radiation damage: unblocked points × \RADIATION_DAMAGE_CELLS_PER_POINT\ (1), at most \RADIATION_DAMAGE_MAX_CELLS\ (2), are lost from the next sol's free cells (\lostCells\, step \damage\). The projection includes it.
-- Rock samples: each rover trip adds 1; a successful mission needs \SAMPLES_GOAL\ (1).
-- Results: \success\ (home + sample + dose within limit), \with_failures\ (home, an objective missed), \early_return\.
+- Dose limit `DOSE_LIMIT` = 2 points: above it at the end of a night → early return, cause `radiation`. Words: low 0–1, medium 2, high > 2.
+- Radiation damage: unblocked points × `RADIATION_DAMAGE_CELLS_PER_POINT` (1), at most `RADIATION_DAMAGE_MAX_CELLS` (2), are lost from the next sol's free cells (`lostCells`, step `damage`). The projection includes it.
+- Rock samples: each rover trip adds 1; a successful mission needs `SAMPLES_GOAL` (1).
+- Results: `success` (home + sample + dose within limit), `with_failures` (home, an objective missed), `early_return`.
 - Worked game B (§8) now ends on night 2 for radiation (exposure 3 > 2); games A, C and bonus are unchanged.

@@ -6,7 +6,8 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**', 'tools/**'] },
+  // private/ is git-ignored (submission drafts, video build scripts): not part of the project.
+  { ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**', 'tools/**', 'private/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

@@ -102,7 +102,7 @@ Sessão informal, sem arquivo exportado. Registrada pela mãe, só fatos.
 
 ---
 
-## Revisões de design B a F (adulto)
+## Revisões de design B a H (adulto)
 
 Não são sessões com criança: a mãe revisou cada versão no computador e no iPhone 16, nos dois idiomas. Elas definiram a maior parte das regras do jogo.
 
@@ -113,6 +113,8 @@ Não são sessões com criança: a mãe revisou cada versão no computador e no 
 | D | Crise só com texto e sempre a mesma resposta, mesmo com escudo suficiente; fotos faltando | Crise com desenho, medidor risco x escudo, escolher de onde tirar as células; fotos reais da NASA em todo fato da missão 2 | `5afc51c` |
 | E | O rover precisa de uma missão de verdade; números importantes escondidos no texto | Rover escolhe o destino; a missão 2 exige a amostra da frente do delta (ADR-0035); conclusões do relatório em negrito | `8ae30de` |
 | F | Fonte do texto parece genérica; frases começando em negrito; cartão do Sol quebrando | Fonte Atkinson Hyperlegible Next; um só padrão de negrito; degradê no cartão do Sol | `d77d8d2` |
+| G | Tela inicial: a chave do modo assistido precisava de um desenho melhor; cartão do Sol longo demais; crédito da foto inexato; "sol" deve continuar "sol" | Botões de nível Cadete / Comandante; cartão do Sol em uma linha, com uma frase calmo/agitado (explicação levada para o painel de dados da NASA); crédito exato da foto; texto de volta a sóis, botões de nível menores | `99f87c6`, `7c944f3`, `f3815c1` |
+| H | No celular: sem espaço para tocar abaixo do astronauta e andar em direção à câmera; botões soltos demais; cartão do céu cobre o Sol; aviso de borda não fechava. "O Sol nesta semana" não era ao vivo | Direcional e câmera mais alta; uma barra só para céu, zoom e menu; cartão do céu desce; aviso de borda some sozinho; DONKI ao vivo pelo serviço de API | `9de3e5d` |
 
 ---
 

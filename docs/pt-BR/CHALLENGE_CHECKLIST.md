@@ -35,7 +35,7 @@ Se a resposta para a fatia em andamento for "não", ela não está pronta. Evid�
 - [x] **C3. Dois ou três recursos centrais.** Energia, ar, comida (regra 3 do CLAUDE.md); a dose é um limite, não um quarto medidor para gastar.
 - [x] **C4. Não é abstrato demais nem técnico demais.** Fatos ligados à decisão que explicam (fato do sol, fichas).
 - [ ] **C5. Não é só educativo nem só entretenimento.** Parcial: precisa do próximo teste com criança para confirmar.
-- [x] **C6. Dado estático nunca é apresentado como ao vivo.** As missões usam um arquivo datado; "O Sol nesta semana" mostra "Atualizado em … UTC · copiado da NASA 2 vezes por dia"; o jogo não faz chamada ao vivo.
+- [x] **C6. Dado estático nunca é apresentado como ao vivo.** As missões usam um arquivo datado; "O Sol nesta semana" lê o DONKI ao vivo pelo serviço de API no Railway (selo "AO VIVO" com a hora da leitura); se o serviço não responder, mostra a cópia datada, identificada como cópia.
 
 ## D. Público e acesso
 
@@ -47,8 +47,8 @@ Se a resposta para a fatia em andamento for "não", ela não está pronta. Evid�
 
 - [x] **E1. Pelo menos um dado ou recurso da NASA é usado.** DONKI (e outros, `NASA_SOURCES` em `facts.ts`).
 - [x] **E2. As fontes são creditadas dentro do jogo.** Selos, fichas, selos FOTO REAL, painel de dados da NASA.
-- [x] **E3. Cada dado mostra se é ao vivo ou de arquivo, com a data.** As fichas mostram a data; "O Sol nesta semana" mostra a hora da cópia.
-- [x] **E4. Conjunto curado embutido como alternativa.** As missões rodam só com o catálogo embutido; se a cópia do DONKI faltar, o painel da tela inicial some.
+- [x] **E3. Cada dado mostra se é ao vivo ou de arquivo, com a data.** As fichas mostram a data; "O Sol nesta semana" mostra "AO VIVO" e a hora da leitura, ou a hora da cópia.
+- [x] **E4. Conjunto curado embutido como alternativa.** As missões rodam só com o catálogo embutido; o painel da tela inicial passa do ao vivo para a cópia datada, e some se os dois faltarem.
 - **E5. Fontes sugeridas pelo desafio:**
   - [x] DONKI — eventos das missões, resposta da Antena, "O Sol nesta semana"
   - [ ] Dosimetria do RadLab / OSDR — **não usada** (ADR-0026); a radiação vem do RAD do Curiosity, em Marte
@@ -59,7 +59,7 @@ Se a resposta para a fatia em andamento for "não", ela não está pronta. Evid�
 
 ## F. O que faz a solução se destacar
 
-- [ ] **F1. A escolha no jogo se liga a uma consequência do mundo real.** Parcial: a decisão de blindagem usa eventos reais do DONKI de maio de 2024, com as datas; o clima espacial atual aparece na tela inicial, mas não entra nas missões. O jogo só lê o retrato e o arquivo (sem chamada ao vivo).
+- [ ] **F1. A escolha no jogo se liga a uma consequência do mundo real.** Parcial: a decisão de blindagem usa eventos reais do DONKI de maio de 2024, com as datas; o clima espacial atual aparece ao vivo na tela inicial, mas ainda não entra nas missões.
 - [ ] **F2. Rejogabilidade.** Parcial: duas missões com eventos diferentes; falhar termina com uma causa clara e uma nova tentativa.
   - [x] "Jogar esta missão de novo com outro plano?" no fim (`EndScreen.tsx`)
   - [x] "Voltar ao sol em que tudo mudou" depois de um retorno antecipado
@@ -78,17 +78,17 @@ Se a resposta para a fatia em andamento for "não", ela não está pronta. Evid�
   - [ ] Use of Super Intelligence (SI) (rascunho fora do repositório público)
   - [ ] NASA Data
   - [ ] Space Agency Partner Data and Other References
-- [ ] **G3. Demo:** vídeo de até 30 segundos ou até 7 slides — **ainda não feita**.
-  - [ ] Vídeo com narração e imagens do jogo (as capturas do teste do CI servem de base)
-  - [ ] Slides de apoio
-  - [ ] Trecho "Show me the code" (ficha de constantes + um teste passando) e endereço do repositório
+- [x] **G3. Demo:** vídeo de 29 segundos, https://youtu.be/zaAPhmpyvIg (fotos reais da NASA, imagens reais do jogo, legendas em inglês; narração por IA declarada).
+  - [x] Vídeo com narração e imagens do jogo
+  - [ ] Slides de apoio — não feitos (a demo é o vídeo)
+  - [x] Código e provas: seções 3, 6 e 10 do README (regras, constantes, testes) e o endereço do repositório
 - [ ] **G4. Idioma:** o repositório tem o inglês como padrão e traduções em português ✓; página do projeto, vídeo e slides ainda por fazer.
 - [ ] **G5. Links públicos**, testados em janela anônima — fazer antes de submeter.
-  - [x] Link do projeto final = GitHub Pages; o Railway é o espelho
-  - [x] O jogo funciona inteiro sem a API (ele nunca a chama)
+  - [x] O jogo público é o GitHub Pages (também no campo "Website" do repositório); o Railway roda o serviço de API e uma cópia de reserva do jogo
+  - [x] O jogo funciona inteiro sem a API: só "O Sol nesta semana" a chama, e volta para a cópia datada se ela falhar
 - [ ] **G6. Slides:** nome do time, nomes dos membros, desafio — por fazer.
 - [x] **G7. Nenhuma imagem, vídeo, áudio ou semelhança de menores de 18 anos** no jogo e no repositório (conferências do ASSETS.md; o `PLAYTEST.md` registra só fatos). Continuar conferindo na demo e na página.
-- [x] **G8. Uso de IA declarado** — `AI_USAGE.md`; nenhuma mídia gerada por IA no jogo.
+- [x] **G8. Uso de IA declarado** — `AI_USAGE.md`; nenhuma mídia gerada por IA no jogo; a narração do vídeo de demonstração é voz sintética por IA (Kokoro-82M), declarada na tela, na descrição e nos metadados do arquivo.
 - [x] **G9. Tudo o que foi usado está listado** — `ASSETS.md` (imagens, modelos 3D, fonte), `package.json` / `pnpm-lock.yaml` (bibliotecas).
 - [ ] **G10. Caixas "Terms and Conditions" e "Confirm All Work is Original"** — na submissão.
 - [ ] **G11. Todos os membros confirmados no mesmo evento** — a confirmar no site do evento.
@@ -147,4 +147,4 @@ O jogo se passa em Marte. Dado que não foi medido em Marte só entra como paral
 - [x] **L2. Código em inglês.**
 - [x] **L3. Documentação bilíngue** (`docs/en/`, `docs/pt-BR/`).
 - [x] **L4. README em inglês**, com `README.pt-BR.md`.
-- [ ] **L5. Página do projeto, demo e slides em inglês** — por fazer.
+- [ ] **L5. Página do projeto, demo e slides em inglês** — demo feita em inglês; página do projeto em rascunho fora do repositório; sem slides.

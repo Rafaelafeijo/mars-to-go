@@ -35,7 +35,7 @@ If the answer for the slice in progress is "no", it is not ready. Evidence so fa
 - [x] **C3. Two or three core resources.** Power, air, food (CLAUDE.md rule 3); dose is a limit, not a fourth meter to spend.
 - [x] **C4. Not too abstract nor too technical.** Facts tied to the decision they explain (fact of the sol, data cards).
 - [ ] **C5. Not only educational nor only entertainment.** Partial: needs the next playtest to confirm.
-- [x] **C6. Static data is never presented as live.** Missions use a dated archive; "The Sun this week" shows "Updated … UTC · copied from NASA twice a day"; no live call in the game.
+- [x] **C6. Static data is never presented as live.** Missions use a dated archive. "The Sun this week" reads DONKI live through the API service on Railway (badge "LIVE" with the fetch time); if the service does not answer, it shows the dated copy, labeled as a copy.
 
 ## D. Audience and access
 
@@ -47,8 +47,8 @@ If the answer for the slice in progress is "no", it is not ready. Evidence so fa
 
 - [x] **E1. At least one NASA dataset or resource is used.** DONKI (and others, `NASA_SOURCES` in `facts.ts`).
 - [x] **E2. Sources are credited inside the game.** Badges, data cards, REAL PHOTO badges, NASA data panel.
-- [x] **E3. Each piece of data shows whether it is live or archive, with the date.** Cards show the date; "The Sun this week" shows its copy time.
-- [x] **E4. A built-in curated set as a fallback.** The missions run only on the bundled catalog; if the DONKI copy is missing, the home panel is hidden.
+- [x] **E3. Each piece of data shows whether it is live or archive, with the date.** Cards show the date; "The Sun this week" shows "LIVE" and the fetch time, or the time of its copy.
+- [x] **E4. A built-in curated set as a fallback.** The missions run only on the bundled catalog; the home panel falls back from live to the dated copy, and is hidden if both are missing.
 - **E5. Sources suggested by the challenge:**
   - [x] DONKI — mission events, Antenna answer, "The Sun this week"
   - [ ] RadLab / OSDR dosimetry — **not used** (ADR-0026); radiation comes from Curiosity RAD on Mars instead
@@ -59,7 +59,7 @@ If the answer for the slice in progress is "no", it is not ready. Evidence so fa
 
 ## F. What makes the solution stand out
 
-- [ ] **F1. The in-game choice connects to a real-world consequence.** Partial: the shield decision uses real DONKI events from May 2024 with their dates; current space weather is shown on the home screen but does not enter the missions. The game reads only the snapshot and the archive (no live call).
+- [ ] **F1. The in-game choice connects to a real-world consequence.** Partial: the shield decision uses real DONKI events from May 2024 with their dates; current space weather is shown live on the home screen but does not enter the missions yet.
 - [ ] **F2. Replayability.** Partial: two missions with different events; failing ends with a clear cause and a retry.
   - [x] "Play this mission again with another plan?" at the end (`EndScreen.tsx`)
   - [x] "Go back to the sol where everything changed" after an early return
@@ -78,17 +78,17 @@ If the answer for the slice in progress is "no", it is not ready. Evidence so fa
   - [ ] Use of Super Intelligence (SI) (drafted outside the public repository)
   - [ ] NASA Data
   - [ ] Space Agency Partner Data and Other References
-- [ ] **G3. Demo:** video up to 30 seconds or up to 7 slides — **not made yet**.
-  - [ ] Video with narration and game footage (the CI playthrough screenshots are a base)
-  - [ ] Supporting slides
-  - [ ] "Show me the code" excerpt (constants sheet + a passing test) and repo address
+- [x] **G3. Demo:** a 29-second video, https://youtu.be/zaAPhmpyvIg (real NASA photos, real game footage, English captions; AI narration declared).
+  - [x] Video with narration and game footage
+  - [ ] Supporting slides — not made (the video is the demo)
+  - [x] Code and evidence: README sections 3, 6 and 10 (rules, constants, tests) and the repo address
 - [ ] **G4. Language:** repo is English-first with Portuguese translations ✓; project page, video and slides still to make.
 - [ ] **G5. Public links**, tested in an incognito window — to do before submitting.
-  - [x] Final project link = GitHub Pages; Railway is the mirror
-  - [x] The game works fully without the API (it never calls it)
+  - [x] The public game is GitHub Pages (also the repository's "Website" field); Railway runs the API service and a backup mirror
+  - [x] The game works fully without the API: only "The Sun this week" calls it, and it falls back to the dated copy
 - [ ] **G6. Slides:** team name, member names, challenge — to do.
 - [x] **G7. No image, video, audio or likeness of anyone under 18** in the game and repo (ASSETS.md checks; `PLAYTEST.md` records facts only). Keep checking for the demo and the page.
-- [x] **G8. AI use declared** — `AI_USAGE.md`; no AI-generated media in the game.
+- [x] **G8. AI use declared** — `AI_USAGE.md`; no AI-generated media in the game; the demo video's narration is AI text-to-speech (Kokoro-82M), declared on screen, in the description and in the file metadata.
 - [x] **G9. Everything used is listed** — `ASSETS.md` (images, 3D models, font), `package.json` / `pnpm-lock.yaml` (libraries).
 - [ ] **G10. "Terms and Conditions" and "Confirm All Work is Original"** — at submission.
 - [ ] **G11. All members confirmed in the same event** — to confirm on the event site.
@@ -147,4 +147,4 @@ The game takes place on Mars. Data that was not measured on Mars only goes in as
 - [x] **L2. Code in English.**
 - [x] **L3. Bilingual documentation** (`docs/en/`, `docs/pt-BR/`).
 - [x] **L4. README in English**, with `README.pt-BR.md`.
-- [ ] **L5. Project page, demo and slides in English** — still to make.
+- [ ] **L5. Project page, demo and slides in English** — demo done in English; project page drafted outside the repository; no slides.

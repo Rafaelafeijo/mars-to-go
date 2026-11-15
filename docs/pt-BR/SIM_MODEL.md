@@ -35,9 +35,10 @@ Todo valor aqui é uma regra do jogo, não uma medição, a menos que o rótulo 
 | `ASK_EARTH_CELLS` | 1 | célula | cenário | A grande antena precisa de energia |
 | `ASK_EARTH_ANSWER_AT` | diário desta noite | — | simplificação | O atraso real de ida é de ~4–24 min (DATA_MAP M9); a resposta chega depois que o plano é travado e aparece no diário desta noite, com o tempo de viagem do sinal |
 | `RADIO_ROUND_TRIP_MIN_MINUTES` | 8 | min | medido (derivado) | 2 × ~4 min de ida na maior aproximação (DATA_MAP M9); mostrado no botão desativado durante uma crise |
-| `EXPOSURE_LOW_MAX` | 2 | ponto de exposição | simplificação | Escala de três níveis, não uma dose |
-| `EXPOSURE_MEDIUM_MAX` | 5 | ponto de exposição | simplificação | ≥ 6 é "alta" |
-| `CRISIS_SECONDS` | 10 | s | cenário | O modo assistido para o relógio |
+| `EXPOSURE_LOW_MAX` | 1 | ponto de exposição | simplificação | Escala de três níveis, não uma dose (era 2; mudou com o limite de dose, §17) |
+| `EXPOSURE_MEDIUM_MAX` | 2 | ponto de exposição | simplificação | > 2 é "alta" e passa do limite de dose (era 5; §17) |
+| `CRISIS_SECONDS` | 10 | s | cenário | Nível Comandante |
+| `CRISIS_SECONDS_CADET` | 30 | s | cenário | Nível Cadete (o modo assistido): mais tempo em vez de parar o relógio (revisão de design G) |
 
 Tabela de evento para risco (simplificação, ver §5).
 
@@ -293,8 +294,8 @@ Testes (`projection.test.ts`): os valores de hoje são iguais aos de `resolveNig
 
 ## 17. Consequências (ADR-0033, revisão de design B)
 
-- Limite de dose \DOSE_LIMIT\ = 2 pontos: acima dele no fim de uma noite → retorno antecipado, causa \adiation\. Palavras: baixa 0–1, média 2, alta > 2.
-- Dano por radiação: pontos não bloqueados × \RADIATION_DAMAGE_CELLS_PER_POINT\ (1), no máximo \RADIATION_DAMAGE_MAX_CELLS\ (2), saem das células livres do sol seguinte (\lostCells\, passo \damage\). A projeção inclui o dano.
-- Amostras de rocha: cada saída do rover soma 1; uma missão bem-sucedida exige \SAMPLES_GOAL\ (1).
-- Resultados: \success\ (em casa + amostra + dose dentro do limite), \with_failures\ (em casa, faltou um objetivo), \early_return\.
+- Limite de dose `DOSE_LIMIT` = 2 pontos: acima dele no fim de uma noite → retorno antecipado, causa `radiation`. Palavras: baixa 0–1, média 2, alta > 2.
+- Dano por radiação: pontos não bloqueados × `RADIATION_DAMAGE_CELLS_PER_POINT` (1), no máximo `RADIATION_DAMAGE_MAX_CELLS` (2), saem das células livres do sol seguinte (`lostCells`, passo `damage`). A projeção inclui o dano.
+- Amostras de rocha: cada saída do rover soma 1; uma missão bem-sucedida exige `SAMPLES_GOAL` (1).
+- Resultados: `success` (em casa + amostra + dose dentro do limite), `with_failures` (em casa, faltou um objetivo), `early_return`.
 - O jogo de exemplo B (§8) agora termina na noite 2 por radiação (exposição 3 > 2); os jogos A, C e bônus não mudam.
