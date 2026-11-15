@@ -5,15 +5,26 @@
 import { useTranslation } from 'react-i18next';
 import { Icon, type IconName } from '../world/Icon';
 
-const POINTS: { icon: IconName; tone: string; key: string }[] = [
+type Point = { icon: IconName; tone: string; key: string };
+const POINTS: Point[] = [
   { icon: 'rocket', tone: 'tone-energy', key: 'goal' },
   { icon: 'air', tone: 'tone-air', key: 'air' },
   { icon: 'food', tone: 'tone-food', key: 'food' },
   { icon: 'energy', tone: 'tone-energy', key: 'power' },
 ];
+/** Mission 2 "The May storm": the real week, the dose limit, the rover sample, the crisis. */
+const POINTS_M2: Point[] = [
+  { icon: 'storm', tone: 'tone-rad', key: 'storm' },
+  { icon: 'shield', tone: 'tone-rad', key: 'dose' },
+  { icon: 'rover', tone: 'tone-energy', key: 'sample' },
+  { icon: 'antenna', tone: 'tone-energy', key: 'crisis' },
+];
 
-export function Briefing({ onStart }: { onStart: () => void }) {
+export function Briefing({ onStart, missionId = 'm1' }: { onStart: () => void; missionId?: string }) {
   const { t } = useTranslation();
+  const m2 = missionId === 'm2';
+  const ns = m2 ? 'brief2' : 'brief';
+  const points = m2 ? POINTS_M2 : POINTS;
   return (
     <div className="brief">
       <div className="brief__card">
@@ -26,18 +37,18 @@ export function Briefing({ onStart }: { onStart: () => void }) {
           <rect x="28" y="100" width="12" height="6" rx="2" fill="#e8703a" />
         </svg>
         <div>
-          <p className="brief__eyebrow">{t('brief.eyebrow')}</p>
-          <h1 className="brief__title">{t('brief.title')}</h1>
-          <p className="brief__intro">{t('brief.intro')}</p>
+          <p className="brief__eyebrow">{t(`${ns}.eyebrow`)}</p>
+          <h1 className="brief__title">{t(`${ns}.title`)}</h1>
+          <p className="brief__intro">{t(`${ns}.intro`)}</p>
         </div>
       </div>
       <ul className="brief__points">
-        {POINTS.map((p) => (
+        {points.map((p) => (
           <li key={p.key}>
             <span className={`brief__icon ${p.tone}`}>
               <Icon name={p.icon} size={26} />
             </span>
-            <span>{t(`brief.${p.key}`)}</span>
+            <span>{t(`${ns}.${p.key}`)}</span>
           </li>
         ))}
       </ul>

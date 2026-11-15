@@ -31,7 +31,8 @@
     "surprise": "Me surpreenda",
     "surpriseLocked": "Abre depois da missão 1",
     "assisted": "Modo assistido",
-    "assistedHint": "Mais tempo e conta mais devagar."
+    "assistedHint": "Mais tempo e conta mais devagar.",
+    "mission2": "Missão 2 · A tempestade de maio"
   },
   "missions": {
     "m1": "Missão 1 · Primeiros sóis"
@@ -254,7 +255,9 @@
     "missingSample": "O rover nunca saiu, então nenhuma amostra de rocha voltou. Mande o rover pelo menos uma vez: custa 2 células e 2 de ar.",
     "locked": "A missão 2 abre quando a tripulação volta para casa com a dose dentro do limite.",
     "chartRanOut": "Acabou",
-    "chartSol": "Sol"
+    "chartSol": "Sol",
+    "nextPlay": "Jogar a Missão 2 · A tempestade de maio",
+    "missionsTitle": "Missões"
   },
   "card": {
     "labels": {
@@ -416,7 +419,7 @@
     "replay": "Ver a noite de novo"
   },
   "world": {
-    "place": "Missão 1 · Jezero · Sol {{n}} de {{total}} · Terreno ilustrado, não é foto",
+    "place": "{{m}} · Jezero · Sol {{n}} de {{total}} · Terreno ilustrado, não é foto",
     "illustration": "Terreno ilustrado, inspirado na cratera Jezero; não é foto.",
     "mission": {
       "title": "Controle da Missão",
@@ -487,7 +490,7 @@
     },
     "night": "A noite cai em Jezero…",
     "sceneLabel": "Cena da base em Marte. Use a barra de baixo para jogar sem a vista 3D.",
-    "missionPlace": "Missão 1 · Cratera Jezero · Sol {{n}} de {{total}}",
+    "missionPlace": "{{m}} · Cratera Jezero · Sol {{n}} de {{total}}",
     "tank": {
       "label": "Tanque de ar: {{n}}",
       "critical": "AR CRÍTICO: {{n}}"
@@ -526,7 +529,7 @@
       "discovery": "Descoberta do rover: {{site}}",
       "realNasa": "DADO REAL DA NASA",
       "suits": "trajes do rover −{{suits}}",
-      "eyebrow": "Missão 1 · Noite do sol {{n}}",
+      "eyebrow": "{{m}} · Noite do sol {{n}}",
       "labelAir": "Ar",
       "labelFood": "Comida",
       "labelRad": "Radiação",
@@ -582,7 +585,24 @@
     "zoomIn": "Aproximar",
     "zoomOut": "Afastar",
     "nightShield": "O escudo segurou! A tripulação está segura.",
-    "nightExposed": "Tripulação exposta! A radiação passou pelo escudo."
+    "nightExposed": "Tripulação exposta! A radiação passou pelo escudo.",
+    "crisis": {
+      "title": "Tempestade solar! As partículas chegam em minutos",
+      "text": "A luz da erupção já chegou. As partículas vêm logo depois. Escolha agora:",
+      "seconds_one": "{{count}} segundo",
+      "seconds_other": "{{count}} segundos",
+      "assisted": "Modo assistido: sem relógio.",
+      "moveToShield": "Passar {{n}} células da Máquina de ar para o Escudo (−{{n}} de ar nesta noite)",
+      "recallExpedition": "Chamar o rover de volta (sem amostra; o ar dos trajes já foi gasto)",
+      "keepPlan": "Manter o plano",
+      "timeout": "O tempo acabou: o plano ficou como estava."
+    },
+    "reportCrisis": {
+      "label": "Crise",
+      "moveToShield": "Você passou {{n}} células para o Escudo.",
+      "recallExpedition": "Você chamou o rover de volta.",
+      "keepPlan": "Você manteve o plano."
+    }
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",
@@ -628,5 +648,19 @@
     "explain": "Uma erupção é um clarão repentino no Sol. Uma CME é uma nuvem de partículas que o Sol lança no espaço. As missões do jogo usam eventos reais como esses.",
     "copy": "Cópia de {{date}}, não é ao vivo",
     "compact": "O Sol nesta semana: {{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)"
+  },
+  "missionShort": {
+    "m1": "Missão 1",
+    "m2": "Missão 2"
+  },
+  "brief2": {
+    "eyebrow": "Missão 2 · A tempestade de maio",
+    "title": "Uma tempestade real está chegando",
+    "intro": "Esta semana é a semana real de 14 a 20 de maio de 2024. Todo evento vem de registros da NASA.",
+    "storm": "Nuvens do Sol vão chegar a Marte. No último sol, a maior tempestade que o Curiosity já mediu.",
+    "dose": "Limite de dose de radiação: 2. Acima dele, o médico da missão manda a tripulação para casa.",
+    "sample": "Leve 1 amostra de rocha para casa. Todas as máquinas estão abertas desde o sol 1.",
+    "crisis": "Quando a tempestade vier rápida, você terá 10 segundos para escolher.",
+    "start": "Começar o sol 1"
   }
 }

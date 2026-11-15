@@ -8,6 +8,7 @@ import {
   predictionOptions,
   resolveNight,
   type Allocation,
+  type CrisisResolution,
   type MissionDef,
   type MissionState,
   type NightResult,
@@ -80,9 +81,10 @@ export function useGame() {
     setGame((g) => ({ ...g, morning: { ...g.morning, answer } }));
   }, []);
 
-  const lockPlan = useCallback((allocation: Allocation) => {
+  /** Locks the plan; on a solar storm sol the 10-second crisis choice comes with it (SIM_MODEL §6). */
+  const lockPlan = useCallback((allocation: Allocation, crisis?: CrisisResolution) => {
     setGame((g) => {
-      const result = resolveNight(g.def, g.state, { allocation });
+      const result = resolveNight(g.def, g.state, { allocation, ...(crisis ? { crisis } : {}) });
       const { options, correctIndex } = predictionOptions(g.def, g.state, allocation);
       return { ...g, screen: 'night', night: { before: g.state, allocation, result, pick: { options, correctIndex, picked: null } } };
     });

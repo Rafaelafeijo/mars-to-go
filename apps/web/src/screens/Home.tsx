@@ -9,7 +9,19 @@ import { prefersReducedMotion } from '../lib/format';
 import { Icon } from '../world/Icon';
 import { SunThisWeek } from './SunThisWeek';
 
-export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () => void; assisted: boolean; onAssisted: (on: boolean) => void; onNasaData: () => void }) {
+export function Home({
+  onPlay,
+  onPlayM2,
+  assisted,
+  onAssisted,
+  onNasaData,
+}: {
+  onPlay: () => void;
+  onPlayM2?: () => void;
+  assisted: boolean;
+  onAssisted: (on: boolean) => void;
+  onNasaData: () => void;
+}) {
   const { t } = useTranslation();
   const roles = t('home.roles', { returnObjects: true }) as string[];
   const [role, setRole] = useState(0);
@@ -46,6 +58,11 @@ export function Home({ onPlay, assisted, onAssisted, onNasaData }: { onPlay: () 
             <Icon name="radiation" size={16} className="tone-rad" /> {t('hero.nasaData')}
           </button>
         </div>
+        {onPlayM2 && (
+          <button type="button" className="hero__m2" onClick={onPlayM2}>
+            <Icon name="storm" size={18} className="tone-rad" /> {t('home.mission2')}
+          </button>
+        )}
         <label className="hero__assist">
           <input type="checkbox" role="switch" checked={assisted} onChange={(e) => onAssisted(e.target.checked)} />
           <span>

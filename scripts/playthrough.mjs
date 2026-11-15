@@ -159,6 +159,34 @@ try {
     console.log('PERF', JSON.stringify(perf));
     writeFileSync(`${out}/perf.json`, JSON.stringify(perf, null, 2));
   }
+  // Mission 2 (world, en): opens from the end screen; the 10-second crisis appears on sol 7.
+  if (mode === 'world' && lang === 'en' && ok) {
+    const PLAN_M2 = [[5, 2, 0], [4, 1, 0, 1], [4, 1, 2], [5, 2, 0], [5, 0, 2], [6, 1, 0], [4, 0, 3]];
+    await page.getByRole('button', { name: /Play Mission 2/ }).click();
+    await shot('10-m2-briefing');
+    await page.getByRole('button', { name: T.start }).click();
+    for (let sol = 1; sol <= 7; sol++) {
+      const row = PLAN_M2[sol - 1];
+      await page.getByRole('button', { name: T.planSol }).click();
+      for (let i = 0; i < row.length; i++) {
+        const slot = page.getByRole('button', { name: new RegExp(`^${esc(`${T.worldAdd} ${T.machines[i]}`)}`) });
+        for (let k = 0; k < row[i]; k++) await slot.click();
+      }
+      await page.getByRole('button', { name: T.pass }).click();
+      if (sol === 7) {
+        await page.getByRole('alertdialog').waitFor();
+        await shot('11-m2-crisis', false);
+        await page.getByRole('button', { name: /^Keep the plan/ }).click();
+      }
+      await page.getByRole('button', { name: T.next }).waitFor();
+      if (sol === 7) await shot('12-m2-report-sol7', false);
+      await page.getByRole('button', { name: T.next }).click();
+    }
+    const m2ok = await page.getByRole('heading', { level: 1, name: T.success }).isVisible();
+    await shot('13-m2-end');
+    console.log(m2ok ? 'PLAYTHROUGH OK (en, world, mission 2): mission accomplished' : 'PLAYTHROUGH FAILED (en, world, mission 2)');
+    if (!m2ok) failed = true;
+  }
   if (errors.length) {
     console.log('page errors:', errors);
     failed = true;

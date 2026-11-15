@@ -2616,6 +2616,62 @@ button.top__brand {
   color: var(--color-text-muted);
 }
 
+/* Mission 2 entry on the home screen. */
+.hero__m2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  min-height: var(--tap);
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(185 162 255 / 0.6);
+  background: rgb(185 162 255 / 0.14);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* The 10-second crisis. */
+.overlay--crisis {
+  background: rgb(40 8 20 / 0.78);
+}
+.banner--crisis {
+  border-color: #ff5a4a;
+  box-shadow: 0 0 0 1px rgb(255 90 74 / 0.3), 0 0 70px rgb(255 90 74 / 0.35), 0 24px 60px rgb(0 0 0 / 0.55);
+}
+.crisis__timer {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ff9b8a;
+}
+.crisis__bar {
+  display: block;
+  height: 8px;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.1);
+  overflow: hidden;
+}
+.crisis__bar span {
+  display: block;
+  height: 100%;
+  background: #ff5a4a;
+  transition: width 1s linear;
+}
+.crisis__choices {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+.crisis__choices .btn {
+  justify-content: flex-start;
+  text-align: left;
+  min-height: 52px;
+  white-space: normal;
+}
+
 /* World: one-line place strip, like the footer. */
 .hud-bottom__place {
   font-size: 0.62rem;

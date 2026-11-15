@@ -77,7 +77,20 @@ function Chart({ game }: { game: Game }) {
   );
 }
 
-export function EndScreen({ game, onReplay, onGoBack, onHome }: { game: Game; onReplay: () => void; onGoBack: (sol: number) => void; onHome: () => void }) {
+export function EndScreen({
+  game,
+  onReplay,
+  onGoBack,
+  onHome,
+  onNext,
+}: {
+  game: Game;
+  onReplay: () => void;
+  onGoBack: (sol: number) => void;
+  onHome: () => void;
+  /** Mission 1 ended with everyone home: mission 2 is open. */
+  onNext?: () => void;
+}) {
   const { t, i18n } = useTranslation();
   const s = game.state;
   const result = missionResult(s) ?? 'early_return';
@@ -148,9 +161,14 @@ export function EndScreen({ game, onReplay, onGoBack, onHome }: { game: Game; on
       <Chart game={game} />
       {turn && <p>{t('end.turningPoint', { n: turn })}</p>}
       {home && earth?.photo && <Photo photo={earth.photo} alt={earth.text[locale].title} />}
-      <p className="muted">{home ? t('end.next') : t('end.locked')}</p>
+      {game.def.id === 'm1' && <p className="muted">{home ? t('end.next') : t('end.locked')}</p>}
       <div className="actions">
-        <button type="button" className="btn btn--primary" onClick={onReplay}>
+        {onNext && (
+          <button type="button" className="btn btn--primary" onClick={onNext}>
+            <Icon name="storm" size={18} /> {t('end.nextPlay')}
+          </button>
+        )}
+        <button type="button" className={onNext ? 'btn' : 'btn btn--primary'} onClick={onReplay}>
           {t('end.playAgain')}
         </button>
         {turn && (

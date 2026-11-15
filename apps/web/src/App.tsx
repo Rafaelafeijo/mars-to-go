@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DATA_SOURCES_IN_GAME, EVERY_NUMBER_HAS_BADGE, LOCALES } from '@mars-to-go/content';
+import { DATA_SOURCES_IN_GAME, EVERY_NUMBER_HAS_BADGE, LOCALES, MISSION_1, MISSION_2 } from '@mars-to-go/content';
 import { setLocale } from './i18n';
 import { CardProvider } from './cards/CardContext';
 import { useGame } from './game/useGame';
@@ -15,6 +15,22 @@ import { WorldScreen } from './world/WorldScreen';
 import { NasaDataPanel } from './world/NasaDataPanel';
 
 const REPO_URL = 'https://github.com/Rafaelafeijo/mars-to-go';
+/** Progress stays on this device only (rule 9): mission 2 opens after mission 1 ends with everyone home. */
+const M2_KEY = 'marsToGo.m2Unlocked';
+function readM2(): boolean {
+  try {
+    return localStorage.getItem(M2_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+function saveM2() {
+  try {
+    localStorage.setItem(M2_KEY, '1');
+  } catch {
+    /* private mode: the button still shows on the end screen */
+  }
+}
 type Ui = 'world' | 'one' | 'list';
 
 /**
@@ -33,6 +49,11 @@ export function App() {
   const main = useRef<HTMLElement>(null);
   const [ui] = useState<Ui>(initialUi);
   const [nasaOpen, setNasaOpen] = useState(false);
+  const m1Home = game.screen === 'end' && game.def.id === 'm1' && game.state.status === 'returned_all';
+  useEffect(() => {
+    if (m1Home) saveM2();
+  }, [m1Home]);
+  const m2Open = m1Home || readM2();
 
   // Each new screen starts at the top, with focus on the main region for screen readers.
   useEffect(() => {
@@ -71,8 +92,16 @@ export function App() {
         </nav>
       </header>
       <main id="main" ref={main} tabIndex={-1} className={inSol && ui !== 'list' ? 'main--one' : undefined}>
-        {game.screen === 'home' && <Home onPlay={() => g.startMission()} assisted={game.assisted} onAssisted={g.setAssisted} onNasaData={() => setNasaOpen(true)} />}
-        {game.screen === 'briefing' && <Briefing onStart={() => g.go('morning')} />}
+        {game.screen === 'home' && (
+          <Home
+            onPlay={() => g.startMission(MISSION_1)}
+            onPlayM2={m2Open ? () => g.startMission(MISSION_2) : undefined}
+            assisted={game.assisted}
+            onAssisted={g.setAssisted}
+            onNasaData={() => setNasaOpen(true)}
+          />
+        )}
+        {game.screen === 'briefing' && <Briefing missionId={game.def.id} onStart={() => g.go('morning')} />}
         {inSol && ui === 'world' && (
           <WorldScreen
             key={`${game.def.id}-${game.checkpoints.length}`}
@@ -90,7 +119,15 @@ export function App() {
         )}
         {ui === 'list' && game.screen === 'night' && <NightScreen key={game.state.sol} game={game} onPick={g.pickResult} onDone={g.endNight} />}
         {ui === 'list' && game.screen === 'log' && <SolLogScreen game={game} onNext={g.nextSol} />}
-        {game.screen === 'end' && <EndScreen game={game} onReplay={() => g.startMission(game.def)} onGoBack={g.goBackToSol} onHome={() => g.go('home')} />}
+        {game.screen === 'end' && (
+          <EndScreen
+            game={game}
+            onReplay={() => g.startMission(game.def)}
+            onGoBack={g.goBackToSol}
+            onHome={() => g.go('home')}
+            onNext={m1Home ? () => g.startMission(MISSION_2) : undefined}
+          />
+        )}
       </main>
       <NasaDataPanel open={nasaOpen} onClose={() => setNasaOpen(false)} />
       {game.screen === 'home' && (

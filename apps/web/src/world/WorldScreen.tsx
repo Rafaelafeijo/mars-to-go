@@ -11,6 +11,7 @@ import {
   airSols,
   cellsUsed,
   conditionsFor,
+  crisisFor,
   foodSols,
   freeCells,
   openDestinations,
@@ -19,6 +20,7 @@ import {
   unlockSol,
   validateAllocation,
   type Allocation,
+  type CrisisResolution,
   type Destination,
   type EarthAnswer,
   type NightStep,
@@ -50,11 +52,12 @@ function hasWebGL(): boolean {
 }
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const M1_ONLY_FACTS = ['sol3-flare', 'sol5-cme'];
 const sumSteps =(steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 
 interface Props {
   game: Game;
-  onLock: (a: Allocation) => void;
+  onLock: (a: Allocation, crisis?: CrisisResolution) => void;
   onNightDone: () => void;
   onRestart: () => void;
   onHome: () => void;
@@ -72,7 +75,13 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const free = freeCells(cond.dust, lost);
   const open = openDestinations(base.mode, base.sol);
   const [a, setA] = useState<Allocation>(EMPTY);
-  const plan = night ? night.allocation : a;
+  // At night, show the plan as it ran: the crisis may have moved cells from air to shield.
+  const ranCrisis = night?.result.state.log.at(-1)?.plan.crisis;
+  const moved = night && ranCrisis?.kind === 'solarStorm' && ranCrisis.choice === 'moveToShield' ? Math.min(V.CRISIS_SHIELD_SWAP_CELLS, night.allocation.lifeSupport) : 0;
+  const plan = useMemo(
+    () => (night ? { ...night.allocation, lifeSupport: night.allocation.lifeSupport - moved, shield: night.allocation.shield + moved } : a),
+    [night, moved, a],
+  );
   const left = free - cellsUsed(plan);
   const projection = useMemo(() => project(def, base, plan), [def, base, plan]);
   const ready = validateAllocation(base, a, cond.dust).length === 0;
@@ -110,7 +119,38 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const foodOk = projection.foodEndsOnSol === null;
   const growing = base.pendingHarvests.map((h) => ({ ...h, daysLeft: h.sol - base.sol }));
   if (!night && a.greenhouse > 0) growing.push({ sol: base.sol + V.GREENHOUSE_DELAY_SOLS, food: a.greenhouse * V.FOOD_PER_GREENHOUSE_CELL, daysLeft: V.GREENHOUSE_DELAY_SOLS });
-  const fact = SOL_FACTS.find((f) => f.sol === base.sol);
+  const missionName = t(`missionShort.${def.id}`, { defaultValue: t('missionShort.m1') });
+  // Facts of sols 3 and 5 talk about mission 1's own events: not shown in other missions.
+  const fact = SOL_FACTS.find((f) => f.sol === base.sol && (def.id === 'm1' || !M1_ONLY_FACTS.includes(f.id)));
+
+  // The 10-second crisis (SIM_MODEL §6): a fast storm on this sol asks for a choice when the plan is locked.
+  const stormSol = !night && crisisFor(def, base.sol) === 'solarStorm';
+  const [crisis, setCrisis] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState<number>(V.CRISIS_SECONDS);
+  const resolveCrisis = (choice: 'moveToShield' | 'recallExpedition' | 'keepPlan') => {
+    setCrisis(false);
+    onLock(a, { kind: 'solarStorm', choice });
+  };
+  const resolveRef = useRef(resolveCrisis);
+  useEffect(() => {
+    resolveRef.current = resolveCrisis;
+  });
+  useEffect(() => {
+    if (!crisis || game.assisted) return;
+    if (secondsLeft <= 0) {
+      resolveRef.current('keepPlan');
+      return;
+    }
+    const id = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => window.clearTimeout(id);
+  }, [crisis, secondsLeft, game.assisted]);
+  const passNight = () => {
+    if (stormSol) {
+      setSecondsLeft(V.CRISIS_SECONDS);
+      setCrisis(true);
+    } else onLock(a);
+  };
+  const crisisChoice = ranCrisis;
 
   const effect = (d: Destination): string => {
     const n = plan[d];
@@ -413,7 +453,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
           </span>
           {lost > 0 && <span className="hud-hand__lost"> · {t('world.hand.lost', { n: lost })}</span>}
         </p>
-        <button type="button" className="btn btn--primary" disabled={!ready || night !== null} onClick={() => onLock(a)}>
+        <button type="button" className="btn btn--primary" disabled={!ready || night !== null} onClick={passNight}>
           <Icon name="moon" size={18} /> {ready ? t('world.hand.pass') : t('world.hand.placeFirst', { count: left })}
         </button>
       </section>
@@ -442,7 +482,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
             </button>
           </div>
         )}
-        <p className="hud-bottom__place">{t('world.place', { n: base.sol, total: V.MISSION_SOLS })}</p>
+        <p className="hud-bottom__place">{t('world.place', { m: missionName, n: base.sol, total: V.MISSION_SOLS })}</p>
         <h2 id="bar-title" className="sr-only">
           {t('world.hotbar')}
         </h2>
@@ -482,7 +522,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
       {banner && !night && (
         <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="banner-title">
           <div className={`banner${ev ? ' banner--event' : ''}`}>
-            <p className="banner__eyebrow">{t('world.missionPlace', { n: base.sol, total: V.MISSION_SOLS })}</p>
+            <p className="banner__eyebrow">{t('world.missionPlace', { m: missionName, n: base.sol, total: V.MISSION_SOLS })}</p>
             <h2 id="banner-title">
               <Icon name={ev ? 'storm' : cond.dust ? 'dust' : 'sun'} size={28} className={ev ? 'tone-rad' : 'tone-sun'} /> {ev ? t('world.banner.event') : t('world.banner.calm')}
             </h2>
@@ -507,6 +547,39 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         </div>
       )}
 
+      {/* The 10-second crisis: a fast storm, decided under time pressure (no timer in assisted mode). */}
+      {crisis && !night && (
+        <div className="overlay overlay--crisis" role="alertdialog" aria-modal="true" aria-labelledby="crisis-title" aria-describedby="crisis-text">
+          <div className="banner banner--event banner--crisis">
+            <p className="crisis__timer" aria-live="assertive">
+              {game.assisted ? t('world.crisis.assisted') : t('world.crisis.seconds', { count: secondsLeft })}
+            </p>
+            {!game.assisted && (
+              <span className="crisis__bar" aria-hidden="true">
+                <span style={{ width: `${(secondsLeft / V.CRISIS_SECONDS) * 100}%` }} />
+              </span>
+            )}
+            <h2 id="crisis-title">
+              <Icon name="storm" size={28} className="tone-rad" /> {t('world.crisis.title')}
+            </h2>
+            <p id="crisis-text">{t('world.crisis.text')}</p>
+            <div className="crisis__choices">
+              <button type="button" className="btn btn--primary" disabled={a.lifeSupport === 0} onClick={() => resolveCrisis('moveToShield')}>
+                <Icon name="shield" size={18} /> {t('world.crisis.moveToShield', { n: Math.min(V.CRISIS_SHIELD_SWAP_CELLS, a.lifeSupport) })}
+              </button>
+              {a.expedition === 1 && (
+                <button type="button" className="btn" onClick={() => resolveCrisis('recallExpedition')}>
+                  <Icon name="rover" size={18} /> {t('world.crisis.recallExpedition')}
+                </button>
+              )}
+              <button type="button" className="btn btn--ghost" onClick={() => resolveCrisis('keepPlan')}>
+                {t('world.crisis.keepPlan')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {night && !report && (
         <div className="world__night" role="status">
           <Icon name="moon" size={28} /> {t('world.night')}
@@ -522,7 +595,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="report-title">
           <div className="report">
             <header className="report__head">
-              <p className="report__eyebrow">{t('world.report.eyebrow', { n: base.sol })}</p>
+              <p className="report__eyebrow">{t('world.report.eyebrow', { m: missionName, n: base.sol })}</p>
               <h2 id="report-title">{t('world.report.title', { n: base.sol })}</h2>
             </header>
             <div className="report__body">
@@ -573,6 +646,14 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                     <span className="stat__label">{t('world.report.labelRover')}</span>
                     <strong className="stat__value">+1</strong>
                     <span className="stat__what">{t('world.report.sample', { site: t(`world.sites.${discovery}`), count: after.discoveries.length, goal: V.SAMPLES_GOAL })}</span>
+                  </li>
+                )}
+                {crisisChoice?.kind === 'solarStorm' && (
+                  <li className="stat tone-rad">
+                    <span className="stat__icon"><Icon name="storm" size={22} /></span>
+                    <span className="stat__label">{t('world.reportCrisis.label')}</span>
+                    <span className="stat__value" />
+                    <span className="stat__what">{t(`world.reportCrisis.${crisisChoice.choice}`, { n: Math.min(V.CRISIS_SHIELD_SWAP_CELLS, night?.allocation.lifeSupport ?? 0) })}</span>
                   </li>
                 )}
                 {tonightEarth && (

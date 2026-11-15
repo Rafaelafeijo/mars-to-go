@@ -31,7 +31,8 @@
     "surprise": "Surprise me",
     "surpriseLocked": "Opens after mission 1",
     "assisted": "Assisted mode",
-    "assistedHint": "More time and slower math."
+    "assistedHint": "More time and slower math.",
+    "mission2": "Mission 2 · The May storm"
   },
   "missions": {
     "m1": "Mission 1 · First sols"
@@ -254,7 +255,9 @@
     "missingSample": "The rover never went out, so no rock sample came home. Send the rover at least once: it costs 2 cells and 2 air.",
     "locked": "Mission 2 opens when the crew comes home with the dose within the limit.",
     "chartRanOut": "Ran out",
-    "chartSol": "Sol"
+    "chartSol": "Sol",
+    "nextPlay": "Play Mission 2 · The May storm",
+    "missionsTitle": "Missions"
   },
   "card": {
     "labels": {
@@ -416,7 +419,7 @@
     "replay": "Watch the night again"
   },
   "world": {
-    "place": "Mission 1 · Jezero · Sol {{n}} of {{total}} · Illustrated terrain, not a photo",
+    "place": "{{m}} · Jezero · Sol {{n}} of {{total}} · Illustrated terrain, not a photo",
     "illustration": "Illustrated terrain inspired by Jezero Crater, not a photo.",
     "mission": {
       "title": "Mission Control",
@@ -487,7 +490,7 @@
     },
     "night": "Night falls on Jezero…",
     "sceneLabel": "Mars base scene. Use the bar below to play without the 3D view.",
-    "missionPlace": "Mission 1 · Jezero Crater · Sol {{n}} of {{total}}",
+    "missionPlace": "{{m}} · Jezero Crater · Sol {{n}} of {{total}}",
     "tank": {
       "label": "Air tank: {{n}}",
       "critical": "AIR CRITICAL: {{n}}"
@@ -526,7 +529,7 @@
       "discovery": "Rover discovery: {{site}}",
       "realNasa": "REAL NASA DATA",
       "suits": "rover space suits −{{suits}}",
-      "eyebrow": "Mission 1 · Night of sol {{n}}",
+      "eyebrow": "{{m}} · Night of sol {{n}}",
       "labelAir": "Air",
       "labelFood": "Food",
       "labelRad": "Radiation",
@@ -582,7 +585,24 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "nightShield": "The shield held! The crew is safe.",
-    "nightExposed": "Crew exposed! Radiation got through the shield."
+    "nightExposed": "Crew exposed! Radiation got through the shield.",
+    "crisis": {
+      "title": "Solar storm! Particles arrive in minutes",
+      "text": "The light of the flare is already here. The particles come next. Choose now:",
+      "seconds_one": "{{count}} second",
+      "seconds_other": "{{count}} seconds",
+      "assisted": "Assisted mode: no timer.",
+      "moveToShield": "Move {{n}} cells from the Air machine to the Shield (−{{n}} air tonight)",
+      "recallExpedition": "Call the rover back (no sample, suits' air already spent)",
+      "keepPlan": "Keep the plan",
+      "timeout": "Time is up: the plan stays as it was."
+    },
+    "reportCrisis": {
+      "label": "Crisis",
+      "moveToShield": "You moved {{n}} cells to the Shield.",
+      "recallExpedition": "You called the rover back.",
+      "keepPlan": "You kept the plan."
+    }
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
@@ -628,5 +648,19 @@
     "explain": "A flare is a sudden flash of light on the Sun. A CME is a cloud of particles the Sun throws into space. The game's missions use real events like these.",
     "copy": "Copy of {{date}}, not live",
     "compact": "The Sun this week: {{flares}} flares, {{cmes}} particle clouds (NASA DONKI)"
+  },
+  "missionShort": {
+    "m1": "Mission 1",
+    "m2": "Mission 2"
+  },
+  "brief2": {
+    "eyebrow": "Mission 2 · The May storm",
+    "title": "A real storm is coming",
+    "intro": "This week is the real week of May 14–20, 2024. Every event comes from NASA records.",
+    "storm": "Clouds from the Sun will reach Mars. On the last sol, the biggest storm Curiosity ever measured.",
+    "dose": "Radiation dose limit: 2. Above it, the mission doctor sends the crew home.",
+    "sample": "Bring 1 rock sample home. Every machine is open from sol 1.",
+    "crisis": "When the storm comes fast, you have 10 seconds to choose.",
+    "start": "Start sol 1"
   }
 }

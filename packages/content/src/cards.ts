@@ -652,6 +652,150 @@ export const CARDS: DataCard[] = [
     },
   },
   {
+    id: 'crisis',
+    label: 'scenario',
+    place: 'game',
+    date: null,
+    badgeSource: 'Game rule',
+    sourceName: 'NASA/JPL, "NASA Watches Mars Light Up During Epic Solar Storm" (2024-06-10)',
+    sourceUrl: 'https://www.nasa.gov/missions/maven/nasa-watches-mars-light-up-during-epic-solar-storm/',
+    recordId: 'NASA release 2024-080',
+    numbers: ['CRISIS_SECONDS', 'CRISIS_SHIELD_SWAP_CELLS'],
+    facts: [],
+    status: 'complete',
+    text: {
+      en: {
+        title: 'The 10-second crisis',
+        what: 'When a fast solar storm comes, you have 10 seconds to choose: move 2 cells from the Air machine to the Shield, call the rover back, or keep the plan.',
+        processing: 'The real fact: on May 20, 2024, NASA says the flare\'s light arrived first and the charged particles reached Mars "in just tens of minutes". There is little time to react.',
+        gameUse: 'Moving 2 cells to the Shield blocks 2 more risk points but makes 2 less air tonight. Calling the rover back avoids the radiation outside, but the suits\' air is already spent and no sample comes home. With no choice in 10 seconds, the plan stays as it is. In assisted mode there is no timer.',
+        simplified: 'Real crews would have minutes, not seconds, and rules written in advance. The 10 seconds are a game rule to feel the hurry.',
+        learnMore:
+          'Light is the fastest thing there is, so the flash arrives before the particles, like lightning before thunder. Astronauts on the space station also move to the most shielded part of the station when a solar storm warning comes.',
+      },
+      'pt-BR': {
+        title: 'A crise de 10 segundos',
+        what: 'Quando vem uma tempestade solar rápida, você tem 10 segundos para escolher: passar 2 células da Máquina de ar para o Escudo, chamar o rover de volta ou manter o plano.',
+        processing: 'O fato real: em 20 de maio de 2024, a NASA conta que a luz da erupção chegou primeiro e as partículas carregadas chegaram a Marte "em apenas dezenas de minutos". Há pouco tempo para reagir.',
+        gameUse: 'Passar 2 células para o Escudo bloqueia mais 2 pontos de risco, mas faz 2 de ar a menos nesta noite. Chamar o rover de volta evita a radiação lá fora, mas o ar dos trajes já foi gasto e nenhuma amostra volta. Sem escolha em 10 segundos, o plano fica como está. No modo assistido não há relógio.',
+        simplified: 'Uma tripulação de verdade teria minutos, não segundos, e regras escritas antes. Os 10 segundos são uma regra do jogo para sentir a pressa.',
+        learnMore:
+          'A luz é a coisa mais rápida que existe, então o clarão chega antes das partículas, como o relâmpago antes do trovão. Os astronautas da estação espacial também vão para a parte mais protegida da estação quando chega um aviso de tempestade solar.',
+      },
+    },
+  },
+  {
+    id: 'evt-flr-2024-05-14',
+    label: 'measured',
+    place: 'Sun',
+    date: '2024-05-14',
+    badgeSource: 'DONKI',
+    sourceName: 'NASA CCMC DONKI — Solar flare',
+    sourceUrl: 'https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30849/-1',
+    recordId: '2024-05-14T16:46:00-FLR-001',
+    numbers: [],
+    facts: [],
+    status: 'complete',
+    text: {
+      en: {
+        title: 'Solar flare X8.7',
+        what: 'A real solar flare of class X8.7, at its brightest on May 14, 2024, at 16:51 UTC.',
+        processing: 'Recorded in NASA\'s DONKI database and seen by the GOES satellites in Earth orbit. We keep its class and turn it into a game risk: an X flare is risk 2.',
+        gameUse: 'Risk 2. There is no evidence it reached Mars, so in the game it does not raise the dose. The Antenna answers "Earth does not know".',
+        simplified: 'Scientists measure flares in great detail; we use only the letter and number of the class.',
+        parallel:
+          'Seen from Earth\'s side, not from Mars. Earth and Mars share the same Sun, but whether a flare reaches Mars depends on which way it points.',
+        learnMore:
+          'X is the strongest flare class. This one was one of the biggest of the year. A flare is like a flashlight: if it points at your friend, it does not light you up.',
+      },
+      'pt-BR': {
+        title: 'Erupção solar X8.7',
+        what: 'Uma erupção solar real de classe X8.7, no seu ponto mais forte em 14 de maio de 2024, às 16:51 UTC.',
+        processing: 'Registrada no banco de dados DONKI da NASA e vista pelos satélites GOES, na órbita da Terra. Guardamos a classe e a transformamos num risco do jogo: uma erupção X é risco 2.',
+        gameUse: 'Risco 2. Não há prova de que ela chegou a Marte, então no jogo ela não aumenta a dose. A Antena responde "a Terra não sabe".',
+        simplified: 'Cientistas medem erupções com muitos detalhes; nós usamos só a letra e o número da classe.',
+        parallel:
+          'Vista do lado da Terra, não de Marte. A Terra e Marte têm o mesmo Sol, mas se uma erupção chega a Marte depende da direção para onde ela aponta.',
+        learnMore:
+          'X é a classe mais forte de erupção. Esta foi uma das maiores do ano. Uma erupção é como uma lanterna: se aponta para o seu amigo, não ilumina você.',
+      },
+    },
+  },
+  {
+    id: 'evt-cme-2024-05-13',
+    label: 'measured',
+    place: 'Sun',
+    date: '2024-05-13',
+    badgeSource: 'DONKI',
+    sourceName: 'NASA CCMC DONKI — Coronal mass ejection and WSA-ENLIL model run',
+    sourceUrl: 'https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30814/-1',
+    recordId: '2024-05-13T09:12:00-CME-001 · WSA-ENLIL/30822/1',
+    numbers: [],
+    facts: [],
+    status: 'complete',
+    text: {
+      en: {
+        title: 'A fast cloud heads to Mars',
+        what: 'A real coronal mass ejection (CME) that left the Sun on May 13, 2024, at 09:12 UTC, seen as a full halo by three coronagraphs.',
+        processing: 'From NASA\'s DONKI database. NASA\'s WSA-ENLIL model, given a speed of 1,456 km/s, forecast it would arrive at Mars on May 16, 2024, at 18:09 UTC, and not as a glancing blow.',
+        gameUse: 'Risk 2, and it reaches Mars: what the shield does not block raises the dose and damages cells for the next sol.',
+        simplified: 'In the game it arrives the same night; in reality the trip took about three days. The arrival is a forecast by a model, not a measurement.',
+        parallel:
+          'The CME was seen from near Earth, but the forecast is about Mars itself: the model follows the cloud through the solar system.',
+        learnMore:
+          'A coronagraph is a camera that covers the bright Sun with a disk, to see the clouds it throws out, like covering a lamp with your hand to see the room. A "halo" means the cloud spreads all around the Sun as seen from us.',
+      },
+      'pt-BR': {
+        title: 'Uma nuvem rápida rumo a Marte',
+        what: 'Uma ejeção de massa coronal (CME) real, que saiu do Sol em 13 de maio de 2024, às 09:12 UTC, vista como um halo completo por três coronógrafos.',
+        processing: 'Do banco de dados DONKI da NASA. O modelo WSA-ENLIL da NASA, usando uma velocidade de 1.456 km/s, previu a chegada a Marte em 16 de maio de 2024, às 18:09 UTC, e não de raspão.',
+        gameUse: 'Risco 2, e chega a Marte: o que o escudo não bloqueia aumenta a dose e estraga células para o sol seguinte.',
+        simplified: 'No jogo ela chega na mesma noite; na realidade a viagem levou cerca de três dias. A chegada é uma previsão de um modelo, não uma medição.',
+        parallel:
+          'A CME foi vista de perto da Terra, mas a previsão é sobre o próprio Marte: o modelo acompanha a nuvem pelo Sistema Solar.',
+        learnMore:
+          'Um coronógrafo é uma câmera que cobre o Sol brilhante com um disco, para ver as nuvens que ele lança, como tapar uma lâmpada com a mão para enxergar a sala. "Halo" quer dizer que a nuvem se espalha em volta de todo o Sol, visto daqui.',
+      },
+    },
+  },
+  {
+    id: 'evt-cme-2024-05-14',
+    label: 'measured',
+    place: 'Sun',
+    date: '2024-05-14',
+    badgeSource: 'DONKI',
+    sourceName: 'NASA CCMC DONKI — Coronal mass ejection and WSA-ENLIL model run',
+    sourceUrl: 'https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30873/-1',
+    recordId: '2024-05-14T17:30:00-CME-001 · WSA-ENLIL/30872/1',
+    numbers: [],
+    facts: [],
+    status: 'complete',
+    text: {
+      en: {
+        title: 'One more cloud for Mars',
+        what: 'A real coronal mass ejection (CME) that left the Sun on May 14, 2024, at 17:30 UTC, right after the X8.7 flare.',
+        processing: 'From NASA\'s DONKI database. NASA\'s WSA-ENLIL model, given a speed of 1,199 km/s, forecast it would arrive at Mars on May 17, 2024, at 15:08 UTC, and not as a glancing blow.',
+        gameUse: 'Risk 2, and it reaches Mars: what the shield does not block raises the dose and damages cells for the next sol.',
+        simplified: 'In the game it arrives the same night; in reality the trip took about three days. The arrival is a forecast by a model, not a measurement.',
+        parallel:
+          'The CME was seen from near Earth, but the forecast is about Mars itself: the model follows the cloud through the solar system.',
+        learnMore:
+          'In May 2024 one very active spot on the Sun threw out cloud after cloud, like a volcano that keeps erupting. Mars and Earth both got hit in the same weeks.',
+      },
+      'pt-BR': {
+        title: 'Mais uma nuvem para Marte',
+        what: 'Uma ejeção de massa coronal (CME) real, que saiu do Sol em 14 de maio de 2024, às 17:30 UTC, logo depois da erupção X8.7.',
+        processing: 'Do banco de dados DONKI da NASA. O modelo WSA-ENLIL da NASA, usando uma velocidade de 1.199 km/s, previu a chegada a Marte em 17 de maio de 2024, às 15:08 UTC, e não de raspão.',
+        gameUse: 'Risco 2, e chega a Marte: o que o escudo não bloqueia aumenta a dose e estraga células para o sol seguinte.',
+        simplified: 'No jogo ela chega na mesma noite; na realidade a viagem levou cerca de três dias. A chegada é uma previsão de um modelo, não uma medição.',
+        parallel:
+          'A CME foi vista de perto da Terra, mas a previsão é sobre o próprio Marte: o modelo acompanha a nuvem pelo Sistema Solar.',
+        learnMore:
+          'Em maio de 2024 uma mancha muito ativa no Sol lançou nuvem atrás de nuvem, como um vulcão que não para de entrar em erupção. Marte e a Terra foram atingidos nas mesmas semanas.',
+      },
+    },
+  },
+  {
     id: 'evt-may-2024',
     label: 'measured',
     place: 'Mars',
