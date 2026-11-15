@@ -66,7 +66,7 @@ He was the first tester of every version (section 7). No name, image or voice of
 
 The challenge says kids usually see a mission's outcome, never the trade-offs behind it, and that space content is either too abstract or too technical. Research on educational games agrees:
 
-- **Most "educational" apps are digital worksheets.** Hirsh-Pasek et al. (2015) found that most apps in the market "are simply digital worksheets, games, and puzzles that have been reproduced in an e-format without any explicit consideration of how children learn." ([*Psychological Science in the Public Interest* 16(1):3–34](https://doi.org/10.1177/1529100615569721))
+- **Most "educational" apps are digital worksheets.** Hirsh-Pasek et al. (2015) write that the majority of apps in the market belong to a "first wave" in which "apps are simply digital worksheets, games, and puzzles that have been reproduced in an e-format without any explicit consideration of how children learn …" ([*Psychological Science in the Public Interest* 16(1):3–34](https://doi.org/10.1177/1529100615569721), p. 5).
 - **58% of top-downloaded children's learning apps are lower-quality.** In a content analysis of 124 apps, 72 (58%) scored as lower-quality, and 73% scored low on active learning, where the lowest score means the app "drills skills, and feels like an online workbook." (Meyer et al., 2021, [*Journal of Children and Media*](https://doi.org/10.1080/17482798.2021.1882516))
 - **Quizzes dominate; simulations are rare.** A mapping of 176 studies on mobile educational games (2019–2024) found quiz mechanics in 40.91% of studies and simulation in 10.80% (Sales & Oliveira, 2025, [*Journal on Interactive Systems*](https://doi.org/10.5753/jis.2025.5947), Table 4). The pattern repeats in another field: a 2025 systematic review of cybersecurity educational games for children (91 games in 68 papers, 2010–2024) found quizzes in 41.8% of the games and simulations in 19.8% (Damenu et al., [arXiv:2508.17414](https://arxiv.org/abs/2508.17414), preprint).
 
@@ -80,7 +80,7 @@ Mars to Go is a simulation, not a quiz: the child learns by deciding, then sees 
 
 ### And worldwide
 
-In a 2019 Harris Poll for the LEGO Group of 3,000 children aged 8–12 in the US, UK and China, **86% said they were interested in space exploration and 90% wanted to learn more** ([LEGO Group, July 2019](https://www.lego.com/en-id/aboutus/news/2019/july/lego-group-kicks-off-global-program-to-inspire-the-next-generation-of-space-explorers-as-nasa-celebrates-50-years-of-moon-landing); an online poll commissioned by a toy company). Our son is one of many.
+In a 2019 online survey by The Harris Poll for the LEGO Group, with 1,000 children aged 8–12 in each of the US, UK and China (May 30 to June 8, 2019), **86% said they were interested in space exploration and 90% wanted to learn more** ([LEGO Group, July 2019](https://www.lego.com/en-id/aboutus/news/2019/july/lego-group-kicks-off-global-program-to-inspire-the-next-generation-of-space-explorers-as-nasa-celebrates-50-years-of-moon-landing); an online poll commissioned by a toy company). Our son is one of many.
 
 ---
 
