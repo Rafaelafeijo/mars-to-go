@@ -70,9 +70,10 @@ const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: numb
 ];
 
 function Model({ name, x, z, scale, rot = 0, y, center = false }: { name: string; x: number; z: number; scale: number; rot?: number; y?: number; center?: boolean }) {
-  // useDraco = false: our models are not Draco-compressed, and the default decoder would be
-  // fetched from a third-party CDN (privacy rule 9: no request outside the game).
-  const { scene } = useGLTF(M(name), false);
+  // useDraco = false, useMeshopt = false: our models use neither compression. The Draco decoder
+  // would come from a third-party CDN (privacy rule 9) and Meshopt compiles WebAssembly, which
+  // the Content Security Policy does not allow.
+  const { scene } = useGLTF(M(name), false, false);
   const obj = useMemo(() => scene.clone(true), [scene]);
   // Some Kenney models have their origin at a corner: center them so labels sit right above.
   const offset = useMemo(() => {
@@ -873,4 +874,4 @@ export default function Scene3D(props: SceneProps & { label: string }) {
 }
 
 // The greenhouse is drawn in code (inflatable cylinder), so its Kenney model is not loaded.
-for (const n of [...MACHINES.filter((m) => m.d !== 'greenhouse').map((m) => m.model), ...SCENERY.map((s) => s.model), HABITAT.model]) useGLTF.preload(M(n), false);
+for (const n of [...MACHINES.filter((m) => m.d !== 'greenhouse').map((m) => m.model), ...SCENERY.map((s) => s.model), HABITAT.model]) useGLTF.preload(M(n), false, false);
