@@ -51,13 +51,13 @@ const MACHINES: MachineSpec[] = [
   { d: 'greenhouse', model: 'hangar_roundGlass', pos: [5.5, -3], scale: 1.8, rot: -0.5 },
   { d: 'shield', model: 'machine_wireless', pos: [-4.6, -9], scale: 2.2 },
   // Parked in view of the start position, so it is seen (locked) from sol 1.
-  { d: 'expedition', model: 'rover', pos: [4.2, 4], scale: 1.6, rot: -0.6 },
+  { d: 'expedition', model: 'rover', pos: [4.2, 4], scale: 2.6, rot: -0.6 },
   { d: 'askEarth', model: 'satelliteDish_large', pos: [-8.5, 3], scale: 2, rot: 0.8 },
 ];
 const AT = Object.fromEntries(MACHINES.map((m) => [m.d, m])) as Record<Destination, MachineSpec>;
 
 /** The crew's home (habitat), in the middle of the base and under the shield dome. Not a machine. */
-const HABITAT = { model: 'hangar_largeA', pos: [-0.5, -11.5] as [number, number], scale: 2.2 };
+const HABITAT = { model: 'hangar_largeA', pos: [-6.5, -13.5] as [number, number], scale: 2.2 };
 
 const SCENERY: { model: string; pos: [number, number]; scale: number; rot?: number }[] = [
   { model: 'container-tall', pos: [12, -10], scale: 2.2, rot: -0.3 },
