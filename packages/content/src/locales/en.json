@@ -649,9 +649,8 @@
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
     "nasaData": "Real NASA data in this game",
     "credit": "Real photo: Jezero Crater, Perseverance · NASA/JPL-Caltech/ASU/MSSS",
-    "line1": "Bring four astronauts back home.",
-    "line2": "That is 7 days on Mars.",
-    "line3": "No choice is free."
+    "line1": "Bring four astronauts home. 7 sols.",
+    "line2": "No choice is free."
   },
   "brief": {
     "portrait": "Your character: the base commander, in a white space suit.",

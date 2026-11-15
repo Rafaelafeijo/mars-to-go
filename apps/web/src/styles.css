@@ -2614,23 +2614,27 @@ button.top__brand {
   gap: 8px;
   margin-top: 14px;
 }
+/* Smaller than Play and the data button: a secondary choice (design review H). */
 .hero__level-btn {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
+  align-items: baseline;
+  gap: 6px;
   min-height: var(--tap);
-  padding: 8px 16px;
-  border-radius: 18px;
-  border: 1px solid rgb(255 255 255 / 0.25);
-  background: rgb(20 16 14 / 0.6);
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(20 16 14 / 0.5);
   color: var(--color-text);
   font: inherit;
-  text-align: left;
+  font-size: 0.85rem;
+  line-height: var(--tap);
   cursor: pointer;
 }
+.hero__level-btn strong {
+  font-weight: 700;
+}
 .hero__level-btn span {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
 }
 .hero__level-btn[aria-checked='true'] {

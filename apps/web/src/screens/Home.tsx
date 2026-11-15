@@ -34,7 +34,7 @@ export function Home({
           TO GO
         </h1>
         <p className="hero__line">
-          <span>{t('hero.line1')}</span> <span>{t('hero.line2')}</span> <span>{t('hero.line3')}</span>
+          <span>{t('hero.line1')}</span> <span>{t('hero.line2')}</span>
         </p>
         <div className="hero__actions">
           <button type="button" className="hero__play" onClick={onPlay}>
