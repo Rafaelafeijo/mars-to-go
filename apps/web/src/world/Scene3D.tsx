@@ -403,7 +403,7 @@ function ShieldDome({ cells, flash }: { cells: number; flash: boolean }) {
  * Sky dome. NASA Science: by day the Mars sky is "yellow to orange" (dust); the tones here are
  * an illustration of that description, not a measured color. Night: dark blue with stars.
  */
-const SKY = { dayHorizon: '#e7c9a0', dayZenith: '#c48f62', nightHorizon: '#2a2440', nightZenith: '#0c0d1a' };
+const SKY = { dayHorizon: '#e4b77f', dayZenith: '#b9794a', nightHorizon: '#2a2440', nightZenith: '#0c0d1a' };
 function SkyDome({ night }: { night: boolean }) {
   const geo = useMemo(() => {
     const g = new THREE.SphereGeometry(200, 32, 16);
@@ -610,7 +610,7 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
     const ease = 1 - Math.pow(0.001, Math.min(dt, 0.05));
     const z = zoom.current;
     const want = skyView
-      ? new THREE.Vector3(p.position.x, p.position.y + 1.6, p.position.z + 4)
+      ? new THREE.Vector3(p.position.x, p.position.y + 1.8, p.position.z) // the astronaut's eyes
       : new THREE.Vector3(p.position.x, p.position.y + (portrait ? 9.5 : 5) * z, p.position.z + (portrait ? 15 : 10) * z);
     camera.position.lerp(want, ease);
     const wantLook = skyView ? new THREE.Vector3(SUN_POS[0] * 0.25, SUN_POS[1] * 0.25, SUN_POS[2] * 0.25) : new THREE.Vector3(p.position.x, p.position.y + 1.6, p.position.z - 5);
@@ -632,7 +632,7 @@ function Player({ target, onArrive, onNear, onEdge, skyView, playerRef }: Player
   });
 
   return (
-    <group ref={playerRef} position={[0, 0, 3]} rotation={[0, Math.PI, 0]}>
+    <group ref={playerRef} position={[0, 0, 3]} rotation={[0, Math.PI, 0]} visible={!skyView}>
       <Astronaut walking={walking} />
     </group>
   );
