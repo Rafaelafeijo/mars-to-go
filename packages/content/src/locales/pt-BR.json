@@ -17,21 +17,17 @@
     "numbersLine": "7 sóis · 10 células · 5 decisões",
     "intro": "Comande uma base tripulada em Marte. Nenhuma escolha é grátis: a energia que protege a tripulação hoje é o oxigênio que falta amanhã.",
     "solExplained": "Em Marte, o dia tem nome: sol. Ele dura 40 minutos a mais que o nosso.",
-    "rolePrefix": "Hoje você é",
-    "roles": [
-      "piloto",
-      "engenheiro",
-      "cientista",
-      "agricultor de Marte"
-    ],
     "play": "Jogar",
     "continue": "Continuar no sol {{sol}}",
     "howItWorks": "Como funciona",
     "howItWorksText": "A cada sol você recebe 10 células de energia. 3 mantêm a base aquecida; você distribui as outras 7. O Suporte à Vida faz ar nesta noite. A Estufa faz comida dois sóis depois. O Escudo protege a tripulação nesta noite. Todo número mostra de onde vem: toque nele.",
     "surprise": "Me surpreenda",
     "surpriseLocked": "Abre depois da missão 1",
-    "assisted": "Modo assistido",
-    "assistedHint": "Mais tempo e conta mais devagar."
+    "levelLabel": "Escolha o seu nível",
+    "cadet": "Cadete",
+    "cadetHint": "30 segundos para decidir",
+    "commander": "Comandante",
+    "commanderHint": "10 segundos"
   },
   "missions": {
     "m1": "Missão 1 · Primeiros sóis"
@@ -602,7 +598,6 @@
       "text": "A luz da erupção já chegou. As partículas vêm logo depois. Escolha agora:",
       "seconds_one": "{{count}} segundo",
       "seconds_other": "{{count}} segundos",
-      "assisted": "Modo assistido: sem relógio.",
       "recallExpedition": "Chamar o rover de volta (seguro, mas sem amostra; o ar dos trajes já foi gasto)",
       "titleCme": "Uma nuvem rápida chega a Marte esta noite!",
       "textCme": "O modelo da NASA previu esta nuvem rápida em Marte. É a sua última chance de mudar o plano:",
@@ -652,11 +647,11 @@
   },
   "hero": {
     "eyebrow": "Cratera Jezero · Marte · NASA Space Apps 2026",
-    "line": "Traga quatro astronautas para casa. 7 sóis. Nenhuma escolha é grátis.",
     "nasaData": "Dados reais da NASA neste jogo",
-    "credit": "FOTO REAL · Cratera Jezero, Marte · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · cor realçada",
-    "line1": "Traga quatro astronautas para casa. 7 sóis.",
-    "line2": "Nenhuma escolha é grátis."
+    "credit": "Foto real: cratera Jezero, Perseverance · NASA/JPL-Caltech/ASU/MSSS",
+    "line1": "Traga quatro astronautas de volta para casa.",
+    "line2": "São 7 dias em Marte.",
+    "line3": "Nenhuma escolha é grátis."
   },
   "brief": {
     "portrait": "Seu personagem: o comandante da base, de traje espacial branco.",
@@ -688,13 +683,15 @@
     "badge": "DADO REAL DA NASA",
     "title": "O Sol nesta semana",
     "flares": "Erupções",
-    "cmes": "Nuvens de partículas (CMEs)",
+    "cmes": "Nuvens de partículas",
     "seps": "Tempestades de partículas",
     "strongest": "Maior erupção: {{cls}}, em {{date}}.",
-    "explain": "Uma erupção é um clarão repentino no Sol. Uma CME é uma nuvem de partículas que o Sol lança no espaço. As missões do jogo usam eventos reais como esses.",
+    "explain": "O Sol nesta semana (tela inicial): uma erupção é um clarão repentino no Sol; uma nuvem de partículas (CME) é uma nuvem que o Sol lança no espaço. \"Agitada\" quer dizer uma erupção de classe M5 ou mais forte (escala R2 ou maior da NOAA) ou um evento de partículas solares na semana; senão, \"calma\". As missões do jogo usam eventos reais como esses.",
     "copy": "Atualizado em {{date}} · copiado da NASA 2 vezes por dia",
-    "compact": "O Sol nesta semana: {{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)",
-    "when": "{{date}}, às {{time}} UTC"
+    "compact": "{{flares}} erupções, {{cmes}} nuvens de partículas (NASA DONKI)",
+    "when": "{{date}}, às {{time}} UTC",
+    "calm": "Semana calma no Sol",
+    "busy": "Semana agitada no Sol"
   },
   "missionShort": {
     "m1": "Missão 1",

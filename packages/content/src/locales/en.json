@@ -17,21 +17,17 @@
     "numbersLine": "7 sols · 10 cells · 5 decisions",
     "intro": "Run a crewed base on Mars. No choice is free: the power that protects the crew today is the oxygen missing tomorrow.",
     "solExplained": "On Mars, a day has a name: sol. It lasts 40 minutes longer than ours.",
-    "rolePrefix": "Today you are a",
-    "roles": [
-      "pilot",
-      "engineer",
-      "scientist",
-      "Mars farmer"
-    ],
     "play": "Play",
     "continue": "Continue sol {{sol}}",
     "howItWorks": "How it works",
     "howItWorksText": "Each sol you get 10 power cells. 3 keep the base warm; you place the other 7. Life Support makes air tonight. The Greenhouse makes food two sols later. The Shield protects the crew tonight. Every number shows where it comes from: tap it.",
     "surprise": "Surprise me",
     "surpriseLocked": "Opens after mission 1",
-    "assisted": "Assisted mode",
-    "assistedHint": "More time and slower math."
+    "levelLabel": "Choose your level",
+    "cadet": "Cadet",
+    "cadetHint": "30 seconds to decide",
+    "commander": "Commander",
+    "commanderHint": "10 seconds"
   },
   "missions": {
     "m1": "Mission 1 · First sols"
@@ -602,7 +598,6 @@
       "text": "The light of the flare is already here. The particles come next. Choose now:",
       "seconds_one": "{{count}} second",
       "seconds_other": "{{count}} seconds",
-      "assisted": "Assisted mode: no timer.",
       "recallExpedition": "Call the rover back (safe, but no sample; the suits' air is already spent)",
       "titleCme": "A fast cloud reaches Mars tonight!",
       "textCme": "NASA's model forecast this fast cloud at Mars. It is your last chance to change the plan:",
@@ -652,11 +647,11 @@
   },
   "hero": {
     "eyebrow": "Jezero Crater · Mars · NASA Space Apps 2026",
-    "line": "Bring four astronauts home. 7 sols. No choice is free.",
     "nasaData": "Real NASA data in this game",
-    "credit": "REAL PHOTO · Jezero Crater, Mars · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022 · enhanced color",
-    "line1": "Bring four astronauts home. 7 sols.",
-    "line2": "No choice is free."
+    "credit": "Real photo: Jezero Crater, Perseverance · NASA/JPL-Caltech/ASU/MSSS",
+    "line1": "Bring four astronauts back home.",
+    "line2": "That is 7 days on Mars.",
+    "line3": "No choice is free."
   },
   "brief": {
     "portrait": "Your character: the base commander, in a white space suit.",
@@ -688,13 +683,15 @@
     "badge": "REAL NASA DATA",
     "title": "The Sun this week",
     "flares": "Flares",
-    "cmes": "Particle clouds (CMEs)",
+    "cmes": "Particle clouds",
     "seps": "Particle storms",
     "strongest": "Strongest flare: {{cls}}, on {{date}}.",
-    "explain": "A flare is a sudden flash of light on the Sun. A CME is a cloud of particles the Sun throws into space. The game's missions use real events like these.",
+    "explain": "The Sun this week (home screen): a flare is a sudden flash of light on the Sun; a particle cloud (CME) is a cloud of particles the Sun throws into space. \"Busy\" means a flare of class M5 or stronger (NOAA scale R2 or higher) or a solar particle event that week; otherwise \"calm\". The game's missions use real events like these.",
     "copy": "Updated {{date}} · copied from NASA twice a day",
-    "compact": "The Sun this week: {{flares}} flares, {{cmes}} particle clouds (NASA DONKI)",
-    "when": "{{date}}, {{time}} UTC"
+    "compact": "{{flares}} flares, {{cmes}} particle clouds (NASA DONKI)",
+    "when": "{{date}}, {{time}} UTC",
+    "calm": "A calm week on the Sun",
+    "busy": "A busy week on the Sun"
   },
   "missionShort": {
     "m1": "Mission 1",
