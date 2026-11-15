@@ -30,6 +30,13 @@ Checks done on 2026-11-14: no NASA logo or insignia as subject; image 10 shows n
 
 Images 11-15 added on 2026-11-15 (source files in a local scratch folder, named `11-…` to `15-…` for `prepare_images.py`). Checks: no NASA logo, insignia, flag or mission patch visible; no minors; image 11 replaces the requested PIA24033 graphic, which shows the Artemis logo, the Mars 2020 patch and a U.S. flag. Crops: 11 (right panel only, the WATSON photo; left panel with the rover and yellow circle out), 12 (right part: the Stirling converter; the technician and his branded cap out), 13 (part of the black sky and the film frame number out). Image 12 is the power converter of a ground test unit, not a reactor; image 14 stores rocket propellant, shown as a parallel for storing liquid oxygen.
 
+
+**Notes (audit of 2026-11-15).**
+- `jezero-wide-h480` and `jezero-wide-h840` are a wider crop of row 1 (PIA24921, same credit), made by `tools/data/prepare_images.py` for the list-mode outside view.
+- `gale-sunset` has no 1600 px size because its original is smaller; the game asks for 1600 px only for the full-screen home image.
+- Every image was checked by eye: no logos, insignia, flags, people or personal names. Text on hardware ("LIQUID OXYGEN", part numbers, "221BBAKER" on the SHERLOC target) is part of the real photos.
+- Row 8 (`delta-front`) is shown in the night report when the rover brings the delta sample.
+
 ## 3D models
 
 Used by the 3D world prototype (ADR-0032), in `apps/web/public/models/kenney/` with the original license files.
@@ -40,6 +47,9 @@ Used by the 3D world prototype (ADR-0032), in `apps/web/public/models/kenney/` w
 | Space Station Kit | Kenney (www.kenney.nl) | CC0 1.0 (public domain) | https://kenney.nl/assets/space-station-kit | container-tall (`.glb`) + `Textures/colormap.png` |
 
 The terrain, sky and Sun are drawn in code (illustration inspired by Jezero Crater, declared on screen as illustration, not a photo).
+
+
+Not loaded by this version (kept with their license): `astronautA` (the game draws its own astronaut), `corridor`, `hangar_roundGlass` (the greenhouse is drawn in code).
 
 ## Fonts
 

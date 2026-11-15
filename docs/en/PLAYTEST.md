@@ -2,7 +2,7 @@
 
 > Portuguese version: [`docs/pt-BR/PLAYTEST.md`](../pt-BR/PLAYTEST.md). Rules: ADR-0029. **No name, image, voice or likeness of the tester in any file.** Facts only.
 
-How to run a session: open the playtest link (with `?playtest=1`) on the phone, check the discreet "playtest" indicator, let the child play without help unless asked, then tap "Export session" and save the JSON in `docs/playtest/`.
+How the sessions were run: the child played without help unless he asked; the parent wrote down facts only, during and right after the session. A session-export mode was planned (ADR-0029) but not built in time, so there are no exported files.
 
 ---
 
@@ -43,6 +43,8 @@ Informal session, no exported file (playtest mode did not exist yet). Recorded b
 4. One sentence, in his own words: not recorded.
 5. Did he ask to play again? not recorded.
 
+**What round 0 changed:** these observations became block 1 (commit `c66cfa9`): a home screen with one image and one button, a briefing in bullets, the forecast banner at the start of each sol, the solar storm visible at night, a sol report after each night, a critical air tank, plants that grow, rover and antenna actions, our own astronaut, and the reason for an early return with its numbers.
+
 ---
 
 ## Design review A (adult, after block 1)
@@ -65,50 +67,59 @@ Not a child session: the parent reviewed commit `9198cfb` on a computer, in both
 
 ---
 
-## Round 1
+## Round 1 — mission 1 after block 1 (child)
+
+Informal session, no exported file. Recorded by the parent, facts only.
 
 | Field | Value |
 | --- | --- |
-| Date and time | |
-| Device (model, browser) | |
-| Game version (commit) | |
+| Date | 2026-11-14, night |
+| Devices | Computer: Windows 11 Pro, AMD Ryzen 7 7735HS with Radeon graphics, 15 GB RAM, screen 1920×1200 at 150% scale (1280×800 CSS px), browser: _to confirm (Chrome 157 or Edge 157 are installed)_ · iPhone 16, browser: _to confirm_ |
+| Game version (commit) | `c550a4f` … `7d3c2d9` (branch `phase-3b`, after design review A) |
 | Tester | tester, 8 years old |
-| Language played | |
-| Assisted mode | on / off |
-| Session file | `docs/playtest/round1-session.json` |
+| Language played | Portuguese |
+| Mission | Mission 1 |
 
-### Observations by moment
+| Moment | What happened (facts) | Change it caused | Commit |
+| --- | --- | --- | --- |
+| Gameplay | Used the label of the machine he was next to (then shown with "▶") a lot to put cells straight into it, more than the bottom bar. | A clear action button next to the machine: "+ Add 1 cell" and "−", also key E. | `5bb50bb` |
+| 3D base | Thought the air machine was the crew's little house. | A real crew habitat in the base, labeled "Habitat" (NASA's term), separate from the machines. | `5bb50bb`, `3a23255` |
 
-| Moment | What happened (facts) | Time |
-| --- | --- | --- |
-| Opening | | |
-| First allocation | | |
-| Live math | | |
-| First night | | |
-| Data badge / card | | |
-| Crisis | | |
-| End | | |
+## Round 2 — mission 2 (child)
 
-### The five final questions (brief §11)
+| Field | Value |
+| --- | --- |
+| Date | 2026-11-15 |
+| Devices | Same computer as round 1 · iPhone 16 |
+| Game version (commit) | `22205ed` … `8ae30de` (branch `phase-3b`) |
+| Tester | tester, 8 years old |
+| Language played | Portuguese |
+| Mission | Mission 2 "The May storm" |
 
-1. Time to understand the first allocation without help:
-2. Where they got stuck, and what changed because of it:
-3. What they did in the first crisis:
-4. One sentence, in their own words:
-5. Did they ask to play again?
-
-### Observation → change
-
-At most the three most important fixes; each is its own commit citing the observation.
-
-| # | Observation | Change made | Commit | Before | After |
-| --- | --- | --- | --- | --- | --- |
-| 1 | | | | `docs/playtest/r1-1-before.png` | `docs/playtest/r1-1-after.png` |
-| 2 | | | | | |
-| 3 | | | | | |
+| Moment | What happened (facts) | Change it caused | Commit |
+| --- | --- | --- | --- |
+| After playing | Asked how astronauts breathe inside the suit: does the oxygen go inside? | Fact of sol 7 in mission 2 "How astronauts breathe in a suit", written from NASA-STD-3001 technical briefs read in full, with a real photo of an Apollo suit backpack. | `d77d8d2` |
 
 ---
 
-## Round 2 (Sunday morning, if time allows)
+## Design reviews B–F (adult)
 
-Same template as round 1.
+Not child sessions: the parent reviewed each build on the computer and on the iPhone 16, in both languages. They shaped most of the game rules.
+
+| Review | Main observations | Changes | Commit |
+| --- | --- | --- | --- |
+| B | Air and food always win; no penalty without a shield; rover and antenna give nothing; walking bugs; unclear report numbers | Dose limit, radiation damage to cells, rock sample objective, three results, Earth's answer shown, walking fixes, clearer report (ADR-0033) | `5bb50bb` |
+| C | Mission 2 too easy; Antenna gives no feedback; repeated facts and photos; "tomorrow" said the next morning; right click walks | False alarms, crisis on every fast storm, Antenna feedback, own facts for mission 2, "today/tomorrow" fix (ADR-0034) | `f49362f` |
+| D | Crisis only text and always the same answer, even with enough shield; missing photos | Crisis with picture, risk vs shield meter, choose where cells come from; real NASA photos for every mission 2 fact | `5afc51c` |
+| E | The rover needs a real mission; key numbers hidden in text | Rover chooses its site; mission 2 needs the delta front sample (ADR-0035); report conclusions in bold | `8ae30de` |
+| F | Body font looks generic; text starting in bold; Sun card wraps | Atkinson Hyperlegible Next font; one bold pattern; Sun card gradient | `d77d8d2` |
+
+---
+
+## What testing with a child changed
+
+1. **Reading:** the child skipped long text, so the game moved to short bullets, one strong image and numbers you can see (round 0).
+2. **Seeing consequences:** "nothing happened" when a flare came, so solar events became visible at night, and the report now explains every number (round 0, review B).
+3. **Acting where you look:** the child played by walking up to machines, so the game gained an action button next to each machine (round 1).
+4. **Understanding the base:** the air machine looked like a house, so the base gained a real habitat (round 1).
+5. **Curiosity as content:** the child's question about breathing in a suit became a real NASA fact in the game (round 2).

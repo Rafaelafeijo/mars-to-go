@@ -2,7 +2,7 @@
 
 > Versão em inglês (padrão): [`docs/en/PLAYTEST.md`](../en/PLAYTEST.md). Regras: ADR-0029. **Nada de nome, imagem, voz ou semelhança do testador em nenhum arquivo.** Só fatos.
 
-Como fazer uma sessão: abra o link de teste (com `?playtest=1`) no celular, confira o indicador discreto "teste", deixe a criança jogar sem ajuda, a não ser que ela peça, e no fim toque em "Exportar sessão" e salve o JSON em `docs/playtest/`.
+Como as sessões foram feitas: a criança jogou sem ajuda, a não ser quando pediu; a mãe anotou só fatos, durante e logo depois da sessão. Um modo de exportar a sessão foi planejado (ADR-0029), mas não ficou pronto a tempo; por isso não há arquivos exportados.
 
 ---
 
@@ -43,6 +43,8 @@ Sessão informal, sem arquivo exportado (o modo de teste ainda não existia). Re
 4. Uma frase, com as palavras dele: não registrada.
 5. Pediu para jogar de novo? não registrado.
 
+**O que a rodada 0 mudou:** essas observações viraram o bloco 1 (commit `c66cfa9`): tela inicial com uma imagem e um botão, briefing em tópicos, a previsão em destaque no início de cada sol, a tempestade solar visível à noite, um relatório depois de cada noite, o tanque de ar crítico, plantas que crescem, ações do rover e da antena, o nosso próprio astronauta e o motivo do retorno antecipado com os números.
+
 ---
 
 ## Revisão de design A (adulto, depois do bloco 1)
@@ -65,50 +67,59 @@ Não é sessão com criança: a mãe revisou o commit `9198cfb` no computador, n
 
 ---
 
-## Rodada 1
+## Rodada 1 — missão 1 depois do bloco 1 (criança)
+
+Sessão informal, sem arquivo exportado. Registrada pela mãe, só fatos.
 
 | Campo | Valor |
 | --- | --- |
-| Data e hora | |
-| Aparelho (modelo, navegador) | |
-| Versão do jogo (commit) | |
+| Data | 14/11/2026, noite |
+| Aparelhos | Computador: Windows 11 Pro, AMD Ryzen 7 7735HS com gráficos Radeon, 15 GB de RAM, tela 1920×1200 em escala 150% (1280×800 px CSS), navegador: _a confirmar (Chrome 157 ou Edge 157 estão instalados)_ · iPhone 16, navegador: _a confirmar_ |
+| Versão do jogo (commit) | `c550a4f` … `7d3c2d9` (ramo `phase-3b`, depois da revisão de design A) |
 | Testador | testador, 8 anos |
-| Idioma jogado | |
-| Modo assistido | ligado / desligado |
-| Arquivo da sessão | `docs/playtest/round1-session.json` |
+| Idioma | Português |
+| Missão | Missão 1 |
 
-### Observações por momento
+| Momento | O que aconteceu (fatos) | Mudança que causou | Commit |
+| --- | --- | --- | --- |
+| Jogo | Usava muito o rótulo da máquina ao lado dele (então com "▶") para pôr células direto nela, mais que a barra de baixo. | Um botão de ação claro ao lado da máquina: "+ Pôr 1 célula" e "−", também pela tecla E. | `5bb50bb` |
+| Base 3D | Achou que a máquina de ar era a casinha da tripulação. | Um habitat de verdade na base, com o rótulo "Habitat" (termo da NASA), separado das máquinas. | `5bb50bb`, `3a23255` |
 
-| Momento | O que aconteceu (fatos) | Tempo |
-| --- | --- | --- |
-| Abertura | | |
-| Primeira distribuição | | |
-| Conta ao vivo | | |
-| Primeira noite | | |
-| Selo / ficha de dado | | |
-| Crise | | |
-| Fim | | |
+## Rodada 2 — missão 2 (criança)
 
-### As cinco perguntas finais (brief §11)
+| Campo | Valor |
+| --- | --- |
+| Data | 15/11/2026 |
+| Aparelhos | O mesmo computador da rodada 1 · iPhone 16 |
+| Versão do jogo (commit) | `22205ed` … `8ae30de` (ramo `phase-3b`) |
+| Testador | testador, 8 anos |
+| Idioma | Português |
+| Missão | Missão 2 "A tempestade de maio" |
 
-1. Tempo até entender a primeira distribuição sem ajuda:
-2. Onde travou, e o que mudou por causa disso:
-3. O que fez na primeira crise:
-4. Uma frase, com as palavras dele:
-5. Pediu para jogar de novo?
-
-### Observação → mudança
-
-No máximo as três correções mais importantes; cada uma é um commit próprio citando a observação.
-
-| # | Observação | Mudança feita | Commit | Antes | Depois |
-| --- | --- | --- | --- | --- | --- |
-| 1 | | | | `docs/playtest/r1-1-before.png` | `docs/playtest/r1-1-after.png` |
-| 2 | | | | | |
-| 3 | | | | | |
+| Momento | O que aconteceu (fatos) | Mudança que causou | Commit |
+| --- | --- | --- | --- |
+| Depois de jogar | Perguntou como os astronautas respiram dentro do traje: o oxigênio passa por dentro? | Fato do sol 7 da missão 2 "Como os astronautas respiram no traje", escrito a partir dos resumos técnicos NASA-STD-3001 lidos por inteiro, com foto real de uma mochila de traje da Apollo. | `d77d8d2` |
 
 ---
 
-## Rodada 2 (domingo de manhã, se houver tempo)
+## Revisões de design B a F (adulto)
 
-Mesmo modelo da rodada 1.
+Não são sessões com criança: a mãe revisou cada versão no computador e no iPhone 16, nos dois idiomas. Elas definiram a maior parte das regras do jogo.
+
+| Revisão | Principais observações | Mudanças | Commit |
+| --- | --- | --- | --- |
+| B | Ar e comida sempre vencem; sem castigo sem escudo; rover e antena não dão nada; bugs ao andar; números do relatório confusos | Limite de dose, dano da radiação nas células, objetivo de amostra de rocha, três resultados, resposta da Terra na tela, correções ao andar, relatório mais claro (ADR-0033) | `5bb50bb` |
+| C | Missão 2 fácil demais; Antena sem aviso; fatos e fotos repetidos; "amanhã" dito na manhã seguinte; botão direito faz andar | Alarmes falsos, crise em toda tempestade rápida, aviso da Antena, fatos próprios na missão 2, correção "hoje/amanhã" (ADR-0034) | `f49362f` |
+| D | Crise só com texto e sempre a mesma resposta, mesmo com escudo suficiente; fotos faltando | Crise com desenho, medidor risco x escudo, escolher de onde tirar as células; fotos reais da NASA em todo fato da missão 2 | `5afc51c` |
+| E | O rover precisa de uma missão de verdade; números importantes escondidos no texto | Rover escolhe o destino; a missão 2 exige a amostra da frente do delta (ADR-0035); conclusões do relatório em negrito | `8ae30de` |
+| F | Fonte do texto parece genérica; frases começando em negrito; cartão do Sol quebrando | Fonte Atkinson Hyperlegible Next; um só padrão de negrito; degradê no cartão do Sol | `d77d8d2` |
+
+---
+
+## O que o teste com criança mudou
+
+1. **Leitura:** a criança pulava texto longo, então o jogo passou a usar tópicos curtos, uma imagem forte e números que dá para ver (rodada 0).
+2. **Ver a consequência:** "não aconteceu nada" quando veio a erupção, então os eventos solares ficaram visíveis à noite e o relatório passou a explicar cada número (rodada 0, revisão B).
+3. **Agir onde se olha:** a criança jogava andando até as máquinas, então o jogo ganhou um botão de ação ao lado de cada máquina (rodada 1).
+4. **Entender a base:** a máquina de ar parecia uma casa, então a base ganhou um habitat de verdade (rodada 1).
+5. **Curiosidade vira conteúdo:** a pergunta da criança sobre respirar no traje virou um fato real da NASA no jogo (rodada 2).

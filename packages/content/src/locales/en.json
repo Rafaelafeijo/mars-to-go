@@ -557,7 +557,8 @@
       "foodLeft_one": "There is now {{after}}: enough for {{count}} more night.",
       "foodLeft_other": "There is now {{after}}: enough for {{count}} more nights.",
       "doseNow": "The dose is now {{n}} of {{max}}.",
-      "doseRule": "Above {{max}} radiation points, the mission doctor sends the crew home."
+      "doseRule": "Above {{max}} radiation points, the mission doctor sends the crew home.",
+      "deltaPhoto": "REAL PHOTO · enhanced color · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 2022-06-30 to 07-08 · the delta front in Jezero Crater, where your sample comes from (PIA24925)."
     },
     "sites": {
       "rochette": "the rock Rochette",

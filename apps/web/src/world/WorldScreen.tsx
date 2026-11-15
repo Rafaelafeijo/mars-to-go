@@ -776,7 +776,16 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                     <span className="stat__icon"><Icon name="rover" size={22} /></span>
                     <span className="stat__label">{t('world.report.labelRover')}</span>
                     <strong className="stat__value">+1</strong>
-                    <span className="stat__what">{t('world.report.sample', { site: t(`world.sites.${discovery}`), count: after.discoveries.length, goal: V.SAMPLES_GOAL })}</span>
+                    <span className="stat__what">
+                      {t('world.report.sample', { site: t(`world.sites.${discovery}`), count: after.discoveries.length, goal: V.SAMPLES_GOAL })}
+                      {/* The real place of the delta sample (ASSETS row 8, PIA24925). */}
+                      {discovery === 'delta-front' && (
+                        <figure className="stat__photo">
+                          <img src={`${import.meta.env.BASE_URL}images/delta-front-480.webp`} alt={t('world.report.deltaPhoto')} />
+                          <figcaption>{t('world.report.deltaPhoto')}</figcaption>
+                        </figure>
+                      )}
+                    </span>
                   </li>
                 )}
                 {lastCrisis && (

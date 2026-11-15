@@ -2621,6 +2621,21 @@ button.top__brand {
   color: var(--color-text-muted);
 }
 
+.stat__photo {
+  margin: 10px 0 0;
+}
+.stat__photo img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.stat__photo figcaption {
+  margin-top: 4px;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
 /* Design review E: the conclusion of each report line stands out (bold, brighter; warm when close). */
 .stat__key {
   color: var(--color-text);

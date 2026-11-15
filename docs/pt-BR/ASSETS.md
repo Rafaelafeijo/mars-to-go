@@ -30,6 +30,13 @@ Conferências feitas em 14/11/2026: nenhum logo ou insígnia da NASA como assunt
 
 Imagens 11 a 15 adicionadas em 15/11/2026 (arquivos de origem numa pasta local temporária, com nomes `11-…` a `15-…` para o `prepare_images.py`). Conferências: nenhum logo, insígnia, bandeira ou emblema de missão da NASA visível; nenhum menor; a imagem 11 substitui o gráfico PIA24033 pedido, que mostra o logo do Artemis, o emblema do Mars 2020 e uma bandeira dos EUA. Recortes: 11 (só o painel da direita, a foto da WATSON; sai o painel da esquerda com o rover e o círculo amarelo), 12 (parte direita: o conversor Stirling; saem o técnico e o boné com marca), 13 (sai parte do céu preto e o número do quadro do filme). A imagem 12 é o conversor de energia de uma unidade de teste em solo, não um reator; a imagem 14 guarda combustível de foguete e aparece como paralelo para guardar oxigênio líquido.
 
+
+**Notas (auditoria de 15/11/2026).**
+- `jezero-wide-h480` e `jezero-wide-h840` são um recorte mais largo da linha 1 (PIA24921, mesmo crédito), feitos por `tools/data/prepare_images.py` para a vista externa do modo lista.
+- `gale-sunset` não tem o tamanho de 1600 px porque o original é menor; o jogo só pede 1600 px para a imagem de tela cheia da tela inicial.
+- Cada imagem foi conferida a olho: sem logos, emblemas, bandeiras, pessoas ou nomes pessoais. Textos em equipamentos ("LIQUID OXYGEN", números de peça, "221BBAKER" no alvo do SHERLOC) fazem parte das fotos reais.
+- A linha 8 (`delta-front`) aparece no relatório da noite quando o rover traz a amostra do delta.
+
 ## Modelos 3D
 
 Usados pelo protótipo do mundo 3D (ADR-0032), em `apps/web/public/models/kenney/` com os arquivos de licença originais.
@@ -40,6 +47,9 @@ Usados pelo protótipo do mundo 3D (ADR-0032), em `apps/web/public/models/kenney
 | Space Station Kit | Kenney (www.kenney.nl) | CC0 1.0 (domínio público) | https://kenney.nl/assets/space-station-kit | container-tall (`.glb`) + `Textures/colormap.png` |
 
 O terreno, o céu e o Sol são desenhados em código (ilustração inspirada na cratera Jezero, declarada na tela como ilustração, não foto).
+
+
+Não carregados nesta versão (mantidos com a licença): `astronautA` (o jogo desenha o próprio astronauta), `corridor`, `hangar_roundGlass` (a estufa é desenhada em código).
 
 ## Fontes tipográficas
 

@@ -32,7 +32,7 @@ export function Home({
 
   return (
     <div className="hero">
-      <img className="hero__bg" src={`${import.meta.env.BASE_URL}images/jezero-panorama-1600.webp`} srcSet={photoSrcSet('jezero-panorama')} sizes="100vw" alt="" />
+      <img className="hero__bg" src={`${import.meta.env.BASE_URL}images/jezero-panorama-1600.webp`} srcSet={photoSrcSet('jezero-panorama', true)} sizes="100vw" alt="" />
       <div className="hero__shade" aria-hidden="true" />
       <div className="hero__content">
         <p className="hero__eyebrow">{t('hero.eyebrow')}</p>

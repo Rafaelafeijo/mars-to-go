@@ -557,7 +557,8 @@
       "foodLeft_one": "Agora há {{after}}: dá para mais {{count}} noite.",
       "foodLeft_other": "Agora há {{after}}: dá para mais {{count}} noites.",
       "doseNow": "A dose agora é {{n}} de {{max}}.",
-      "doseRule": "Acima de {{max}} pontos de radiação, o médico da missão manda a tripulação para casa."
+      "doseRule": "Acima de {{max}} pontos de radiação, o médico da missão manda a tripulação para casa.",
+      "deltaPhoto": "FOTO REAL · cor realçada · NASA/JPL-Caltech/ASU/MSSS · Perseverance Mastcam-Z · 30/06 a 08/07/2022 · a frente do delta na Cratera Jezero, de onde vem a sua amostra (PIA24925)."
     },
     "sites": {
       "rochette": "a rocha Rochette",
