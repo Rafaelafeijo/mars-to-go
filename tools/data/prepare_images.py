@@ -22,6 +22,12 @@ IMAGES = {
     "delta-front": ("08-PIA24925.jpg", (0.0, 0.02, 0.235, 0.56)),
     "moxie": ("09-PIA24203.tif", (0.0, 0.0, 1.0, 1.0)),
     "iss-lettuce": ("10-iss072e404269.jpg", (0.0, 0.0, 1.0, 1.0)),
+    # Mission 2 facts (ASSETS.md rows 11-15)
+    "spacesuit-materials": ("11-PIA26520.tif", (0.357, 0.012, 0.995, 0.988)),
+    "kilopower": ("12-GRC-2015-C-06315.jpg", (0.46, 0.0, 1.0, 1.0)),
+    "lunar-eva": ("13-as15-88-11901.jpg", (0.0, 0.14, 1.0, 0.94)),
+    "ox-storage": ("14-KSC-20191108-PH-JBS01_0049.jpg", (0.0, 0.0, 1.0, 1.0)),
+    "suit-backpack": ("15-S68-34582.jpg", (0.0, 0.0, 1.0, 1.0)),
 }
 WIDTHS = (480, 960, 1600)
 

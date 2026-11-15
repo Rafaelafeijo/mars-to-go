@@ -596,18 +596,32 @@
       "seconds_one": "{{count}} segundo",
       "seconds_other": "{{count}} segundos",
       "assisted": "Modo assistido: sem relógio.",
-      "moveToShield": "Passar {{n}} células da Máquina de ar para o Escudo (−{{n}} de ar nesta noite)",
-      "recallExpedition": "Chamar o rover de volta (sem amostra; o ar dos trajes já foi gasto)",
-      "keepPlan": "Manter o plano",
-      "timeout": "O tempo acabou: o plano ficou como estava.",
+      "recallExpedition": "Chamar o rover de volta (seguro, mas sem amostra; o ar dos trajes já foi gasto)",
       "titleCme": "Uma nuvem rápida chega a Marte esta noite!",
-      "textCme": "O modelo da NASA previu esta nuvem rápida em Marte. É a sua última chance de mudar o plano:"
+      "textCme": "O modelo da NASA previu esta nuvem rápida em Marte. É a sua última chance de mudar o plano:",
+      "meter": "Risco {{risk}} · seu Escudo {{shield}}.",
+      "enough": "Seu Escudo já bloqueia tudo. Nada a mudar.",
+      "covered": "Agora o Escudo bloqueia tudo.",
+      "need_one": "Falta {{count}} célula no Escudo para bloquear tudo.",
+      "need_other": "Faltam {{count}} células no Escudo para bloquear tudo.",
+      "drag": "Toque ou arraste uma célula para o Escudo. Escolha de onde ela sai; cada uma custa alguma coisa:",
+      "cost": {
+        "lifeSupport": "−1 de ar nesta noite",
+        "greenhouse": "−2 de comida no sol {{sol}}",
+        "askEarth": "sem resposta da Terra"
+      },
+      "shieldZone": "Escudo: {{n}}",
+      "undo": "Desfazer",
+      "done": "Pronto, passar a noite",
+      "continue": "Continuar"
     },
     "reportCrisis": {
       "label": "Crise",
-      "moveToShield": "Você passou {{n}} células para o Escudo.",
-      "recallExpedition": "Você chamou o rover de volta.",
-      "keepPlan": "Você manteve o plano."
+      "moved_one": "Você passou {{count}} célula para o Escudo ({{from}}).",
+      "moved_other": "Você passou {{count}} células para o Escudo ({{from}}).",
+      "enough": "Seu Escudo já bastava: nada a mudar.",
+      "keepPlan": "Você manteve o plano.",
+      "recallExpedition": "Você chamou o rover de volta."
     },
     "earthToday": {
       "yes": "o evento solar de hoje vai chegar a Marte (previsão de um modelo da NASA). Ponha células no Escudo.",

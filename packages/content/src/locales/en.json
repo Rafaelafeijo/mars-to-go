@@ -596,18 +596,32 @@
       "seconds_one": "{{count}} second",
       "seconds_other": "{{count}} seconds",
       "assisted": "Assisted mode: no timer.",
-      "moveToShield": "Move {{n}} cells from the Air machine to the Shield (−{{n}} air tonight)",
-      "recallExpedition": "Call the rover back (no sample, suits' air already spent)",
-      "keepPlan": "Keep the plan",
-      "timeout": "Time is up: the plan stays as it was.",
+      "recallExpedition": "Call the rover back (safe, but no sample; the suits' air is already spent)",
       "titleCme": "A fast cloud reaches Mars tonight!",
-      "textCme": "NASA's model forecast this fast cloud at Mars. It is your last chance to change the plan:"
+      "textCme": "NASA's model forecast this fast cloud at Mars. It is your last chance to change the plan:",
+      "meter": "Risk {{risk}} · your Shield {{shield}}.",
+      "enough": "Your Shield already blocks all of it. No change needed.",
+      "covered": "Now the Shield blocks all of it.",
+      "need_one": "{{count}} more Shield cell blocks all of it.",
+      "need_other": "{{count}} more Shield cells block all of it.",
+      "drag": "Tap or drag a cell into the Shield. Choose where it comes from; each one costs something:",
+      "cost": {
+        "lifeSupport": "−1 air tonight",
+        "greenhouse": "−2 food on sol {{sol}}",
+        "askEarth": "no answer from Earth"
+      },
+      "shieldZone": "Shield: {{n}}",
+      "undo": "Undo",
+      "done": "Ready, pass the night",
+      "continue": "Continue"
     },
     "reportCrisis": {
       "label": "Crisis",
-      "moveToShield": "You moved {{n}} cells to the Shield.",
-      "recallExpedition": "You called the rover back.",
-      "keepPlan": "You kept the plan."
+      "moved_one": "You moved {{count}} cell into the Shield ({{from}}).",
+      "moved_other": "You moved {{count}} cells into the Shield ({{from}}).",
+      "enough": "Your Shield was already enough: nothing to change.",
+      "keepPlan": "You kept the plan.",
+      "recallExpedition": "You called the rover back."
     },
     "earthToday": {
       "yes": "today's solar event will reach Mars (NASA model forecast). Put cells in the Shield.",

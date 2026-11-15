@@ -2690,6 +2690,84 @@ button.top__brand {
   background: #ff5a4a;
   transition: width 1s linear;
 }
+.crisis__art {
+  width: 100%;
+  height: auto;
+  max-height: 140px;
+}
+.crisis__ray {
+  animation: crisis-ray 0.9s linear infinite;
+}
+@keyframes crisis-ray {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+.crisis__status {
+  font-size: 1.05rem;
+}
+.crisis__hint {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+.crisis__sources {
+  display: grid;
+  gap: 8px;
+}
+.crisis__chip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 1px solid currentColor;
+  background: rgb(255 255 255 / 0.04);
+  font: inherit;
+  text-align: left;
+  cursor: grab;
+}
+.crisis__chip span {
+  color: var(--color-text);
+}
+.crisis__chip small {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+.crisis__chip:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+.crisis__drop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 2px dashed #b9a2ff;
+  background: rgb(185 162 255 / 0.1);
+  font-weight: 800;
+}
+.crisis__undo {
+  margin-left: auto;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 99px;
+  border: 1px solid var(--glass-line);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.crisis__recall {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: var(--tap);
+  font-size: 0.92rem;
+}
 .crisis__choices {
   display: grid;
   gap: 10px;

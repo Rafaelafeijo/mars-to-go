@@ -52,6 +52,10 @@ function hasWebGL(): boolean {
 }
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+/** Where crisis cells can come from (the rover's cells are already outside: it can only be called back). */
+type CrisisSource = 'lifeSupport' | 'greenhouse' | 'askEarth';
+const CRISIS_SOURCES: CrisisSource[] = ['lifeSupport', 'greenhouse', 'askEarth'];
+const NO_MOVES: Record<CrisisSource, number> = { lifeSupport: 0, greenhouse: 0, askEarth: 0 };
 const sumSteps =(steps: NightStep[], ids: NightStep['id'][]) => steps.filter((s) => ids.includes(s.id)).reduce((t, s) => t + s.delta, 0);
 
 interface Props {
@@ -74,13 +78,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const free = freeCells(cond.dust, lost);
   const open = openDestinations(base.mode, base.sol);
   const [a, setA] = useState<Allocation>(EMPTY);
-  // At night, show the plan as it ran: the crisis may have moved cells from air to shield.
-  const ranCrisis = night?.result.state.log.at(-1)?.plan.crisis;
-  const moved = night && ranCrisis?.kind === 'solarStorm' && ranCrisis.choice === 'moveToShield' ? Math.min(V.CRISIS_SHIELD_SWAP_CELLS, night.allocation.lifeSupport) : 0;
-  const plan = useMemo(
-    () => (night ? { ...night.allocation, lifeSupport: night.allocation.lifeSupport - moved, shield: night.allocation.shield + moved } : a),
-    [night, moved, a],
-  );
+  // At night, the plan as it ran (the crisis already moved its cells into the allocation).
+  const plan = night ? night.allocation : a;
   const left = free - cellsUsed(plan);
   const projection = useMemo(() => project(def, base, plan), [def, base, plan]);
   const ready = validateAllocation(base, a, cond.dust).length === 0;
@@ -122,22 +121,44 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   // Each mission has its own facts: no fact or photo repeats from one mission to the next.
   const fact = (def.id === 'm2' ? SOL_FACTS_M2 : SOL_FACTS).find((f) => f.sol === base.sol);
 
-  // The 10-second crisis (SIM_MODEL §6): a fast storm on this sol asks for a choice when the plan is locked.
+  // The 10-second crisis (SIM_MODEL §6, ADR-0034): a fast storm that reaches Mars. The child sees the
+  // risk against the shield and chooses WHERE to take cells from (tap or drag into the Shield); each
+  // source shows its cost. If the shield already blocks everything, the crisis only says so.
   const stormSol = !night && crisisFor(def, base.sol) === 'solarStorm';
   const [crisis, setCrisis] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(V.CRISIS_SECONDS);
-  const resolveCrisis = (choice: 'moveToShield' | 'recallExpedition' | 'keepPlan') => {
-    setCrisis(false);
-    onLock(a, { kind: 'solarStorm', choice });
+  const [moves, setMoves] = useState<Record<CrisisSource, number>>(NO_MOVES);
+  const [recall, setRecall] = useState(false);
+  const [lastCrisis, setLastCrisis] = useState<{ moved: Record<CrisisSource, number>; recall: boolean; enough: boolean } | null>(null);
+  const movedTotal = CRISIS_SOURCES.reduce((s, k) => s + moves[k], 0);
+  const stormRisk = cond.event?.risk ?? 0;
+  const shieldNow = a.shield + movedTotal;
+  const need = Math.max(0, stormRisk - shieldNow);
+  const enoughAtStart = a.shield >= stormRisk;
+  const moveOne = (k: CrisisSource) => {
+    if (a[k] - moves[k] <= 0 || need === 0) return;
+    setMoves((m) => ({ ...m, [k]: m[k] + 1 }));
   };
-  const resolveRef = useRef(resolveCrisis);
+  const finishCrisis = () => {
+    const alloc: Allocation = {
+      ...a,
+      lifeSupport: a.lifeSupport - moves.lifeSupport,
+      greenhouse: a.greenhouse - moves.greenhouse,
+      askEarth: (a.askEarth - moves.askEarth) as 0 | 1,
+      shield: a.shield + movedTotal,
+    };
+    setCrisis(false);
+    setLastCrisis({ moved: moves, recall, enough: enoughAtStart });
+    onLock(alloc, { kind: 'solarStorm', choice: recall ? 'recallExpedition' : 'keepPlan' });
+  };
+  const finishRef = useRef(finishCrisis);
   useEffect(() => {
-    resolveRef.current = resolveCrisis;
+    finishRef.current = finishCrisis;
   });
   useEffect(() => {
     if (!crisis || game.assisted) return;
     if (secondsLeft <= 0) {
-      resolveRef.current('keepPlan');
+      finishRef.current(); // time is up: what was moved so far stays
       return;
     }
     const id = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
@@ -146,10 +167,14 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const passNight = () => {
     if (stormSol) {
       setSecondsLeft(V.CRISIS_SECONDS);
+      setMoves(NO_MOVES);
+      setRecall(false);
       setCrisis(true);
-    } else onLock(a);
+    } else {
+      setLastCrisis(null);
+      onLock(a);
+    }
   };
-  const crisisChoice = ranCrisis;
 
   const effect = (d: Destination): string => {
     const n = plan[d];
@@ -565,23 +590,85 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                 <span style={{ width: `${(secondsLeft / V.CRISIS_SECONDS) * 100}%` }} />
               </span>
             )}
-            <h2 id="crisis-title">
-              <Icon name="storm" size={28} className="tone-rad" /> {ev?.kind === 'cme' ? t('world.crisis.titleCme') : t('world.crisis.title')}
-            </h2>
-            <p id="crisis-text">{ev?.kind === 'cme' ? t('world.crisis.textCme') : t('world.crisis.text')}</p>
-            <div className="crisis__choices">
-              <button type="button" className="btn btn--primary" disabled={a.lifeSupport === 0} onClick={() => resolveCrisis('moveToShield')}>
-                <Icon name="shield" size={18} /> {t('world.crisis.moveToShield', { n: Math.min(V.CRISIS_SHIELD_SWAP_CELLS, a.lifeSupport) })}
-              </button>
-              {a.expedition === 1 && (
-                <button type="button" className="btn" onClick={() => resolveCrisis('recallExpedition')}>
-                  <Icon name="rover" size={18} /> {t('world.crisis.recallExpedition')}
+            <h2 id="crisis-title">{ev?.kind === 'cme' ? t('world.crisis.titleCme') : t('world.crisis.title')}</h2>
+
+            {/* Picture: the storm hits the dome; one segment per risk point, lit when the shield covers it. */}
+            <svg className="crisis__art" viewBox="0 0 320 120" role="img" aria-label={t('world.crisis.meter', { risk: stormRisk, shield: shieldNow })}>
+              <defs>
+                <radialGradient id="crisisSun" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#fff2c4" />
+                  <stop offset="60%" stopColor="#ffb347" />
+                  <stop offset="100%" stopColor="#ff6a3a" />
+                </radialGradient>
+              </defs>
+              <circle cx="34" cy="44" r="24" fill="url(#crisisSun)" />
+              {[0, 1, 2, 3, 4].map((i) => (
+                <line key={i} className="crisis__ray" x1={64 + i * 6} y1={30 + i * 9} x2={170 + i * 4} y2={56 + i * 6} stroke="#c9a6ff" strokeWidth="2.5" strokeDasharray="4 6" style={{ animationDelay: `${i * 0.15}s` }} />
+              ))}
+              <path d="M190 104 A64 64 0 0 1 318 104" fill="rgb(185 162 255 / 0.12)" stroke={need === 0 ? '#7cd17a' : '#ff9b8a'} strokeWidth="3" />
+              <rect x="232" y="86" width="44" height="18" rx="4" fill="#d7d2cc" />
+              {Array.from({ length: stormRisk }, (_, i) => (
+                <rect key={i} x={206 + i * (96 / Math.max(stormRisk, 1))} y="112" width={96 / Math.max(stormRisk, 1) - 4} height="6" rx="3" fill={i < shieldNow ? '#b9a2ff' : 'rgb(255 255 255 / 0.15)'} />
+              ))}
+            </svg>
+            <p className="crisis__status" id="crisis-text">
+              <strong>{t('world.crisis.meter', { risk: stormRisk, shield: shieldNow })}</strong>{' '}
+              {need === 0 ? (enoughAtStart && movedTotal === 0 ? t('world.crisis.enough') : t('world.crisis.covered')) : t('world.crisis.need', { count: need })}
+            </p>
+
+            {need > 0 && (
+              <>
+                <p className="crisis__hint">{t('world.crisis.drag')}</p>
+                <div className="crisis__sources">
+                  {CRISIS_SOURCES.filter((k) => a[k] - moves[k] > 0).map((k) => (
+                    <button
+                      key={k}
+                      type="button"
+                      className={`crisis__chip tone-${TONE[k]}`}
+                      draggable
+                      onDragStart={(e) => e.dataTransfer.setData('text/plain', k)}
+                      onClick={() => moveOne(k)}
+                    >
+                      <Icon name={ICON[k]} size={20} />
+                      <span>
+                        <strong>{labels[k]}</strong> · {a[k] - moves[k]}
+                        <small>{t(`world.crisis.cost.${k}`, { sol: base.sol + V.GREENHOUSE_DELAY_SOLS })}</small>
+                      </span>
+                      <Icon name="shield" size={18} className="tone-rad" />
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+            {/* Drop target for mouse dragging; the chips above are buttons, so tap and keyboard work without it. */}
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- drag-and-drop extra; the buttons are the accessible path */}
+            <div
+              className="crisis__drop"
+              role="region"
+              aria-label={t('world.crisis.shieldZone', { n: shieldNow })}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                const k = e.dataTransfer.getData('text/plain') as CrisisSource;
+                if (CRISIS_SOURCES.includes(k)) moveOne(k);
+              }}
+            >
+              <Icon name="shield" size={20} className="tone-rad" /> {t('world.crisis.shieldZone', { n: shieldNow })}
+              {movedTotal > 0 && (
+                <button type="button" className="crisis__undo" onClick={() => setMoves(NO_MOVES)}>
+                  {t('world.crisis.undo')}
                 </button>
               )}
-              <button type="button" className="btn btn--ghost" onClick={() => resolveCrisis('keepPlan')}>
-                {t('world.crisis.keepPlan')}
-              </button>
             </div>
+            {a.expedition === 1 && (
+              <label className="crisis__recall">
+                <input type="checkbox" checked={recall} onChange={(e) => setRecall(e.target.checked)} />
+                <Icon name="rover" size={18} /> {t('world.crisis.recallExpedition')}
+              </label>
+            )}
+            <button type="button" className="btn btn--primary" onClick={finishCrisis}>
+              {need === 0 ? t('world.crisis.continue') : t('world.crisis.done')}
+            </button>
           </div>
         </div>
       )}
@@ -660,12 +747,22 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
                     <span className="stat__what">{t('world.report.sample', { site: t(`world.sites.${discovery}`), count: after.discoveries.length, goal: V.SAMPLES_GOAL })}</span>
                   </li>
                 )}
-                {crisisChoice?.kind === 'solarStorm' && (
+                {lastCrisis && (
                   <li className="stat tone-rad">
                     <span className="stat__icon"><Icon name="storm" size={22} /></span>
                     <span className="stat__label">{t('world.reportCrisis.label')}</span>
                     <span className="stat__value" />
-                    <span className="stat__what">{t(`world.reportCrisis.${crisisChoice.choice}`, { n: Math.min(V.CRISIS_SHIELD_SWAP_CELLS, night?.allocation.lifeSupport ?? 0) })}</span>
+                    <span className="stat__what">
+                      {(() => {
+                        const n = CRISIS_SOURCES.reduce((s, k) => s + lastCrisis.moved[k], 0);
+                        const from = CRISIS_SOURCES.filter((k) => lastCrisis.moved[k] > 0)
+                          .map((k) => `${labels[k]} ${lastCrisis.moved[k]}`)
+                          .join(', ');
+                        if (n > 0) return t('world.reportCrisis.moved', { count: n, from });
+                        return lastCrisis.enough ? t('world.reportCrisis.enough') : t('world.reportCrisis.keepPlan');
+                      })()}
+                      {lastCrisis.recall && <span className="stat__hint">{t('world.reportCrisis.recallExpedition')}</span>}
+                    </span>
                   </li>
                 )}
                 {tonightEarth && (

@@ -178,7 +178,8 @@ try {
       if (CRISIS_SOLS.includes(sol)) {
         await page.getByRole('alertdialog').waitFor();
         if (sol === 3 || sol === 7) await shot(`11-m2-crisis-sol${sol}`, false);
-        await page.getByRole('button', { name: /^Keep the plan/ }).click();
+        // The plan's Shield already covers the risk: the crisis says so and asks to continue.
+        await page.getByRole('button', { name: /^Continue$/ }).click();
       }
       await page.getByRole('button', { name: T.next }).waitFor();
       if (sol === 7) await shot('12-m2-report-sol7', false);

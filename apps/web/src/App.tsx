@@ -32,6 +32,8 @@ export function App() {
   const { game } = g;
   const main = useRef<HTMLElement>(null);
   const [ui] = useState<Ui>(initialUi);
+  // Test shortcut: ?mission=2 makes Play open mission 2 directly (for playtests and the demo).
+  const [startM2] = useState(() => new URLSearchParams(window.location.search).get('mission') === '2');
   const [nasaOpen, setNasaOpen] = useState(false);
   // Mission 2 opens only from the end of mission 1 with everyone home (no mission buttons on the home screen).
   const m1Home = game.screen === 'end' && game.def.id === 'm1' && game.state.status === 'returned_all';
@@ -75,7 +77,7 @@ export function App() {
       <main id="main" ref={main} tabIndex={-1} className={inSol && ui !== 'list' ? 'main--one' : undefined}>
         {game.screen === 'home' && (
           <Home
-            onPlay={() => g.startMission(MISSION_1)}
+            onPlay={() => g.startMission(startM2 ? MISSION_2 : MISSION_1)}
             assisted={game.assisted}
             onAssisted={g.setAssisted}
             onNasaData={() => setNasaOpen(true)}

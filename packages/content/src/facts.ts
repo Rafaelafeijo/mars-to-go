@@ -276,6 +276,21 @@ export const SOL_FACTS_M2: SolFact[] = [
   fact2({
     id: 'm2-suits',
     sol: 1,
+    photo: {
+      slug: "spacesuit-materials",
+      credit: "NASA/JPL-Caltech/MSSS",
+      mission: "Mars 2020 Perseverance · WATSON (SHERLOC)",
+      date: "released 2025-03-26",
+      placeEn: "Jezero Crater, Mars (on the rover)",
+      placePt: "Cratera Jezero, Marte (no rover)",
+      enhancedColor: false,
+      sourceUrl: "https://science.nasa.gov/photojournal/perseverance-and-sherlocs-calibration-target",
+      recordId: "PIA26520",
+      caption: {
+            en: "The spacesuit material samples riding on the Perseverance rover, photographed on Mars by its WATSON camera.",
+            'pt-BR': "As amostras de material de traje espacial que viajam no rover Perseverance, fotografadas em Marte pela câmera WATSON."
+      }
+    },
     sourceName: 'NASA/JPL PIA24033, "Spacesuit Materials on Perseverance\'s SHERLOC Calibration Target"',
     sourceUrl: 'https://www.jpl.nasa.gov/images/pia24033-spacesuit-materials-on-perseverances-sherloc-calibration-target/',
     text: {
@@ -286,6 +301,21 @@ export const SOL_FACTS_M2: SolFact[] = [
   fact2({
     id: 'm2-oxygen-tanks',
     sol: 2,
+    photo: {
+      slug: "ox-storage",
+      credit: "NASA/Ben Smegelsky",
+      mission: "Kennedy Space Center · Launch Pad 39B",
+      date: "2019-11-08",
+      placeEn: "Kennedy Space Center, Florida (Earth)",
+      placePt: "Kennedy Space Center, Flórida (Terra)",
+      enhancedColor: false,
+      sourceUrl: "https://images.nasa.gov/details/KSC-20191108-PH-JBS01_0049",
+      recordId: "KSC-20191108-PH-JBS01_0049",
+      caption: {
+            en: "On Earth: a giant tank that keeps rocket liquid oxygen super cold at Kennedy Space Center, Florida. Not on Mars.",
+            'pt-BR': "Na Terra: um tanque gigante que guarda oxigênio líquido de foguete bem gelado no Kennedy Space Center, Flórida. Não é em Marte."
+      }
+    },
     sourceName: 'NASA Glenn, "Liquefaction and Storage of In-Situ Oxygen on the Surface of Mars" (NTRS 20160004210)',
     sourceUrl: NTRS('20160004210'),
     text: {
@@ -296,6 +326,21 @@ export const SOL_FACTS_M2: SolFact[] = [
   fact2({
     id: 'm2-power',
     sol: 3,
+    photo: {
+      slug: "kilopower",
+      credit: "NASA",
+      mission: "NASA Glenn Research Center",
+      date: "2016-11-09",
+      placeEn: "NASA Glenn Research Center, Cleveland, Ohio (Earth)",
+      placePt: "NASA Glenn Research Center, Cleveland, Ohio (Terra)",
+      enhancedColor: false,
+      sourceUrl: "https://images.nasa.gov/details/GRC-2015-C-06315",
+      recordId: "GRC-2015-C-06315",
+      caption: {
+            en: "On Earth, at NASA Glenn in Ohio: a test unit of the engine that would turn a small nuclear reactor's heat into electricity (no reactor in the photo).",
+            'pt-BR': "Na Terra, na NASA Glenn em Ohio: uma unidade de teste do motor que transformaria o calor de um pequeno reator nuclear em eletricidade (não há reator na foto)."
+      }
+    },
     sourceName: 'NASA, Human Exploration of Mars Design Reference Architecture 5.0 (NASA-SP-2009-566)',
     sourceUrl: 'https://www.nasa.gov/pdf/373665main_NASA-SP-2009-566.pdf',
     text: {
@@ -328,6 +373,21 @@ export const SOL_FACTS_M2: SolFact[] = [
   fact2({
     id: 'm2-walk',
     sol: 5,
+    photo: {
+      slug: "lunar-eva",
+      credit: "NASA",
+      mission: "Apollo 15 · lunar surface",
+      date: "1971-07-31 to 08-02",
+      placeEn: "The Moon, Hadley-Apennine",
+      placePt: "Lua, Hadley-Apennine",
+      enhancedColor: false,
+      sourceUrl: "https://images.nasa.gov/details/as15-88-11901",
+      recordId: "AS15-88-11901",
+      caption: {
+            en: "The Apollo 15 lunar rover parked alone on the Moon in 1971; it let astronauts travel farther from their lander.",
+            'pt-BR': "O jipe lunar da Apollo 15 estacionado sozinho na Lua em 1971; ele deixava os astronautas irem mais longe do módulo de pouso."
+      }
+    },
     sourceName: 'NASA, "Exploration EVA Testing and Analogs" (NTRS 20210000827) — Moon planning',
     sourceUrl: NTRS('20210000827'),
     text: {
@@ -360,6 +420,21 @@ export const SOL_FACTS_M2: SolFact[] = [
   fact2({
     id: 'm2-co2-suits',
     sol: 7,
+    photo: {
+      slug: "suit-backpack",
+      credit: "NASA",
+      mission: "Apollo spacesuit (NASA Johnson record)",
+      date: "1968",
+      placeEn: "Earth",
+      placePt: "Terra",
+      enhancedColor: false,
+      sourceUrl: "https://images.nasa.gov/details/S68-34582",
+      recordId: "S68-34582",
+      caption: {
+            en: "Inside an Apollo spacesuit backpack, photographed on Earth in 1968 with its cover removed: the gear that gives air and cleans it.",
+            'pt-BR': "O interior de uma mochila de traje espacial da Apollo, fotografada na Terra em 1968 sem a tampa: o equipamento que dá ar e o limpa."
+      }
+    },
     sourceName: 'NASA/TDA Research, ICES 2011 (NTRS 20110008446)',
     sourceUrl: NTRS('20110008446'),
     text: {

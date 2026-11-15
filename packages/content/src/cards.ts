@@ -666,18 +666,18 @@ export const CARDS: DataCard[] = [
     text: {
       en: {
         title: 'The 10-second crisis',
-        what: 'When a fast solar storm comes, you have 10 seconds to choose: move 2 cells from the Air machine to the Shield, call the rover back, or keep the plan.',
+        what: 'When a fast solar storm reaches Mars, you have 10 seconds: see the risk against your Shield and move cells into it from the machine you choose, or call the rover back.',
         processing: 'The real fact: on May 20, 2024, NASA says the flare\'s light arrived first and the charged particles reached Mars "in just tens of minutes". There is little time to react.',
-        gameUse: 'Moving 2 cells to the Shield blocks 2 more risk points but makes 2 less air tonight. Calling the rover back avoids the radiation outside, but the suits\' air is already spent and no sample comes home. With no choice in 10 seconds, the plan stays as it is. In assisted mode there is no timer.',
+        gameUse: 'Each cell moved to the Shield blocks 1 more risk point, and costs what it was doing: 1 air, 2 food later, or Earth\'s answer. If the Shield already covers the risk, nothing needs to change. Calling the rover back avoids the radiation outside, but the suits\' air is already spent and no sample comes home. When time runs out, what you moved stays. In assisted mode there is no timer. (The older list screens move 2 cells from the Air machine.)',
         simplified: 'Real crews would have minutes, not seconds, and rules written in advance. The 10 seconds are a game rule to feel the hurry.',
         learnMore:
           'Light is the fastest thing there is, so the flash arrives before the particles, like lightning before thunder. Astronauts on the space station also move to the most shielded part of the station when a solar storm warning comes.',
       },
       'pt-BR': {
         title: 'A crise de 10 segundos',
-        what: 'Quando vem uma tempestade solar rápida, você tem 10 segundos para escolher: passar 2 células da Máquina de ar para o Escudo, chamar o rover de volta ou manter o plano.',
+        what: 'Quando uma tempestade solar rápida chega a Marte, você tem 10 segundos: veja o risco contra o seu Escudo e passe células para ele da máquina que escolher, ou chame o rover de volta.',
         processing: 'O fato real: em 20 de maio de 2024, a NASA conta que a luz da erupção chegou primeiro e as partículas carregadas chegaram a Marte "em apenas dezenas de minutos". Há pouco tempo para reagir.',
-        gameUse: 'Passar 2 células para o Escudo bloqueia mais 2 pontos de risco, mas faz 2 de ar a menos nesta noite. Chamar o rover de volta evita a radiação lá fora, mas o ar dos trajes já foi gasto e nenhuma amostra volta. Sem escolha em 10 segundos, o plano fica como está. No modo assistido não há relógio.',
+        gameUse: 'Cada célula passada para o Escudo bloqueia mais 1 ponto de risco e custa o que ela fazia: 1 de ar, 2 de comida depois, ou a resposta da Terra. Se o Escudo já cobre o risco, nada precisa mudar. Chamar o rover de volta evita a radiação lá fora, mas o ar dos trajes já foi gasto e nenhuma amostra volta. Quando o tempo acaba, o que você passou fica. No modo assistido não há relógio. (As telas antigas em lista passam 2 células da Máquina de ar.)',
         simplified: 'Uma tripulação de verdade teria minutos, não segundos, e regras escritas antes. Os 10 segundos são uma regra do jogo para sentir a pressa.',
         learnMore:
           'A luz é a coisa mais rápida que existe, então o clarão chega antes das partículas, como o relâmpago antes do trovão. Os astronautas da estação espacial também vão para a parte mais protegida da estação quando chega um aviso de tempestade solar.',
