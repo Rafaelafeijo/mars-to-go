@@ -760,6 +760,15 @@ function World(props: SceneProps) {
   const tapMachine = (m: MachineSpec, e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     if (!open.includes(m.d)) return;
+    // Phones and tablets (touch): a tap on a machine only walks; cells are placed with the action
+    // button that appears next to it. Before, a tap placed a cell by itself (2 for the rover), and
+    // a tap inside the greenhouse to walk spent cells. Computers keep click-to-place.
+    const touch = window.matchMedia?.('(pointer: coarse)').matches ?? false;
+    if (touch) {
+      pending.current = null;
+      setTarget(nearD === m.d ? new THREE.Vector3(e.point.x, 0, e.point.z) : new THREE.Vector3(m.pos[0], 0, m.pos[1] + 2.6));
+      return;
+    }
     if (nearD === m.d) onUse(m.d);
     else {
       pending.current = m.d;

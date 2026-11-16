@@ -97,6 +97,11 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
   const [missionOpen, setMissionOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
   // Phone: the sky panel starts closed (it covered the scene); one tap opens it. Computer: open, as before.
   const [skyOpen, setSkyOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
+  // Sky view fact: on phones it starts closed so the Sun (centre of the screen) stays visible.
+  const [skyCardOpen, setSkyCardOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? true);
+  // Rover destination (phones): the choice opens when the rover gets its cells and closes after a tap,
+  // leaving one line "Rover → site · Change". Computers always show the two choices.
+  const [sitePickOpen, setSitePickOpen] = useState(true);
   const [banner, setBanner] = useState(true);
   const [menu, setMenu] = useState(false);
   const [skyView, setSkyView] = useState(false);
@@ -214,6 +219,7 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
     if (night || !open.includes(d) || left < cost(d)) return;
     if ((d === 'expedition' || d === 'askEarth') && a[d] === 1) return;
     setA((p) => ({ ...p, [d]: d === 'expedition' || d === 'askEarth' ? 1 : p[d] + 1 }));
+    if (d === 'expedition') setSitePickOpen(true);
     const text =
       d === 'lifeSupport'
         ? t('world.float.lifeSupport', { n: V.AIR_PER_LIFE_SUPPORT_CELL })
@@ -368,8 +374,8 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
 
       {/* Phone direction pad: hold an arrow to walk (the panels cover the ground below the astronaut).
           Hidden while the rover's destination choice is open: on phones it sat on top of the choices. */}
-      {webgl && !isNight && !skyView && a.expedition !== 1 && (
-        <div className="world__pad" role="group" aria-label={t('world.pad.label')}>
+      {webgl && !isNight && !skyView && (a.expedition !== 1 || !sitePickOpen) && (
+        <div className={`world__pad${a.expedition === 1 ? ' is-raised' : ''}`} role="group" aria-label={t('world.pad.label')}>
           {(['up', 'left', 'right', 'down'] as const).map((d) => (
             <button
               key={d}
@@ -432,16 +438,25 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
 
       {/* Sky view: the camera looks up; real NASA facts about the Mars sky, with a real photo */}
       {skyView && !isNight && (
-        <section className="hud-skycard wpanel" aria-labelledby="skycard-title">
+        <section className={`hud-skycard wpanel${skyCardOpen ? '' : ' is-closed'}`} aria-labelledby="skycard-title">
           <span className="report__badge">{t('world.report.realNasa')}</span>
-          <h2 id="skycard-title">{t('world.sky.title')}</h2>
+          <h2 className="hud-skycard__title">
+            <button type="button" className="hud-sky__head" aria-expanded={skyCardOpen} onClick={() => setSkyCardOpen((o) => !o)}>
+              <span id="skycard-title">{t('world.sky.title')}</span>
+              <Icon name={skyCardOpen ? 'minus' : 'plus'} size={14} />
+            </button>
+          </h2>
           {/* No photo here: the Gale sunset photo already belongs to a sol fact (no repeats). */}
-          <p>{t('world.sky.day')}</p>
-          <p className="muted small">
-            <a href="https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/" target="_blank" rel="noreferrer">
-              {t('world.sky.source')}
-            </a>
-          </p>
+          {skyCardOpen && (
+            <>
+              <p>{t('world.sky.day')}</p>
+              <p className="muted small">
+                <a href="https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/" target="_blank" rel="noreferrer">
+                  {t('world.sky.source')}
+                </a>
+              </p>
+            </>
+          )}
         </section>
       )}
 
@@ -547,16 +562,34 @@ export function WorldScreen({ game, onLock, onNightDone, onRestart, onHome, onNa
         </p>
         {/* ADR-0035: the child chooses where the rover goes; the far site costs more. */}
         {a.expedition === 1 && !night && (
-          <div className="site-pick" role="group" aria-label={t('world.sitePick')}>
+          <div className={`site-pick${sitePickOpen ? '' : ' is-closed'}`} role="group" aria-label={t('world.sitePick')}>
             <p className="site-pick__title">
               <Icon name="rover" size={14} /> {t('world.sitePick')}
             </p>
-            {(['rochette', 'delta-front'] as const).map((s) => (
-              <button key={s} type="button" aria-pressed={(a.expeditionSite ?? 'rochette') === s} onClick={() => setA((p) => ({ ...p, expeditionSite: s }))}>
-                <strong>{t(`world.siteChoice.${s}.name`)}</strong>
-                <small>{t(`world.siteChoice.${s}.cost`)}</small>
-              </button>
-            ))}
+            <div className="site-pick__options">
+              {(['rochette', 'delta-front'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  aria-pressed={(a.expeditionSite ?? 'rochette') === s}
+                  onClick={() => {
+                    setA((p) => ({ ...p, expeditionSite: s }));
+                    setSitePickOpen(false);
+                  }}
+                >
+                  <strong>{t(`world.siteChoice.${s}.name`)}</strong>
+                  <small>{t(`world.siteChoice.${s}.cost`)}</small>
+                </button>
+              ))}
+            </div>
+            {/* Phones only (CSS): the chosen site in one line; a tap opens the choice again. */}
+            <button type="button" className="site-pick__summary" aria-expanded={false} onClick={() => setSitePickOpen(true)}>
+              <Icon name="check" size={14} />
+              <span>
+                <Icon name="rover" size={14} /> → <strong>{t(`world.siteChoice.${a.expeditionSite ?? 'rochette'}.name`)}</strong>
+              </span>
+              <span className="site-pick__change">{t('world.siteChange')}</span>
+            </button>
           </div>
         )}
         {a.askEarth === 1 && !night && (

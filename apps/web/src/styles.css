@@ -3431,12 +3431,40 @@ button.top__brand {
     right: 6px;
   }
   /* Rover destination: the two choices side by side, so the panel grows less. */
-  .hud-hand.has-site .site-pick {
+  .hud-hand.has-site .site-pick__options {
     grid-template-columns: 1fr 1fr;
   }
-  .hud-hand.has-site .site-pick__title {
-    grid-column: 1 / -1;
+  /* After a choice: one line "✓ Rover → site · Change"; a tap opens the choice again. */
+  .site-pick.is-closed .site-pick__title,
+  .site-pick.is-closed .site-pick__options {
+    display: none;
   }
+  /* The rover line makes the cells panel taller: lift the pad so it never covers it. */
+  .world__pad.is-raised {
+    bottom: 274px;
+  }
+  .world--acting .world__pad.is-raised {
+    bottom: 330px;
+  }
+  .site-pick.is-closed .site-pick__summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-color: #f5b642;
+    background: rgb(245 182 66 / 0.12);
+  }
+}
+.site-pick__options {
+  display: grid;
+  gap: 6px;
+}
+.site-pick .site-pick__summary {
+  display: none;
+}
+.site-pick__change {
+  margin-left: auto;
+  color: #f5b642;
+  font-weight: 700;
 }
 
 /* Edge warning: a small notice that never blocks taps (it fades away by itself). */
